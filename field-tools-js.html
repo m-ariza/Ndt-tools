@@ -1,317 +1,273 @@
-<!doctype html>
-<html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#1e293b">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="NDT Calc">
-    <title>NDT Field Tools (Offline)</title>
+    <title>NDT Field Tools</title>
 
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%231e293b' rx='100'/%3E%3Cpath fill='%23fbbf24' d='M256 128c19.6 0 37.7 6.6 52.2 17.7l77.4-134C347.1 2.8 303.1 0 256 0s-91.1 2.8-129.6 11.7l77.4 134c14.5-11.1 32.6-17.7 52.2-17.7zM100.9 92L23.5 226.1C8.6 251.9 0 281.2 0 312c0 20.3 3.8 39.8 10.8 58h154.6c-5.8-11.2-9.4-24-9.4-38 0-44.2 35.8-80 80-80 13.6 0 26.3 3.7 37.4 10.1L100.9 92zm221.7 170c11.1-6.4 23.8-10.1 37.4-10.1 44.2 0 80 35.8 80 80 0 14-3.6 26.8-9.4 38H501.2c7-18.2 10.8-37.7 10.8-58 0-30.8-8.6-60.1-23.5-85.9L322.6 92l-52.5 90.9c20.3 14.8 37.2 35.9 52.5 59.1zM256 312c0-13.3-10.7-24-24-24s-24 10.7-24 24 10.7 24 24 24 24-10.7 24-24z'/%3E%3C/svg%3E">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%231e293b'/%3E%3Cpath fill='%23fbbf24' d='M256 128c19.6 0 37.7 6.6 52.2 17.7l77.4-134C347.1 2.8 303.1 0 256 0s-91.1 2.8-129.6 11.7l77.4 134c14.5-11.1 32.6-17.7 52.2-17.7zM100.9 92L23.5 226.1C8.6 251.9 0 281.2 0 312c0 20.3 3.8 39.8 10.8 58h154.6c-5.8-11.2-9.4-24-9.4-38 0-44.2 35.8-80 80-80 13.6 0 26.3 3.7 37.4 10.1L100.9 92zm221.7 170c11.1-6.4 23.8-10.1 37.4-10.1 44.2 0 80 35.8 80 80 0 14-3.6 26.8-9.4 38H501.2c7-18.2 10.8-37.7 10.8-58 0-30.8-8.6-60.1-23.5-85.9L322.6 92l-52.5 90.9c20.3 14.8 37.2 35.9 52.5 59.1zM256 312c0-13.3-10.7-24-24-24s-24 10.7-24 24 10.7 24 24 24 24-10.7 24-24z'/%3E%3C/svg%3E">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231e293b' rx='20'/%3E%3Ccircle cx='50' cy='50' r='9' fill='%23fbbf24'/%3E%3Cpath d='M43.25 38.31 L27.50 11.03 A45 45 0 0 1 72.50 11.03 L56.75 38.31 A13.5 13.5 0 0 0 43.25 38.31 Z M63.50 50.00 L95.00 50.00 A45 45 0 0 1 72.50 88.97 L56.75 61.69 A13.5 13.5 0 0 0 63.50 50.00 Z M43.25 61.69 L27.50 88.97 A45 45 0 0 1 5.00 50.00 L36.50 50.00 A13.5 13.5 0 0 0 43.25 61.69 Z' fill='%23fbbf24'/%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231e293b'/%3E%3Ccircle cx='50' cy='50' r='9' fill='%23fbbf24'/%3E%3Cpath d='M43.25 38.31 L27.50 11.03 A45 45 0 0 1 72.50 11.03 L56.75 38.31 A13.5 13.5 0 0 0 43.25 38.31 Z M63.50 50.00 L95.00 50.00 A45 45 0 0 1 72.50 88.97 L56.75 61.69 A13.5 13.5 0 0 0 63.50 50.00 Z M43.25 61.69 L27.50 88.97 A45 45 0 0 1 5.00 50.00 L36.50 50.00 A13.5 13.5 0 0 0 43.25 61.69 Z' fill='%23fbbf24'/%3E%3C/svg%3E">
 
     <style>
-        /* ... Keep your existing CSS styles here ... */
-      /* --- PURE CSS STYLING (No Tailwind needed) --- */
-      :root {
-        --bg-color: #f1f5f9;
-        --text-color: #334155;
-        --card-bg: #ffffff;
-        --border-color: #cbd5e1;
-        --primary: #0891b2; /* Cyan */
-        --success: #059669; /* Emerald */
-        --accent: #4f46e5; /* Indigo */
-      }
-      body {
-        font-family:
-          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
-          Arial, sans-serif;
-        background-color: var(--bg-color);
-        color: var(--text-color);
-        margin: 0;
-        padding: 20px;
-        padding-bottom: 80px;
-        line-height: 1.5;
-      }
-      .container {
-        max-width: 600px;
-        margin: 0 auto;
-      }
-      h1 {
-        text-align: center;
-        margin-bottom: 5px;
-        color: #1e293b;
-      }
-      .subtitle {
-        text-align: center;
-        color: #94a3b8;
-        font-size: 0.8rem;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        margin-bottom: 30px;
-      }
+        /* --- CSS --- */
+        :root {
+            --bg-color: #f1f5f9; --text-color: #334155; --card-bg: #ffffff;
+            --border-color: #cbd5e1; --primary: #0891b2; --success: #059669; --accent: #4f46e5;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color); color: var(--text-color);
+            margin: 0; padding: 20px; padding-bottom: 80px; line-height: 1.5;
+        }
+        .container { max-width: 600px; margin: 0 auto; }
+        h1 { text-align: center; margin-bottom: 5px; color: #1e293b; }
+        .subtitle { text-align: center; color: #94a3b8; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 30px; }
 
-      /* Card Styling */
-      .card {
-        background: var(--card-bg);
-        border-radius: 12px;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        border: 1px solid var(--border-color);
-        margin-bottom: 20px;
-        overflow: hidden;
-      }
-      .card-header {
-        padding: 15px 20px;
-        background: #f8fafc;
-        border-bottom: 1px solid var(--border-color);
-        font-weight: 600;
-        color: #475569;
-        cursor: pointer;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-      .card-body {
-        padding: 20px;
-        display: block;
-      }
-      .hidden {
-        display: none;
-      }
+        /* Card Styles */
+        .card { background: var(--card-bg); border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 20px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .card-header { padding: 15px 20px; background: #f8fafc; border-bottom: 1px solid var(--border-color); font-weight: 600; color: #475569; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .card-body { padding: 20px; }
+        .hidden { display: none; }
 
-      /* Grid Layout for Inputs */
-      .grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 15px;
-      }
-      .full-width {
-        grid-column: span 2;
-      }
+        /* Inputs & Grid */
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .full-width { grid-column: span 2; }
+        label { display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 4px; }
+        input[type="number"] { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem; box-sizing: border-box; background: #fff; color: #1e293b; }
+        input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.1); }
 
-      /* Input Styling */
-      label {
-        display: block;
-        font-size: 0.75rem;
-        font-weight: 700;
-        color: #64748b;
-        text-transform: uppercase;
-        margin-bottom: 4px;
-      }
-      input[type="number"] {
-        width: 100%;
-        padding: 12px;
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        font-size: 1rem;
-        box-sizing: border-box; /* Fixes padding issues */
-        background: #fff;
-        color: #1e293b;
-      }
-      input:focus {
-        outline: none;
-        border-color: var(--primary);
-        box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.1);
-      }
+        /* Results */
+        .result-box { margin-top: 15px; padding: 15px; border-radius: 8px; text-align: center; background: #ecfeff; border: 1px solid #cffafe; }
+        .result-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        .result-value { font-size: 1.8rem; font-weight: 800; }
+        
+        /* Themes */
+        .cyan-theme .result-box { background: #ecfeff; border-color: #a5f3fc; } .cyan-theme .result-value { color: #0e7490; }
+        .emerald-theme .result-box { background: #ecfdf5; border-color: #6ee7b7; } .emerald-theme .result-value { color: #047857; }
+        .indigo-theme .result-box { background: #eef2ff; border-color: #a5b4fc; } .indigo-theme .result-value { color: #4338ca; }
 
-      /* Result Boxes */
-      .result-box {
-        margin-top: 15px;
-        padding: 15px;
-        border-radius: 8px;
-        text-align: center;
-        background: #ecfeff; /* Light Cyan */
-        border: 1px solid #cffafe;
-      }
-      .result-label {
-        font-size: 0.7rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        margin-bottom: 5px;
-      }
-      .result-value {
-        font-size: 1.8rem;
-        font-weight: 800;
-      }
+        /* CYAN PILL BUTTON */
+        .mini-btn {
+            background: #0891b2; color: white; border: none; padding: 4px 10px; border-radius: 12px;
+            font-size: 0.7rem; cursor: pointer; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;
+            box-shadow: 0 2px 4px rgba(8, 145, 178, 0.3); transition: background 0.2s;
+        }
+        .mini-btn:hover { background: #0e7490; transform: translateY(-1px); }
+        .mini-btn:active { transform: translateY(0); }
 
-      /* Color variations for tools */
-      .cyan-theme .result-box {
-        background: #ecfeff;
-        border-color: #a5f3fc;
-      }
-      .cyan-theme .result-value {
-        color: #0e7490;
-      }
-
-      .emerald-theme .result-box {
-        background: #ecfdf5;
-        border-color: #6ee7b7;
-      }
-      .emerald-theme .result-value {
-        color: #047857;
-      }
-      .emerald-theme input:focus {
-        border-color: var(--success);
-        box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
-      }
-
-      .indigo-theme .result-box {
-        background: #eef2ff;
-        border-color: #a5b4fc;
-      }
-      .indigo-theme .result-value {
-        color: #4338ca;
-      }
-      .indigo-theme input:focus {
-        border-color: var(--accent);
-        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-      }
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.9); z-index: 100;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.2s;
+        }
+        .modal-overlay.open { opacity: 1; pointer-events: auto; }
+        .modal-content {
+            background: #fff; width: 90%; max-width: 400px; border-radius: 12px; padding: 0; overflow: hidden;
+            transform: scale(0.95); transition: transform 0.2s;
+        }
+        .modal-overlay.open .modal-content { transform: scale(1); }
+        .modal-header { background: #f1f5f9; padding: 15px; font-weight: 700; color: #334155; display: flex; justify-content: space-between; align-items: center; }
+        .modal-close { background: none; border: none; font-size: 1.5rem; line-height: 1; cursor: pointer; color: #94a3b8; }
+        
+        /* Table Styles */
+        .exp-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        .exp-table th { background: #f8fafc; color: #64748b; font-weight: 600; text-align: center; padding: 10px; border-bottom: 2px solid #e2e8f0; font-size: 0.75rem; }
+        .exp-table td { padding: 12px 8px; text-align: center; border-bottom: 1px solid #f1f5f9; color: #334155; font-weight: 500; }
+        .exp-table tr:last-child td { border-bottom: none; }
+        
+        /* Clickable cells */
+        .val-btn { 
+            background: #ecfeff; color: #0891b2; padding: 4px 8px; border-radius: 6px; 
+            font-weight: 700; cursor: pointer; display: inline-block; min-width: 30px;
+        }
+        .val-btn:active { background: #0891b2; color: white; }
+        
+        .note { padding: 15px; font-size: 0.75rem; color: #94a3b8; text-align: center; background: #f8fafc; border-top: 1px solid #e2e8f0; }
     </style>
-  </head>
-  <body>
-    <div class="container">
-      <h1>NDT Field Tools</h1>
-      <div class="subtitle">Offline Edition</div>
+</head>
 
-      <div class="card cyan-theme">
+
+<body>
+
+<div class="container">
+    <h1>NDT Field Tools</h1>
+    <div class="subtitle">Offline Edition</div>
+
+    <div class="card cyan-theme">
         <div class="card-header" onclick="toggleCard('card1')">
-          1. Exposure Calculator
-          <span>▼</span>
+            1. Exposure Calculator
+            <span>▼</span>
         </div>
         <div id="card1" class="card-body">
-          <div class="grid">
-            <div>
-              <label>Target Exp (R)</label>
-              <input type="number" id="targetExp" value="10" step="0.1" />
+            <div class="grid">
+                <div>
+                    <label>
+                        Target Exp (R)
+                        <button class="mini-btn" onclick="openModal(event)">Values</button>
+                    </label>
+                    <input type="number" id="targetExp" value="2.0" step="0.1">
+                </div>
+                <div>
+                    <label>Source Age (Mo)</label>
+                    <input type="number" id="age" value="0" step="0.1">
+                </div>
+                <div>
+                    <label>Steel Thick (in)</label>
+                    <input type="number" id="thick" value="0.5" step="0.001">
+                </div>
+                <div>
+                    <label>SFD (Inches)</label>
+                    <input type="number" id="sfd" value="24" step="0.5">
+                </div>
+                <div class="full-width">
+                    <label>Original Strength (Ci)</label>
+                    <input type="number" id="strength" value="50" step="0.1">
+                </div>
             </div>
-            <div>
-              <label>Source Age (Mo)</label>
-              <input type="number" id="age" value="0" step="0.1" />
+            <div class="result-box">
+                <div class="result-label" style="color:#0891b2">Calculated Time</div>
+                <div id="resExposure" class="result-value">---</div>
             </div>
-            <div>
-              <label>Steel Thick (in)</label>
-              <input type="number" id="thick" value="0.5" step="0.001" />
-            </div>
-            <div>
-              <label>SFD (Inches)</label>
-              <input type="number" id="sfd" value="24" step="0.5" />
-            </div>
-            <div class="full-width">
-              <label>Original Strength (Ci)</label>
-              <input type="number" id="strength" value="50" step="0.1" />
-            </div>
-          </div>
-          <div class="result-box">
-            <div class="result-label" style="color: #0891b2">
-              Calculated Time
-            </div>
-            <div id="resExposure" class="result-value">---</div>
-          </div>
         </div>
-      </div>
-
-      <div class="card emerald-theme">
-        <div class="card-header" onclick="toggleCard('card2')">
-          2. Universal Time Adjuster
-          <span>▼</span>
-        </div>
-        <div id="card2" class="card-body">
-          <div class="grid">
-            <div class="full-width">
-              <label>Original Time (Mins)</label>
-              <input type="number" id="t1" value="13.5" step="0.1" />
-            </div>
-            <div>
-              <label>Old Dist (in)</label>
-              <input type="number" id="d1" value="26" />
-            </div>
-            <div>
-              <label>New Dist (in)</label>
-              <input type="number" id="d2" value="28" />
-            </div>
-            <div>
-              <label>Old Curies</label>
-              <input type="number" id="c1" value="83.4" step="0.1" />
-            </div>
-            <div>
-              <label>New Curies</label>
-              <input type="number" id="c2" value="83.4" step="0.1" />
-            </div>
-          </div>
-          <div class="result-box">
-            <div class="result-label" style="color: #059669">
-              New Exposure Time
-            </div>
-            <div id="resUniversal" class="result-value">---</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card indigo-theme">
-        <div class="card-header" onclick="toggleCard('card3')">
-          3. Density Adjustment
-          <span>▼</span>
-        </div>
-        <div id="card3" class="card-body hidden">
-          <div class="grid">
-            <div class="full-width">
-              <label>Old Time (Mins)</label>
-              <input type="number" id="tOld" value="10" step="0.1" />
-            </div>
-            <div>
-              <label>Old Density</label>
-              <input type="number" id="densOld" value="2.0" step="0.1" />
-            </div>
-            <div>
-              <label>Target Density</label>
-              <input type="number" id="densNew" value="2.5" step="0.1" />
-            </div>
-          </div>
-          <div class="result-box">
-            <div class="result-label" style="color: #4f46e5">Adjusted Time</div>
-            <div id="resDensity" class="result-value">---</div>
-          </div>
-        </div>
-      </div>
     </div>
 
-    <script>
-      /* --- PURE JAVASCRIPT LOGIC (No Libraries) --- */
+    <div class="card emerald-theme">
+        <div class="card-header" onclick="toggleCard('card2')">
+            2. Universal Time Adjuster
+            <span>▼</span>
+        </div>
+        <div id="card2" class="card-body">
+            <div class="grid">
+                <div class="full-width">
+                    <label>Original Time (Mins)</label>
+                    <input type="number" id="t1" value="13.5" step="0.1">
+                </div>
+                <div>
+                    <label>Old Dist (in)</label>
+                    <input type="number" id="d1" value="26">
+                </div>
+                <div>
+                    <label>New Dist (in)</label>
+                    <input type="number" id="d2" value="28">
+                </div>
+                <div>
+                    <label>Old Curies</label>
+                    <input type="number" id="c1" value="83.4" step="0.1">
+                </div>
+                <div>
+                    <label>New Curies</label>
+                    <input type="number" id="c2" value="83.4" step="0.1">
+                </div>
+            </div>
+            <div class="result-box">
+                <div class="result-label" style="color:#059669">New Exposure Time</div>
+                <div id="resUniversal" class="result-value">---</div>
+            </div>
+        </div>
+    </div>
 
-      // Constants
-      const HALF_LIFE_DAYS = 73.83;
-      const DAYS_IN_MONTH_AVG = 30.4375;
-      const HALF_LIFE_MONTHS = HALF_LIFE_DAYS / DAYS_IN_MONTH_AVG;
-      const GAMMA_CONSTANT = 5.9; // Ir-192
-      const ATTENUATION = 1.4; // Steel
+    <div class="card indigo-theme">
+        <div class="card-header" onclick="toggleCard('card3')">
+            3. Density Adjustment
+            <span>▼</span>
+        </div>
+        <div id="card3" class="card-body hidden">
+            <div class="grid">
+                <div class="full-width">
+                    <label>Old Time (Mins)</label>
+                    <input type="number" id="tOld" value="10" step="0.1">
+                </div>
+                <div>
+                    <label>Old Density</label>
+                    <input type="number" id="densOld" value="2.0" step="0.1">
+                </div>
+                <div>
+                    <label>Target Density</label>
+                    <input type="number" id="densNew" value="2.5" step="0.1">
+                </div>
+            </div>
+            <div class="result-box">
+                <div class="result-label" style="color:#4f46e5">Adjusted Time</div>
+                <div id="resDensity" class="result-value">---</div>
+            </div>
+        </div>
+    </div>
+</div>
 
-      // Helper: Format decimal minutes to Mins:Secs
-      function formatTime(val) {
-        if (!val || val <= 0 || !isFinite(val)) return "---";
+<div id="expModal" class="modal-overlay" onclick="closeModal(event)">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span>Exposure Values (Ir-192)</span>
+            <button class="modal-close" onclick="closeModal(null, true)">×</button>
+        </div>
+        
+        <table class="exp-table">
+            <thead>
+                <tr>
+                    <th style="text-align:left; padding-left:15px;">Matl</th>
+                    <th>Fuji 100</th>
+                    <th>Fuji 80</th>
+                    <th>Fuji 50</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="text-align:left; padding-left:15px; font-weight:700; color:#64748b;">Steel</td>
+                    <td><span class="val-btn" onclick="selectVal(1.8)">1.8</span></td>
+                    <td><span class="val-btn" onclick="selectVal(2.8)">2.8</span></td>
+                    <td><span class="val-btn" onclick="selectVal(4.5)">4.5</span></td>
+                </tr>
+                <tr>
+                    <td style="text-align:left; padding-left:15px; font-weight:700; color:#64748b;">Inco</td>
+                    <td><span class="val-btn" onclick="selectVal(2.5)">2.5</span></td>
+                    <td><span class="val-btn" onclick="selectVal(3.8)">3.8</span></td>
+                    <td><span class="val-btn" onclick="selectVal(5.0)">5.0</span></td>
+                </tr>
+                <tr>
+                    <td style="text-align:left; padding-left:15px; font-weight:700; color:#64748b;">CuNi</td>
+                    <td><span class="val-btn" onclick="selectVal(3.0)">3.0</span></td>
+                    <td><span class="val-btn" onclick="selectVal(4.2)">4.2</span></td>
+                    <td><span class="val-btn" onclick="selectVal(5.5)">5.5</span></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div class="note">
+            Target Density: 2.0<br>
+            Tap a value to use it.
+        </div>
+    </div>
+</div>
+
+<script>
+    // Constants
+    const HALF_LIFE_DAYS = 73.83; 
+    const DAYS_IN_MONTH_AVG = 30.4375; 
+    const HALF_LIFE_MONTHS = HALF_LIFE_DAYS / DAYS_IN_MONTH_AVG; 
+    const GAMMA_CONSTANT = 5.9; 
+    const ATTENUATION = 1.4; 
+
+    function formatTime(val) {
+        if(!val || val <= 0 || !isFinite(val)) return '---';
         let mins = Math.floor(val);
         let secs = Math.round((val - mins) * 60);
-        if (secs === 60) {
-          mins++;
-          secs = 0;
-        }
-        return `${mins}m ${secs.toString().padStart(2, "0")}s`;
-      }
+        if (secs === 60) { mins++; secs = 0; }
+        return `${mins}m ${secs.toString().padStart(2, '0')}s`;
+    }
 
-      // Tool 1: Exposure Calculation
-      function calcExposure() {
-        const targetExp = parseFloat(
-          document.getElementById("targetExp").value,
-        );
-        const age = parseFloat(document.getElementById("age").value);
-        const thick = parseFloat(document.getElementById("thick").value);
-        const sfd = parseFloat(document.getElementById("sfd").value);
-        const strength = parseFloat(document.getElementById("strength").value);
+    // 1. Exposure Calc
+    function calcExposure() {
+        const targetExp = parseFloat(document.getElementById('targetExp').value);
+        const age = parseFloat(document.getElementById('age').value);
+        const thick = parseFloat(document.getElementById('thick').value);
+        const sfd = parseFloat(document.getElementById('sfd').value);
+        const strength = parseFloat(document.getElementById('strength').value);
 
         if (!targetExp || !sfd || !strength) {
-          document.getElementById("resExposure").innerHTML = "---";
-          return;
+            document.getElementById('resExposure').innerHTML = "---"; return;
         }
 
         let curActivity = strength * Math.pow(0.5, age / HALF_LIFE_MONTHS);
@@ -321,68 +277,68 @@
         let rate = intensity * shielding;
         let timeMins = (targetExp / rate) * 60;
 
-        document.getElementById("resExposure").innerHTML = formatTime(timeMins);
-      }
+        document.getElementById('resExposure').innerHTML = formatTime(timeMins);
+    }
 
-      // Tool 2: Universal Time Adjuster
-      function calcUniversal() {
-        const t1 = parseFloat(document.getElementById("t1").value);
-        const d1 = parseFloat(document.getElementById("d1").value);
-        const d2 = parseFloat(document.getElementById("d2").value);
-        const c1 = parseFloat(document.getElementById("c1").value);
-        const c2 = parseFloat(document.getElementById("c2").value);
+    // 2. Universal Calc
+    function calcUniversal() {
+        const t1 = parseFloat(document.getElementById('t1').value);
+        const d1 = parseFloat(document.getElementById('d1').value);
+        const d2 = parseFloat(document.getElementById('d2').value);
+        const c1 = parseFloat(document.getElementById('c1').value);
+        const c2 = parseFloat(document.getElementById('c2').value);
 
         if (!t1 || !d1 || !d2 || !c1 || !c2) {
-          document.getElementById("resUniversal").innerHTML = "---";
-          return;
+            document.getElementById('resUniversal').innerHTML = "---"; return;
         }
+        let t2 = t1 * Math.pow((d2/d1), 2) * (c1/c2);
+        document.getElementById('resUniversal').innerHTML = formatTime(t2);
+    }
 
-        // T2 = T1 * (D2/D1)^2 * (C1/C2)
-        let t2 = t1 * Math.pow(d2 / d1, 2) * (c1 / c2);
-        document.getElementById("resUniversal").innerHTML = formatTime(t2);
-      }
-
-      // Tool 3: Density Adjustment
-      function calcDensity() {
-        const tOld = parseFloat(document.getElementById("tOld").value);
-        const dOld = parseFloat(document.getElementById("densOld").value);
-        const dNew = parseFloat(document.getElementById("densNew").value);
+    // 3. Density Calc
+    function calcDensity() {
+        const tOld = parseFloat(document.getElementById('tOld').value);
+        const dOld = parseFloat(document.getElementById('densOld').value);
+        const dNew = parseFloat(document.getElementById('densNew').value);
 
         if (!tOld || !dOld || !dNew) {
-          document.getElementById("resDensity").innerHTML = "---";
-          return;
+            document.getElementById('resDensity').innerHTML = "---"; return;
         }
-
-        // T2 = (T1 * D_Target) / D_Old
         let t2 = (tOld * dNew) / dOld;
-        document.getElementById("resDensity").innerHTML = formatTime(t2);
-      }
+        document.getElementById('resDensity').innerHTML = formatTime(t2);
+    }
 
-      // Accordion Toggle
-      function toggleCard(id) {
-        const el = document.getElementById(id);
-        if (el.classList.contains("hidden")) {
-          el.classList.remove("hidden");
-        } else {
-          el.classList.add("hidden");
+    // UI Helpers
+    function toggleCard(id) {
+        document.getElementById(id).classList.toggle('hidden');
+    }
+
+    // Modal Logic
+    function openModal(e) {
+        if(e) e.stopPropagation(); // Prevent card toggle
+        document.getElementById('expModal').classList.add('open');
+    }
+    
+    function closeModal(e, force) {
+        if (force || e.target.id === 'expModal') {
+            document.getElementById('expModal').classList.remove('open');
         }
-      }
+    }
 
-      // Attach Event Listeners (Run on every keystroke)
-      const inputs = document.querySelectorAll("input");
-      inputs.forEach((input) => {
-        input.addEventListener("input", () => {
-          calcExposure();
-          calcUniversal();
-          calcDensity();
-        });
-      });
+    function selectVal(val) {
+        document.getElementById('targetExp').value = val;
+        document.getElementById('expModal').classList.remove('open');
+        calcExposure(); // Re-calculate immediately
+    }
 
-      // Initial Run
-      calcExposure();
-      calcUniversal();
-      calcDensity();
-    </script>
-  </body>
+    // Listeners
+    document.querySelectorAll('input').forEach(i => i.addEventListener('input', () => {
+        calcExposure(); calcUniversal(); calcDensity();
+    }));
+
+    // Init
+    calcExposure(); calcUniversal(); calcDensity();
+</script>
+
+</body>
 </html>
-
