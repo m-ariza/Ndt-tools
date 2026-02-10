@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta name="theme-color" content="#1e293b" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>NDT Field Tools (Offline)</title>
+
+    <style>
+      /* --- PURE CSS STYLING (No Tailwind needed) --- */
+      :root {
+        --bg-color: #f1f5f9;
+        --text-color: #334155;
+        --card-bg: #ffffff;
+        --border-color: #cbd5e1;
+        --primary: #0891b2; /* Cyan */
+        --success: #059669; /* Emerald */
+        --accent: #4f46e5; /* Indigo */
+      }
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+          Arial, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        margin: 0;
+        padding: 20px;
+        padding-bottom: 80px;
+        line-height: 1.5;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 5px;
+        color: #1e293b;
+      }
+      .subtitle {
+        text-align: center;
+        color: #94a3b8;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 30px;
+      }
+
+      /* Card Styling */
+      .card {
+        background: var(--card-bg);
+        border-radius: 12px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        border: 1px solid var(--border-color);
+        margin-bottom: 20px;
+        overflow: hidden;
+      }
+      .card-header {
+        padding: 15px 20px;
+        background: #f8fafc;
+        border-bottom: 1px solid var(--border-color);
+        font-weight: 600;
+        color: #475569;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .card-body {
+        padding: 20px;
+        display: block;
+      }
+      .hidden {
+        display: none;
+      }
+
+      /* Grid Layout for Inputs */
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+      }
+      .full-width {
+        grid-column: span 2;
+      }
+
+      /* Input Styling */
+      label {
+        display: block;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #64748b;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+      }
+      input[type="number"] {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        font-size: 1rem;
+        box-sizing: border-box; /* Fixes padding issues */
+        background: #fff;
+        color: #1e293b;
+      }
+      input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.1);
+      }
+
+      /* Result Boxes */
+      .result-box {
+        margin-top: 15px;
+        padding: 15px;
+        border-radius: 8px;
+        text-align: center;
+        background: #ecfeff; /* Light Cyan */
+        border: 1px solid #cffafe;
+      }
+      .result-label {
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 5px;
+      }
+      .result-value {
+        font-size: 1.8rem;
+        font-weight: 800;
+      }
+
+      /* Color variations for tools */
+      .cyan-theme .result-box {
+        background: #ecfeff;
+        border-color: #a5f3fc;
+      }
+      .cyan-theme .result-value {
+        color: #0e7490;
+      }
+
+      .emerald-theme .result-box {
+        background: #ecfdf5;
+        border-color: #6ee7b7;
+      }
+      .emerald-theme .result-value {
+        color: #047857;
+      }
+      .emerald-theme input:focus {
+        border-color: var(--success);
+        box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+      }
+
+      .indigo-theme .result-box {
+        background: #eef2ff;
+        border-color: #a5b4fc;
+      }
+      .indigo-theme .result-value {
+        color: #4338ca;
+      }
+      .indigo-theme input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>NDT Field Tools</h1>
+      <div class="subtitle">Offline Edition</div>
+
+      <div class="card cyan-theme">
+        <div class="card-header" onclick="toggleCard('card1')">
+          1. Exposure Calculator
+          <span>▼</span>
+        </div>
+        <div id="card1" class="card-body">
+          <div class="grid">
+            <div>
+              <label>Target Exp (R)</label>
+              <input type="number" id="targetExp" value="10" step="0.1" />
+            </div>
+            <div>
+              <label>Source Age (Mo)</label>
+              <input type="number" id="age" value="0" step="0.1" />
+            </div>
+            <div>
+              <label>Steel Thick (in)</label>
+              <input type="number" id="thick" value="0.5" step="0.001" />
+            </div>
+            <div>
+              <label>SFD (Inches)</label>
+              <input type="number" id="sfd" value="24" step="0.5" />
+            </div>
+            <div class="full-width">
+              <label>Original Strength (Ci)</label>
+              <input type="number" id="strength" value="50" step="0.1" />
+            </div>
+          </div>
+          <div class="result-box">
+            <div class="result-label" style="color: #0891b2">
+              Calculated Time
+            </div>
+            <div id="resExposure" class="result-value">---</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card emerald-theme">
+        <div class="card-header" onclick="toggleCard('card2')">
+          2. Universal Time Adjuster
+          <span>▼</span>
+        </div>
+        <div id="card2" class="card-body">
+          <div class="grid">
+            <div class="full-width">
+              <label>Original Time (Mins)</label>
+              <input type="number" id="t1" value="13.5" step="0.1" />
+            </div>
+            <div>
+              <label>Old Dist (in)</label>
+              <input type="number" id="d1" value="26" />
+            </div>
+            <div>
+              <label>New Dist (in)</label>
+              <input type="number" id="d2" value="28" />
+            </div>
+            <div>
+              <label>Old Curies</label>
+              <input type="number" id="c1" value="83.4" step="0.1" />
+            </div>
+            <div>
+              <label>New Curies</label>
+              <input type="number" id="c2" value="83.4" step="0.1" />
+            </div>
+          </div>
+          <div class="result-box">
+            <div class="result-label" style="color: #059669">
+              New Exposure Time
+            </div>
+            <div id="resUniversal" class="result-value">---</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card indigo-theme">
+        <div class="card-header" onclick="toggleCard('card3')">
+          3. Density Adjustment
+          <span>▼</span>
+        </div>
+        <div id="card3" class="card-body hidden">
+          <div class="grid">
+            <div class="full-width">
+              <label>Old Time (Mins)</label>
+              <input type="number" id="tOld" value="10" step="0.1" />
+            </div>
+            <div>
+              <label>Old Density</label>
+              <input type="number" id="densOld" value="2.0" step="0.1" />
+            </div>
+            <div>
+              <label>Target Density</label>
+              <input type="number" id="densNew" value="2.5" step="0.1" />
+            </div>
+          </div>
+          <div class="result-box">
+            <div class="result-label" style="color: #4f46e5">Adjusted Time</div>
+            <div id="resDensity" class="result-value">---</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      /* --- PURE JAVASCRIPT LOGIC (No Libraries) --- */
+
+      // Constants
+      const HALF_LIFE_DAYS = 73.83;
+      const DAYS_IN_MONTH_AVG = 30.4375;
+      const HALF_LIFE_MONTHS = HALF_LIFE_DAYS / DAYS_IN_MONTH_AVG;
+      const GAMMA_CONSTANT = 5.9; // Ir-192
+      const ATTENUATION = 1.4; // Steel
+
+      // Helper: Format decimal minutes to Mins:Secs
+      function formatTime(val) {
+        if (!val || val <= 0 || !isFinite(val)) return "---";
+        let mins = Math.floor(val);
+        let secs = Math.round((val - mins) * 60);
+        if (secs === 60) {
+          mins++;
+          secs = 0;
+        }
+        return `${mins}m ${secs.toString().padStart(2, "0")}s`;
+      }
+
+      // Tool 1: Exposure Calculation
+      function calcExposure() {
+        const targetExp = parseFloat(
+          document.getElementById("targetExp").value,
+        );
+        const age = parseFloat(document.getElementById("age").value);
+        const thick = parseFloat(document.getElementById("thick").value);
+        const sfd = parseFloat(document.getElementById("sfd").value);
+        const strength = parseFloat(document.getElementById("strength").value);
+
+        if (!targetExp || !sfd || !strength) {
+          document.getElementById("resExposure").innerHTML = "---";
+          return;
+        }
+
+        let curActivity = strength * Math.pow(0.5, age / HALF_LIFE_MONTHS);
+        let sfdFeet = sfd / 12.0;
+        let intensity = (curActivity * GAMMA_CONSTANT) / Math.pow(sfdFeet, 2);
+        let shielding = Math.exp(-ATTENUATION * thick);
+        let rate = intensity * shielding;
+        let timeMins = (targetExp / rate) * 60;
+
+        document.getElementById("resExposure").innerHTML = formatTime(timeMins);
+      }
+
+      // Tool 2: Universal Time Adjuster
+      function calcUniversal() {
+        const t1 = parseFloat(document.getElementById("t1").value);
+        const d1 = parseFloat(document.getElementById("d1").value);
+        const d2 = parseFloat(document.getElementById("d2").value);
+        const c1 = parseFloat(document.getElementById("c1").value);
+        const c2 = parseFloat(document.getElementById("c2").value);
+
+        if (!t1 || !d1 || !d2 || !c1 || !c2) {
+          document.getElementById("resUniversal").innerHTML = "---";
+          return;
+        }
+
+        // T2 = T1 * (D2/D1)^2 * (C1/C2)
+        let t2 = t1 * Math.pow(d2 / d1, 2) * (c1 / c2);
+        document.getElementById("resUniversal").innerHTML = formatTime(t2);
+      }
+
+      // Tool 3: Density Adjustment
+      function calcDensity() {
+        const tOld = parseFloat(document.getElementById("tOld").value);
+        const dOld = parseFloat(document.getElementById("densOld").value);
+        const dNew = parseFloat(document.getElementById("densNew").value);
+
+        if (!tOld || !dOld || !dNew) {
+          document.getElementById("resDensity").innerHTML = "---";
+          return;
+        }
+
+        // T2 = (T1 * D_Target) / D_Old
+        let t2 = (tOld * dNew) / dOld;
+        document.getElementById("resDensity").innerHTML = formatTime(t2);
+      }
+
+      // Accordion Toggle
+      function toggleCard(id) {
+        const el = document.getElementById(id);
+        if (el.classList.contains("hidden")) {
+          el.classList.remove("hidden");
+        } else {
+          el.classList.add("hidden");
+        }
+      }
+
+      // Attach Event Listeners (Run on every keystroke)
+      const inputs = document.querySelectorAll("input");
+      inputs.forEach((input) => {
+        input.addEventListener("input", () => {
+          calcExposure();
+          calcUniversal();
+          calcDensity();
+        });
+      });
+
+      // Initial Run
+      calcExposure();
+      calcUniversal();
+      calcDensity();
+    </script>
+  </body>
+</html>
