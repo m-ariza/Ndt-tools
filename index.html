@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#1e293b">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="NDT Calc">
+    <title>NDT Field Tools</title>
+
+    <!-- Strictly Local Icons (SVG Data URIs) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231e293b' rx='20'/%3E%3Ccircle cx='50' cy='50' r='9' fill='%23fbbf24'/%3E%3Cpath d='M43.25 38.31 L27.50 11.03 A45 45 0 0 1 72.50 11.03 L56.75 38.31 A13.5 13.5 0 0 0 43.25 38.31 Z M63.50 50.00 L95.00 50.00 A45 45 0 0 1 72.50 88.97 L56.75 61.69 A13.5 13.5 0 0 0 63.50 50.00 Z M43.25 61.69 L27.50 88.97 A45 45 0 0 1 5.00 50.00 L36.50 50.00 A13.5 13.5 0 0 0 43.25 61.69 Z' fill='%23fbbf24'/%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231e293b'/%3E%3Ccircle cx='50' cy='50' r='9' fill='%23fbbf24'/%3E%3Cpath d='M43.25 38.31 L27.50 11.03 A45 45 0 0 1 72.50 11.03 L56.75 38.31 A13.5 13.5 0 0 0 43.25 38.31 Z M63.50 50.00 L95.00 50.00 A45 45 0 0 1 72.50 88.97 L56.75 61.69 A13.5 13.5 0 0 0 63.50 50.00 Z M43.25 61.69 L27.50 88.97 A45 45 0 0 1 5.00 50.00 L36.50 50.00 A13.5 13.5 0 0 0 43.25 61.69 Z' fill='%23fbbf24'/%3E%3C/svg%3E">
+
+    <style>
+        :root { 
+            --bg-color: #f1f5f9; 
+            --text-color: #334155; 
+            --card-bg: #ffffff; 
+            --border-color: #cbd5e1; 
+            --primary: #0891b2; /* Cyan */
+            --success: #059669; /* Emerald */
+            --accent: #4f46e5;  /* Indigo */
+            --sfd-color: #7c3aed; /* Violet for SFD Tool */
+        }
+        body { font-family: -apple-system, system-ui, sans-serif; background-color: var(--bg-color); color: var(--text-color); margin: 0; padding: 20px; padding-bottom: 80px; line-height: 1.5; }
+        .container { max-width: 600px; margin: 0 auto; }
+        h1 { text-align: center; margin-bottom: 5px; color: #1e293b; }
+        .subtitle { text-align: center; color: #94a3b8; font-size: 0.8rem; text-transform: uppercase; margin-bottom: 30px; }
+        
+        /* Card Styles */
+        .card { background: var(--card-bg); border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 20px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .card-header { padding: 15px 20px; background: #f8fafc; border-bottom: 1px solid var(--border-color); font-weight: 600; color: #475569; display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; }
+        .card-body { padding: 20px; }
+        .hidden { display: none; }
+        
+        /* Form Grid */
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .full-width { grid-column: span 2; }
+        
+        /* Inputs & Labels */
+        label { display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 4px; }
+        input[type="number"], select { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem; box-sizing: border-box; background: #fff; color: #1e293b; appearance: none; -webkit-appearance: none; }
+        select { background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 10px center; background-size: 16px; }
+        input:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.1); }
+        
+        /* Result Boxes */
+        .result-box { margin-top: 15px; padding: 15px; border-radius: 8px; text-align: center; background: #ecfeff; border: 1px solid #cffafe; }
+        .result-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        .result-value { font-size: 1.8rem; font-weight: 800; color: #0e7490; }
+        
+        /* Buttons */
+        .mini-btn { background: #0891b2; color: white; border: none; padding: 4px 10px; border-radius: 12px; font-size: 0.7rem; cursor: pointer; font-weight: 700; box-shadow: 0 2px 4px rgba(8, 145, 178, 0.3); }
+        .action-btn { background: var(--sfd-color); color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; font-weight: 700; margin-top: 5px; width: 100%; }
+        .action-btn:active { transform: scale(0.98); }
+        .secondary-btn { background: transparent; color: var(--text-color); border: 1px solid var(--border-color); padding: 10px; border-radius: 8px; width: 100%; font-weight: 600; cursor: pointer; margin-top: 15px; }
+
+        /* Modal Styles */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.9); z-index: 100; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+        .modal-overlay.open { opacity: 1; pointer-events: auto; }
+        .modal-content { background: #fff; width: 90%; max-width: 500px; border-radius: 12px; padding: 0; overflow-y: auto; max-height: 90vh; transform: scale(0.95); transition: transform 0.2s; }
+        .modal-overlay.open .modal-content { transform: scale(1); }
+        .modal-header { background: #f1f5f9; padding: 15px; font-weight: 700; color: #334155; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); }
+        .modal-close { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #94a3b8; }
+        .modal-body { padding: 20px; }
+        
+        /* Table Styles */
+        .exp-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-top: 10px; }
+        .exp-table th { background: #f8fafc; color: #64748b; padding: 10px; border-bottom: 2px solid #e2e8f0; font-size: 0.75rem; text-align: center; white-space: nowrap; }
+        .exp-table td { padding: 12px 8px; text-align: center; border-bottom: 1px solid #f1f5f9; color: #334155; }
+        .val-btn { background: #ecfeff; color: #0891b2; padding: 6px 10px; border-radius: 6px; font-weight: 700; cursor: pointer; }
+        
+        /* Comparison Row Style */
+        .comp-box { background: #f5f3ff; border: 1px solid #ddd6fe; border-radius: 8px; padding: 12px; text-align: center; flex: 1; }
+        .comp-label { color: var(--sfd-color); font-size: 0.7rem; font-weight: 800; text-transform: uppercase; margin-bottom: 4px; }
+        .comp-value { color: #4c1d95; font-size: 1.4rem; font-weight: 800; }
+        .comp-row { display: flex; gap: 10px; margin-top: 15px; }
+
+        /* Helpers */
+        .thick-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .remove-btn { background: #fee2e2; color: #ef4444; border: none; width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .add-row-btn { width: 100%; padding: 10px; background: #f1f5f9; border: 2px dashed #cbd5e1; border-radius: 8px; color: #64748b; font-weight: 600; cursor: pointer; margin-top: 10px; }
+        .total-banner { background: #f8fafc; padding: 15px; border-radius: 10px; text-align: center; margin: 20px 0; border: 1px solid #e2e8f0; }
+        .switch-row { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 10px; border-radius: 8px; margin-bottom: 15px; }
+        .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: .4s; border-radius: 24px; }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: #0891b2; }
+        input:checked + .slider:before { transform: translateX(20px); }
+        .apply-btn { width: 100%; background: #0891b2; color: white; border: none; padding: 14px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 1rem; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>NDT Field Tools</h1>
+    <div class="subtitle">Offline Edition v2.0</div>
+
+    <!-- CARD 1: EXPOSURE CALC -->
+    <div class="card" style="border-left: 5px solid var(--primary)">
+        <div class="card-header" onclick="toggleCard('card1')">
+            1. Exposure Calculator (New Shot)
+            <span>▼</span>
+        </div>
+        <div id="card1" class="card-body">
+            <div class="grid">
+                <div>
+                    <label>Target Exp (R) <button class="mini-btn" onclick="openModal('expModal', event)">Values</button></label>
+                    <input type="number" id="targetExp" value="2.8" step="0.1">
+                </div>
+                <div>
+                    <label>Source Age (Mo)</label>
+                    <input type="number" id="age" value="0" step="0.1">
+                </div>
+                <div>
+                    <label>Material Thick (in) <button class="mini-btn" onclick="openModal('thickModal', event)">Calc</button></label>
+                    <input type="number" id="thick" value="0.500" step="0.001">
+                </div>
+                <div>
+                    <label>SFD (Inches)</label>
+                    <input type="number" id="sfd" value="24" step="0.5">
+                </div>
+                <div class="full-width">
+                    <label>Original Strength (Ci)</label>
+                    <input type="number" id="strength" value="50" step="0.1">
+                </div>
+            </div>
+            <div class="result-box">
+                <div class="result-label">Calculated Exposure Time</div>
+                <div id="resExposure" class="result-value">---</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CARD 2: TIME ADJUSTER -->
+    <div class="card" style="border-left: 5px solid var(--success)">
+        <div class="card-header" onclick="toggleCard('card2')">
+            2. Universal Time Adjuster
+            <span>▼</span>
+        </div>
+        <div id="card2" class="card-body">
+            <div class="grid">
+                <div class="full-width"><label>Original Time (Mins)</label><input type="number" id="t1" value="13.5" step="0.1"></div>
+                <div><label>Old Dist (in)</label><input type="number" id="d1" value="26"></div>
+                <div><label>New Dist (in)</label><input type="number" id="d2" value="28"></div>
+                <div><label>Old Curies</label><input type="number" id="c1" value="83.4" step="0.1"></div>
+                <div><label>New Curies</label><input type="number" id="c2" value="83.4" step="0.1"></div>
+            </div>
+            <div class="result-box" style="background:#f0fdf4; border-color:#dcfce7;">
+                <div class="result-label" style="color:var(--success)">New Exposure Time</div>
+                <div id="resUniversal" class="result-value" style="color:var(--success)">---</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CARD 3: DENSITY ADJUST -->
+    <div class="card" style="border-left: 5px solid var(--accent)">
+        <div class="card-header" onclick="toggleCard('card3')">
+            3. Density Adjustment
+            <span>▼</span>
+        </div>
+        <div id="card3" class="card-body hidden">
+            <div class="grid">
+                <div class="full-width"><label>Old Time (Mins)</label><input type="number" id="tOld" value="10" step="0.1"></div>
+                <div><label>Old Density</label><input type="number" id="densOld" value="2.0" step="0.1"></div>
+                <div><label>Target Density</label><input type="number" id="densNew" value="2.5" step="0.1"></div>
+            </div>
+            <div class="result-box" style="background:#eef2ff; border-color:#e0e7ff;">
+                <div class="result-label" style="color:var(--accent)">Adjusted Time</div>
+                <div id="resDensity" class="result-value" style="color:var(--accent)">---</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CARD 4: MINIMUM SFD TOOL (NEW) -->
+    <div class="card" style="border-left: 5px solid var(--sfd-color)">
+        <div class="card-header" onclick="toggleCard('card4')">
+            4. Min SFD (Double-Wall RT)
+            <span>▼</span>
+        </div>
+        <div id="card4" class="card-body hidden">
+            <div class="grid">
+                <div class="full-width">
+                    <label>Nominal Pipe Size</label>
+                    <select id="sfdPipe" onchange="updateSourceOptions()"></select>
+                </div>
+                <div class="full-width">
+                    <label>Source Dimension (Longest)</label>
+                    <select id="sfdSource" onchange="calcSfd()"></select>
+                </div>
+            </div>
+            
+            <div class="comp-row">
+                <div class="comp-box">
+                    <div class="comp-label">N/S 250</div>
+                    <div id="valNS" class="comp-value">---</div>
+                    <button class="action-btn" onclick="applySfdToMain('valNS')">Apply</button>
+                </div>
+                <div class="comp-box">
+                    <div class="comp-label">T9074</div>
+                    <div id="valT90" class="comp-value">---</div>
+                    <button class="action-btn" onclick="applySfdToMain('valT90')">Apply</button>
+                </div>
+            </div>
+            
+            <button class="secondary-btn" onclick="openModal('sfdModal', event)">View Full Table 5</button>
+        </div>
+    </div>
+
+</div>
+
+<!-- MODAL 1: EXPOSURE VALUES -->
+<div id="expModal" class="modal-overlay" onclick="closeModal(event)">
+    <div class="modal-content">
+        <div class="modal-header"><span>Exposure Values (Ir-192)</span><button class="modal-close" onclick="closeModal(null, true)">×</button></div>
+        <div class="modal-body">
+            <table class="exp-table">
+                <thead><tr><th style="text-align:left">Material</th><th>Fuji 100</th><th>Fuji 80</th><th>Fuji 50</th></tr></thead>
+                <tbody>
+                    <tr><td style="text-align:left;font-weight:700">Steel</td><td><span class="val-btn" onclick="selectVal(2.8)">2.8</span></td><td><span class="val-btn" onclick="selectVal(3.8)">3.8</span></td><td><span class="val-btn" onclick="selectVal(5.5)">5.5</span></td></tr>
+                    <tr><td style="text-align:left;font-weight:700">Inconel</td><td><span class="val-btn" onclick="selectVal(3.5)">3.5</span></td><td><span class="val-btn" onclick="selectVal(4.8)">4.8</span></td><td><span class="val-btn" onclick="selectVal(6.0)">6.0</span></td></tr>
+                    <tr><td style="text-align:left;font-weight:700">CuNi</td><td><span class="val-btn" onclick="selectVal(4.0)">4.0</span></td><td><span class="val-btn" onclick="selectVal(5.2)">5.2</span></td><td><span class="val-btn" onclick="selectVal(6.5)">6.5</span></td></tr>
+                </tbody>
+            </table>
+            <p style="font-size:0.75rem; color:#94a3b8; text-align:center; margin-top:20px;">Values represent approximate exposure factors for a target density of 2.0 with Ir-192.</p>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL 2: THICKNESS CALC -->
+<div id="thickModal" class="modal-overlay" onclick="closeModal(event)">
+    <div class="modal-content">
+        <div class="modal-header"><span>Thickness Calculator</span><button class="modal-close" onclick="closeModal(null, true)">×</button></div>
+        <div class="modal-body">
+            <div id="thickInputs"></div>
+            <button class="add-row-btn" onclick="addThickRow()">+ Add Thickness Component</button>
+            <div class="switch-row" style="margin-top:20px">
+                <span style="font-size:0.9rem; font-weight:600">Double First Component (x2)</span>
+                <label class="switch"><input type="checkbox" id="doubleToggle" onchange="runTotalCalc()" checked><span class="slider"></span></label>
+            </div>
+            <div class="total-banner"><div style="font-size:0.7rem; text-transform:uppercase; color:#94a3b8">Total Thickness</div><div id="thickTotalDisplay" style="font-size:2rem; font-weight:800; color:#0891b2">0.000"</div></div>
+            <button class="apply-btn" onclick="applyThickToMain()">Apply to Exposure Calc</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL 3: SFD TABLE REFERENCE (NEW) -->
+<div id="sfdModal" class="modal-overlay" onclick="closeModal(event)">
+    <div class="modal-content" style="max-width:600px">
+        <div class="modal-header"><span>Table 5: Min SFD (Double-Wall)</span><button class="modal-close" onclick="closeModal(null, true)">×</button></div>
+        <div class="modal-body">
+            <div style="overflow-x:auto">
+                <table class="exp-table">
+                    <thead><tr><th style="text-align:left">Pipe</th><th>Source Dim</th><th>N/S 250</th><th>T9074</th></tr></thead>
+                    <tbody id="sfdTableBody">
+                        <!-- Populated via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // --- EXISTING CONSTANTS & LOGIC ---
+    const HALF_LIFE_DAYS = 73.83; const DAYS_IN_MONTH_AVG = 30.4375; const HALF_LIFE_MONTHS = HALF_LIFE_DAYS / DAYS_IN_MONTH_AVG;
+    const GAMMA_CONSTANT = 5.9; const ATTENUATION = 1.4;
+
+    function formatTime(val) {
+        if(!val || val <= 0 || !isFinite(val)) return '---';
+        let h = Math.floor(val/60); let m = Math.floor(val%60); let s = Math.round((val*60)%60);
+        if(s==60){s=0;m++;} if(m==60){m=0;h++;}
+        let timeStr = h > 0 ? `${h}h ${m}m ${s}s` : `${m}m ${s}s`;
+        let hh = h.toString().padStart(2,'0'); let mm = m.toString().padStart(2,'0'); let ss = s.toString().padStart(2,'0');
+        return `<span>${timeStr}</span><span style="display:block; font-size:0.8rem; opacity:0.6; margin-top:4px;">(${hh}:${mm}:${ss})</span>`;
+    }
+
+    function calcExposure() {
+        const targetExp = parseFloat(document.getElementById('targetExp').value);
+        const age = parseFloat(document.getElementById('age').value);
+        const thick = parseFloat(document.getElementById('thick').value);
+        const sfd = parseFloat(document.getElementById('sfd').value);
+        const strength = parseFloat(document.getElementById('strength').value);
+        if(!targetExp || !sfd || !strength) return;
+        let curAct = strength * Math.pow(0.5, age/HALF_LIFE_MONTHS);
+        let sfdFt = sfd/12.0;
+        let rate = ((curAct * GAMMA_CONSTANT)/Math.pow(sfdFt,2)) * Math.exp(-ATTENUATION * thick);
+        document.getElementById('resExposure').innerHTML = formatTime((targetExp/rate)*60);
+    }
+
+    function calcUniversal() {
+        const t1 = parseFloat(document.getElementById('t1').value); const d1 = parseFloat(document.getElementById('d1').value);
+        const d2 = parseFloat(document.getElementById('d2').value); const c1 = parseFloat(document.getElementById('c1').value);
+        const c2 = parseFloat(document.getElementById('c2').value);
+        if(!t1 || !d1 || !d2 || !c1 || !c2) return;
+        document.getElementById('resUniversal').innerHTML = formatTime(t1 * Math.pow(d2/d1, 2) * (c1/c2));
+    }
+
+    function calcDensity() {
+        const t1 = parseFloat(document.getElementById('tOld').value); const d1 = parseFloat(document.getElementById('densOld').value);
+        const d2 = parseFloat(document.getElementById('densNew').value);
+        if(!t1 || !d1 || !d2) return;
+        document.getElementById('resDensity').innerHTML = formatTime(t1 * (d2/d1));
+    }
+
+    // Modal Helpers
+    function openModal(id, e) { if(e) e.stopPropagation(); document.getElementById(id).classList.add('open'); if(id=='thickModal' && !document.querySelector('.thick-row')) addThickRow(); }
+    function closeModal(e, force) { if(force || e.target.classList.contains('modal-overlay')) document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('open')); }
+    function toggleCard(id) { document.getElementById(id).classList.toggle('hidden'); }
+    function selectVal(v) { document.getElementById('targetExp').value = v; closeModal(null,true); calcExposure(); }
+
+    // Advanced Thick Calc
+    function addThickRow() {
+        const div = document.createElement('div'); div.className = 'thick-row';
+        div.innerHTML = `<input type="number" step="0.001" placeholder="0.000" oninput="runTotalCalc()" class="thick-input"><button class="remove-btn" onclick="this.parentElement.remove();runTotalCalc()">×</button>`;
+        document.getElementById('thickInputs').appendChild(div);
+    }
+    function runTotalCalc() {
+        const inputs = document.querySelectorAll('.thick-input'); let total = 0;
+        inputs.forEach((inp, i) => { let v = parseFloat(inp.value)||0; if(i==0 && document.getElementById('doubleToggle').checked) v*=2; total += v; });
+        document.getElementById('thickTotalDisplay').innerText = total.toFixed(3) + '"';
+    }
+    function applyThickToMain() {
+        document.getElementById('thick').value = parseFloat(document.getElementById('thickTotalDisplay').innerText);
+        closeModal(null,true); calcExposure();
+    }
+
+    // --- NEW SFD TOOL LOGIC ---
+    
+    // Data from Table 5
+    const SFD_DATA = {
+        "1/2": [
+            {src:"1.0mm", ns:"2.5", t90:"2.8"}, {src:"1.2mm", ns:"3", t90:"3.2"}, {src:"2.1mm", ns:"5-1/4", t90:"5"}, 
+            {src:"2.3mm", ns:"5-3/4", t90:"5-3/8"}, {src:"2.5mm", ns:"6-1/4", t90:"5-3/4"}, {src:"5.5mm", ns:"16.5", t90:"11-3/4"}, 
+            {src:"0.068\"", ns:"4-1/2", t90:"4-1/4"}, {src:"0.080\"", ns:"5-1/8", t90:"4-7/8"}, {src:"0.118\"", ns:"7-5/8", t90:"6-3/4"}, {src:"0.125\"", ns:"8", t90:"7-1/8"}
+        ],
+        "3/4": [
+            {src:"1.0mm", ns:"2-5/8", t90:"3-1/8"}, {src:"1.2mm", ns:"3-1/4", t90:"3-5/8"}, {src:"2.1mm", ns:"5-5/8", t90:"5-1/2"}, 
+            {src:"2.3mm", ns:"6-1/8", t90:"5-7/8"}, {src:"2.5mm", ns:"6-5/8", t90:"6-1/4"}, {src:"5.5mm", ns:"17-3/8", t90:"12-3/8"},
+            {src:"0.068\"", ns:"4-5/8", t90:"4-5/8"}, {src:"0.080\"", ns:"5-1/2", t90:"5-1/4"}, {src:"0.118\"", ns:"8", t90:"7-1/4"}, {src:"0.125\"", ns:"8-1/2", t90:"7-5/8"}
+        ],
+        "1": [
+            {src:"1.0mm", ns:"3-3/8", t90:"4"}, {src:"1.2mm", ns:"4", t90:"4-1/2"}, {src:"2.1mm", ns:"7", t90:"6-3/4"}, 
+            {src:"2.3mm", ns:"7-5/8", t90:"7-3/8"}, {src:"2.5mm", ns:"8-1/4", t90:"7-3/4"}, {src:"5.5mm", ns:"21-3/4", t90:"15-1/2"},
+            {src:"0.068\"", ns:"5-3/4", t90:"5-7/8"}, {src:"0.080\"", ns:"6-7/8", t90:"6-5/8"}, {src:"0.118\"", ns:"10", t90:"9-1/8"}, {src:"0.125\"", ns:"10-5/8", t90:"9-5/8"}
+        ],
+        "1-1/2": [
+            {src:"1.0mm", ns:"4-3/4", t90:"5-5/8"}, {src:"1.2mm", ns:"5-3/4", t90:"6-1/2"}, {src:"2.1mm", ns:"10", t90:"9-7/8"}, 
+            {src:"2.3mm", ns:"11", t90:"10-1/2"}, {src:"2.5mm", ns:"12", t90:"11-1/4"}, {src:"5.5mm", ns:"31-1/2", t90:"22-3/8"},
+            {src:"0.068\"", ns:"8-1/4", t90:"8-3/8"}, {src:"0.080\"", ns:"10", t90:"9-1/2"}, {src:"0.118\"", ns:"14-1/2", t90:"13-1/8"}, {src:"0.125\"", ns:"15-3/8", t90:"13-7/8"}
+        ],
+        "2": [
+            {src:"1.0mm", ns:"6", t90:"7-1/8"}, {src:"1.2mm", ns:"7-1/8", t90:"8"}, {src:"2.1mm", ns:"12-1/2", t90:"12-1/4"}, 
+            {src:"2.3mm", ns:"13-3/4", t90:"13-1/4"}, {src:"2.5mm", ns:"15", t90:"14"}, {src:"5.5mm", ns:"39-1/4", t90:"28"},
+            {src:"0.068\"", ns:"10-1/2", t90:"10-1/2"}, {src:"0.080\"", ns:"12-3/8", t90:"11-7/8"}, {src:"0.118\"", ns:"18-1/8", t90:"16-1/2"}, {src:"0.125\"", ns:"19", t90:"17-1/2"}
+        ],
+        "2-1/2": [
+            {src:"1.0mm", ns:"7-1/4", t90:"8-5/8"}, {src:"1.2mm", ns:"8-5/8", t90:"9-3/4"}, {src:"2.1mm", ns:"15-1/8", t90:"14-3/4"}, 
+            {src:"2.3mm", ns:"16-5/8", t90:"16"}, {src:"2.5mm", ns:"18", t90:"17"}, {src:"5.5mm", ns:"47-1/2", t90:"33-3/4"},
+            {src:"0.068\"", ns:"12-3/4", t90:"12-3/4"}, {src:"0.080\"", ns:"14-3/4", t90:"14-3/8"}, {src:"0.118\"", ns:"22", t90:"19-7/8"}, {src:"0.125\"", ns:"23", t90:"20-7/8"}
+        ],
+        "3": [
+            {src:"1.0mm", ns:"8-3/4", t90:"7"}, {src:"1.2mm", ns:"10-1/2", t90:"7-5/8"}, {src:"2.1mm", ns:"18-3/8", t90:"10-3/4"}, 
+            {src:"2.3mm", ns:"20-1/8", t90:"11-1/2"}, {src:"2.5mm", ns:"22", t90:"12-1/4"}, {src:"5.5mm", ns:"58", t90:"22-1/2"},
+            {src:"0.068\"", ns:"15-1/2", t90:"9-1/2"}, {src:"0.080\"", ns:"18", t90:"10-1/2"}, {src:"0.118\"", ns:"26-5/8", t90:"13-7/8"}, {src:"0.125\"", ns:"28", t90:"14-1/2"}
+        ],
+        "3-1/2": [
+            {src:"1.0mm", ns:"10", t90:"8"}, {src:"1.2mm", ns:"12", t90:"8-3/4"}, {src:"2.1mm", ns:"21", t90:"12-3/8"}, 
+            {src:"2.3mm", ns:"23", t90:"13-1/8"}, {src:"2.5mm", ns:"25", t90:"14"}, {src:"5.5mm", ns:"66", t90:"25-1/2"},
+            {src:"0.068\"", ns:"17-5/8", t90:"10-7/8"}, {src:"0.080\"", ns:"20-1/2", t90:"12"}, {src:"0.118\"", ns:"30-1/2", t90:"15-7/8"}, {src:"0.125\"", ns:"32", t90:"16-1/2"}
+        ]
+    };
+
+    function initSfdTool() {
+        const pipeSelect = document.getElementById('sfdPipe');
+        const sourceSelect = document.getElementById('sfdSource');
+        const tbody = document.getElementById('sfdTableBody');
+
+        // Populate Pipes
+        Object.keys(SFD_DATA).forEach(size => {
+            let opt = document.createElement('option');
+            opt.value = size; opt.innerText = size + '"';
+            pipeSelect.appendChild(opt);
+        });
+
+        // Populate Modal Table
+        for (const [pipe, rows] of Object.entries(SFD_DATA)) {
+            rows.forEach(row => {
+                let tr = document.createElement('tr');
+                tr.innerHTML = `<td>${pipe}"</td><td>${row.src}</td><td style="color:#4f46e5;font-weight:700">${row.ns}</td><td style="color:#4f46e5;font-weight:700">${row.t90}</td>`;
+                tbody.appendChild(tr);
+            });
+        }
+
+        updateSourceOptions();
+    }
+
+    function updateSourceOptions() {
+        const pipe = document.getElementById('sfdPipe').value;
+        const sourceSelect = document.getElementById('sfdSource');
+        const currentSrc = sourceSelect.value;
+        
+        sourceSelect.innerHTML = ''; // Clear
+        
+        SFD_DATA[pipe].forEach(row => {
+            let opt = document.createElement('option');
+            opt.value = row.src; opt.innerText = row.src;
+            sourceSelect.appendChild(opt);
+        });
+
+        // Keep selection if exists, else select first
+        if(currentSrc) {
+            const exists = Array.from(sourceSelect.options).some(o => o.value === currentSrc);
+            if(exists) sourceSelect.value = currentSrc;
+        }
+
+        calcSfd();
+    }
+
+    function calcSfd() {
+        const pipe = document.getElementById('sfdPipe').value;
+        const src = document.getElementById('sfdSource').value;
+        const row = SFD_DATA[pipe].find(r => r.src === src);
+        
+        if(row) {
+            document.getElementById('valNS').innerText = row.ns;
+            document.getElementById('valT90').innerText = row.t90;
+        } else {
+            document.getElementById('valNS').innerText = '---';
+            document.getElementById('valT90').innerText = '---';
+        }
+    }
+
+    function parseFraction(str) {
+        if(!str) return 0;
+        let parts = str.split('-');
+        // Case: "5-1/4"
+        if(parts.length === 2 && parts[1].includes('/')) {
+            let whole = parseFloat(parts[0]);
+            let frac = parts[1].split('/');
+            return whole + (parseFloat(frac[0]) / parseFloat(frac[1]));
+        }
+        // Case: "1/2"
+        if(str.includes('/')) {
+            let frac = str.split('/');
+            return parseFloat(frac[0]) / parseFloat(frac[1]);
+        }
+        // Case: "16.5" or "8"
+        return parseFloat(str);
+    }
+
+    function applySfdToMain(elementId) {
+        const valStr = document.getElementById(elementId).innerText;
+        if(valStr === '---') return;
+        
+        const numericVal = parseFraction(valStr);
+        document.getElementById('sfd').value = numericVal;
+        
+        // Open Card 1 if closed
+        document.getElementById('card1').classList.remove('hidden');
+        
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        // Flash effect
+        const sfdInput = document.getElementById('sfd');
+        sfdInput.style.borderColor = 'var(--sfd-color)';
+        setTimeout(() => { sfdInput.style.borderColor = 'var(--border-color)'; }, 1000);
+
+        calcExposure();
+    }
+
+    // Listeners
+    document.querySelectorAll('input').forEach(inp => inp.addEventListener('input', () => { calcExposure(); calcUniversal(); calcDensity(); }));
+    
+    // Init All
+    initSfdTool();
+    calcExposure(); calcUniversal(); calcDensity();
+
+</script>
+
+</body>
+</html>
