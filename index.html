@@ -1,1103 +1,1813 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#0f172a">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="NDT Calc">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta name="theme-color" content="#0f172a" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-title" content="NDT Calc" />
     <title>NDT Field Tools</title>
 
     <!-- App Icon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230f172a' rx='20'/%3E%3Ccircle cx='50' cy='50' r='9' fill='%2322d3ee'/%3E%3Cpath d='M43.25 38.31 L27.50 11.03 A45 45 0 0 1 72.50 11.03 L56.75 38.31 A13.5 13.5 0 0 0 43.25 38.31 Z M63.50 50.00 L95.00 50.00 A45 45 0 0 1 72.50 88.97 L56.75 61.69 A13.5 13.5 0 0 0 63.50 50.00 Z M43.25 61.69 L27.50 88.97 A45 45 0 0 1 5.00 50.00 L36.50 50.00 A13.5 13.5 0 0 0 43.25 61.69 Z' fill='%2322d3ee'/%3E%3C/svg%3E">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230f172a'/%3E%3Ccircle cx='50' cy='50' r='9' fill='%2322d3ee'/%3E%3Cpath d='M43.25 38.31 L27.50 11.03 A45 45 0 0 1 72.50 11.03 L56.75 38.31 A13.5 13.5 0 0 0 43.25 38.31 Z M63.50 50.00 L95.00 50.00 A45 45 0 0 1 72.50 88.97 L56.75 61.69 A13.5 13.5 0 0 0 63.50 50.00 Z M43.25 61.69 L27.50 88.97 A45 45 0 0 1 5.00 50.00 L36.50 50.00 A13.5 13.5 0 0 0 43.25 61.69 Z' fill='%2322d3ee'/%3E%3C/svg%3E">
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230f172a' rx='20'/%3E%3Ccircle cx='50' cy='50' r='9' fill='%2322d3ee'/%3E%3Cpath d='M43.25 38.31 L27.50 11.03 A45 45 0 0 1 72.50 11.03 L56.75 38.31 A13.5 13.5 0 0 0 43.25 38.31 Z M63.50 50.00 L95.00 50.00 A45 45 0 0 1 72.50 88.97 L56.75 61.69 A13.5 13.5 0 0 0 63.50 50.00 Z M43.25 61.69 L27.50 88.97 A45 45 0 0 1 5.00 50.00 L36.50 50.00 A13.5 13.5 0 0 0 43.25 61.69 Z' fill='%2322d3ee'/%3E%3C/svg%3E"
+    />
+    <link
+      rel="apple-touch-icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230f172a'/%3E%3Ccircle cx='50' cy='50' r='9' fill='%2322d3ee'/%3E%3Cpath d='M43.25 38.31 L27.50 11.03 A45 45 0 0 1 72.50 11.03 L56.75 38.31 A13.5 13.5 0 0 0 43.25 38.31 Z M63.50 50.00 L95.00 50.00 A45 45 0 0 1 72.50 88.97 L56.75 61.69 A13.5 13.5 0 0 0 63.50 50.00 Z M43.25 61.69 L27.50 88.97 A45 45 0 0 1 5.00 50.00 L36.50 50.00 A13.5 13.5 0 0 0 43.25 61.69 Z' fill='%2322d3ee'/%3E%3C/svg%3E"
+    />
 
     <style>
-        :root { 
-            --bg-body: #0f172a;      /* Slate 900 */
-            --text-main: #f8fafc;    /* Slate 50 */
-            --text-muted: #94a3b8;   /* Slate 400 */
-            
-            /* Glass Variables */
-            --glass-bg: rgba(30, 41, 59, 0.7); /* Slate 800 @ 70% */
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-            
-            /* Input Variables */
-            --input-bg: rgba(0, 0, 0, 0.2);
-            --input-border: rgba(255, 255, 255, 0.05);
+      :root {
+        --bg-body: #0f172a; /* Slate 900 */
+        --text-main: #f8fafc; /* Slate 50 */
+        --text-muted: #94a3b8; /* Slate 400 */
 
-            /* Neon Accents */
-            --primary: #22d3ee;      /* Cyan 400 */
-            --primary-glow: rgba(34, 211, 238, 0.15); 
-            
-            --success: #34d399;      /* Emerald 400 */
-            --success-glow: rgba(52, 211, 153, 0.15);
-            
-            --accent: #818cf8;       /* Indigo 400 */
-            --accent-glow: rgba(129, 140, 248, 0.15);
-            
-            --sfd: #fb923c;          /* Orange 400 */
-            --sfd-glow: rgba(251, 146, 60, 0.15);
+        /* Glass Variables */
+        --glass-bg: rgba(30, 41, 59, 0.7); /* Slate 800 @ 70% */
+        --glass-border: rgba(255, 255, 255, 0.08);
+        --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
 
-            --shim: #f43f5e;         /* Rose 500 */
-            --shim-glow: rgba(244, 63, 94, 0.15);
+        /* Input Variables */
+        --input-bg: rgba(0, 0, 0, 0.2);
+        --input-border: rgba(255, 255, 255, 0.05);
 
-            --iqi: #e879f9;          /* Fuchsia 400 */
-            --iqi-glow: rgba(232, 121, 249, 0.15);
+        /* Neon Accents */
+        --primary: #22d3ee; /* Cyan 400 */
+        --primary-glow: rgba(34, 211, 238, 0.15);
 
-            --log: #a3e635;          /* Lime 400 */
-            --log-glow: rgba(163, 230, 53, 0.15);
-        }
+        --success: #34d399; /* Emerald 400 */
+        --success-glow: rgba(52, 211, 153, 0.15);
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        --accent: #818cf8; /* Indigo 400 */
+        --accent-glow: rgba(129, 140, 248, 0.15);
 
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-            background-color: var(--bg-body); 
-            color: var(--text-main); 
-            margin: 0; 
-            padding: 20px 16px 100px 16px;
-            line-height: 1.5;
-            
-            /* Ambient Background Glows */
-            background-image: 
-                radial-gradient(circle at 0% 0%, rgba(34, 211, 238, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 100% 100%, rgba(129, 140, 248, 0.15) 0%, transparent 40%);
-            background-attachment: fixed;
-            min-height: 100vh;
-        }
+        --sfd: #fb923c; /* Orange 400 */
+        --sfd-glow: rgba(251, 146, 60, 0.15);
 
-        .container { max-width: 600px; margin: 0 auto; position: relative; z-index: 1; }
+        --shim: #f43f5e; /* Rose 500 */
+        --shim-glow: rgba(244, 63, 94, 0.15);
 
-        /* Typography */
-        h1 { 
-            text-align: center; 
-            margin: 10px 0 5px; 
-            color: #fff; 
-            font-weight: 800; 
-            letter-spacing: -0.5px;
-            font-size: 1.8rem;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        }
-        .subtitle { 
-            text-align: center; 
-            color: var(--text-muted); 
-            font-size: 0.75rem; 
-            text-transform: uppercase; 
-            letter-spacing: 2px;
-            margin-bottom: 30px; 
-            font-weight: 600;
-            opacity: 0.8;
-        }
-        
-        /* Glass Card Styles */
-        .card { 
-            background: var(--glass-bg);
-            border-radius: 16px; 
-            border: 1px solid var(--glass-border); 
-            margin-bottom: 20px; 
-            overflow: hidden; 
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            box-shadow: var(--glass-shadow);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        
-        /* Card Header */
-        .card-header { 
-            padding: 18px 20px; 
-            background: rgba(255, 255, 255, 0.02); 
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
-            font-weight: 700; 
-            color: var(--text-main); 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            cursor: pointer; 
-            user-select: none; 
-            font-size: 0.95rem;
-            letter-spacing: 0.3px;
-        }
-        
-        /* Colored Top Borders */
-        .card-1 { border-top: 3px solid var(--primary); }
-        .card-2 { border-top: 3px solid var(--success); }
-        .card-3 { border-top: 3px solid var(--accent); }
-        .card-4 { border-top: 3px solid var(--sfd); }
-        .card-5 { border-top: 3px solid var(--shim); }
-        .card-6 { border-top: 3px solid var(--iqi); }
-        .card-7 { border-top: 3px solid var(--log); }
+        --iqi: #e879f9; /* Fuchsia 400 */
+        --iqi-glow: rgba(232, 121, 249, 0.15);
 
-        /* Icon Rotation */
-        .card-header .icon { transition: transform 0.3s ease; font-size: 0.8rem; opacity: 0.6; }
-        .card-header.active .icon { transform: rotate(180deg); opacity: 1; }
+        --log: #a3e635; /* Lime 400 */
+        --log-glow: rgba(163, 230, 53, 0.15);
+      }
 
-        /* Card Body Animation */
-        .card-body { 
-            max-height: 0; 
-            overflow: hidden; 
-            padding: 0 20px;
-            transition: max-height 0.3s ease-out, padding 0.3s ease;
-            opacity: 0;
-        }
-        .card-body.open { 
-            padding: 24px 20px; 
-            opacity: 1;
-        }
+      * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+      }
 
-        /* Form Grid */
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-        .full-width { grid-column: span 2; }
-        
-        /* Inputs & Labels */
-        label { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            font-size: 0.7rem; 
-            font-weight: 700; 
-            color: var(--text-muted); 
-            text-transform: uppercase; 
-            margin-bottom: 6px; 
-            letter-spacing: 0.5px;
-        }
-        
-        /* Glassy Inputs */
-        input[type="number"], input[type="text"], select, textarea { 
-            width: 100%; 
-            padding: 14px; 
-            background: var(--input-bg);
-            border: 1px solid var(--input-border);
-            color: #fff;
-            border-radius: 10px; 
-            font-size: 1.1rem; 
-            font-weight: 500;
-            box-sizing: border-box; 
-            appearance: none; 
-            -webkit-appearance: none; 
-            transition: all 0.2s;
-            font-family: inherit;
-        }
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+          Arial, sans-serif;
+        background-color: var(--bg-body);
+        color: var(--text-main);
+        margin: 0;
+        padding: 20px 16px 100px 16px;
+        line-height: 1.5;
 
-        /* Custom Select Arrow */
-        select { 
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); 
-            background-repeat: no-repeat; 
-            background-position: right 14px center; 
-            background-size: 18px; 
-            padding-right: 40px;
-        }
-        
-        select option {
-            background-color: #1e293b; 
-            color: #fff;
-        }
+        /* Ambient Background Glows */
+        background-image:
+          radial-gradient(
+            circle at 0% 0%,
+            rgba(34, 211, 238, 0.15) 0%,
+            transparent 40%
+          ),
+          radial-gradient(
+            circle at 100% 100%,
+            rgba(129, 140, 248, 0.15) 0%,
+            transparent 40%
+          );
+        background-attachment: fixed;
+        min-height: 100vh;
+      }
 
-        input:focus, select:focus, textarea:focus { 
-            outline: none; 
-            background: rgba(0, 0, 0, 0.4); 
-            border-color: currentColor; 
-        }
-        
-        /* Focus Glows */
-        .card-1 input:focus { border-color: var(--primary); box-shadow: 0 0 10px var(--primary-glow); }
-        .card-2 input:focus { border-color: var(--success); box-shadow: 0 0 10px var(--success-glow); }
-        .card-3 input:focus { border-color: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
-        .card-4 select:focus { border-color: var(--sfd); box-shadow: 0 0 10px var(--sfd-glow); }
-        .card-5 select:focus { border-color: var(--shim); box-shadow: 0 0 10px var(--shim-glow); }
-        .card-6 input:focus { border-color: var(--iqi); box-shadow: 0 0 10px var(--iqi-glow); }
-        .card-7 input:focus, .card-7 textarea:focus { border-color: var(--log); box-shadow: 0 0 10px var(--log-glow); }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+      }
 
-        /* Result Boxes */
-        .result-box { 
-            margin-top: 20px; 
-            padding: 20px; 
-            border-radius: 12px; 
-            text-align: center; 
-            border: 1px solid transparent;
-            position: relative;
-            overflow: hidden;
-            background: rgba(0, 0, 0, 0.25);
-        }
-        
-        /* Subtle colored overlay for results */
-        .res-1 { border: 1px solid rgba(34, 211, 238, 0.1); box-shadow: inset 0 0 15px rgba(34, 211, 238, 0.02); }
-        .res-2 { border: 1px solid rgba(52, 211, 153, 0.1); box-shadow: inset 0 0 15px rgba(52, 211, 153, 0.02); }
-        .res-3 { border: 1px solid rgba(129, 140, 248, 0.1); box-shadow: inset 0 0 15px rgba(129, 140, 248, 0.02); }
-        
-        .result-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; opacity: 0.9; }
-        
-        /* Crisp text */
-        .result-value { 
-            font-size: 2rem; 
-            font-weight: 800; 
-            font-family: monospace; 
-            letter-spacing: -1px; 
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-        }
-        
-        .val-1 { color: var(--primary); }
-        .val-2 { color: var(--success); }
-        .val-3 { color: var(--accent); }
+      /* Typography */
+      h1 {
+        text-align: center;
+        margin: 10px 0 5px;
+        color: #fff;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        font-size: 1.8rem;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      }
+      .subtitle {
+        text-align: center;
+        color: var(--text-muted);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 30px;
+        font-weight: 600;
+        opacity: 0.8;
+      }
 
-        /* Buttons */
-        .mini-btn { 
-            background: rgba(255,255,255,0.05); 
-            color: var(--primary); 
-            border: 1px solid rgba(255,255,255,0.1); 
-            padding: 4px 10px; 
-            border-radius: 20px; 
-            font-size: 0.65rem; 
-            cursor: pointer; 
-            font-weight: 700; 
-            transition: all 0.2s;
-        }
-        .mini-btn:active { background: var(--primary); color: #000; box-shadow: 0 0 10px var(--primary); }
+      /* Glass Card Styles */
+      .card {
+        background: var(--glass-bg);
+        border-radius: 16px;
+        border: 1px solid var(--glass-border);
+        margin-bottom: 20px;
+        overflow: hidden;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        box-shadow: var(--glass-shadow);
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+      }
 
-        .action-btn { 
-            background: var(--sfd); 
-            color: #000; 
-            border: none; 
-            padding: 10px 12px; 
-            border-radius: 8px; 
-            font-size: 0.8rem; 
-            cursor: pointer; 
-            font-weight: 800; 
-            margin-top: 8px; 
-            width: 100%; 
-            box-shadow: 0 4px 15px rgba(251, 146, 60, 0.3);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .action-btn:active { transform: translateY(1px); filter: brightness(0.9); }
-        
-        .secondary-btn { 
-            background: rgba(255, 255, 255, 0.03); 
-            color: var(--text-muted); 
-            border: 1px solid var(--glass-border); 
-            padding: 14px; 
-            border-radius: 10px; 
-            width: 100%; 
-            font-weight: 600; 
-            cursor: pointer; 
-            margin-top: 20px; 
-            font-size: 0.85rem;
-            transition: all 0.2s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .secondary-btn:active { background: rgba(255, 255, 255, 0.1); color: #fff; }
+      /* Card Header */
+      .card-header {
+        padding: 18px 20px;
+        background: rgba(255, 255, 255, 0.02);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        font-weight: 700;
+        color: var(--text-main);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        user-select: none;
+        font-size: 0.95rem;
+        letter-spacing: 0.3px;
+      }
 
-        /* Append Log Button */
-        .append-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(255,255,255,0.1);
-            color: var(--text-muted);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 6px;
-            padding: 4px 8px;
-            font-size: 0.6rem;
-            font-weight: 700;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .append-btn:active { background: #fff; color: #000; }
-        
-        /* Appended version for multi-col cards */
-        .append-block-btn {
-            display: block;
-            width: 100%;
-            margin-top: 10px;
-            background: rgba(255,255,255,0.05);
-            color: var(--text-muted);
-            border: 1px dashed rgba(255,255,255,0.1);
-            padding: 8px;
-            border-radius: 8px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            cursor: pointer;
-            text-transform: uppercase;
-        }
-        .append-block-btn:active { background: rgba(255,255,255,0.15); color: #fff; }
+      /* Colored Top Borders */
+      .card-1 {
+        border-top: 3px solid var(--primary);
+      }
+      .card-2 {
+        border-top: 3px solid var(--success);
+      }
+      .card-3 {
+        border-top: 3px solid var(--accent);
+      }
+      .card-4 {
+        border-top: 3px solid var(--sfd);
+      }
+      .card-5 {
+        border-top: 3px solid var(--shim);
+      }
+      .card-6 {
+        border-top: 3px solid var(--iqi);
+      }
+      .card-7 {
+        border-top: 3px solid var(--log);
+      }
 
-        /* Modals */
-        .modal-overlay { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0, 0, 0, 0.7); 
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            z-index: 100; 
-            display: flex; align-items: center; justify-content: center; 
-            opacity: 0; pointer-events: none; transition: opacity 0.2s; 
-        }
-        .modal-overlay.open { opacity: 1; pointer-events: auto; }
-        
-        .modal-content { 
-            background: rgba(15, 23, 42, 0.95);
-            width: 90%; max-width: 500px; 
-            border-radius: 16px; 
-            padding: 0; 
-            overflow: hidden;
-            max-height: 90vh; 
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            transform: scale(0.95); transition: transform 0.2s; 
-            display: flex; flex-direction: column;
-        }
-        .modal-overlay.open .modal-content { transform: scale(1); }
-        
-        .modal-header { 
-            background: rgba(255, 255, 255, 0.03); 
-            padding: 16px 20px; 
-            font-weight: 700; 
-            color: #fff; 
-            display: flex; justify-content: space-between; align-items: center; 
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
-        }
-        .modal-close { background: none; border: none; font-size: 1.8rem; cursor: pointer; color: var(--text-muted); line-height: 1; }
-        .modal-body { padding: 20px; overflow-y: auto; }
-        
-        /* Tables */
-        .exp-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.9rem; margin-top: 5px; }
-        .exp-table th { color: var(--text-muted); padding: 12px 8px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); font-size: 0.7rem; text-align: center; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-        .exp-table td { padding: 12px 8px; text-align: center; border-bottom: 1px solid rgba(255, 255, 255, 0.05); color: #fff; }
-        .exp-table tr:last-child td { border-bottom: none; }
-        
-        /* Comparison Box (Shared by SFD & Shim) */
-        .comp-row { display: flex; gap: 12px; margin-top: 20px; }
-        .comp-box { 
-            background: rgba(0, 0, 0, 0.2); 
-            border-radius: 12px; 
-            padding: 16px; 
-            text-align: center; 
-            flex: 1; 
-        }
-        .comp-label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; margin-bottom: 6px; opacity: 0.9; }
-        .comp-value { color: #fff; font-size: 1.5rem; font-weight: 800; font-family: monospace; margin-bottom: 4px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-        
-        /* Box Colors */
-        .box-sfd { border: 1px solid rgba(251, 146, 60, 0.3); box-shadow: inset 0 0 20px rgba(251, 146, 60, 0.05); }
-        .box-sfd .comp-label { color: var(--sfd); }
+      /* Icon Rotation */
+      .card-header .icon {
+        transition: transform 0.3s ease;
+        font-size: 0.8rem;
+        opacity: 0.6;
+      }
+      .card-header.active .icon {
+        transform: rotate(180deg);
+        opacity: 1;
+      }
 
-        .box-shim { border: 1px solid rgba(244, 63, 94, 0.3); box-shadow: inset 0 0 20px rgba(244, 63, 94, 0.05); }
-        .box-shim .comp-label { color: var(--shim); }
-        .shim-sub { display: block; font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; text-transform: uppercase; }
+      /* Card Body Animation */
+      .card-body {
+        max-height: 0;
+        overflow: hidden;
+        padding: 0 20px;
+        transition:
+          max-height 0.3s ease-out,
+          padding 0.3s ease;
+        opacity: 0;
+      }
+      .card-body.open {
+        padding: 24px 20px;
+        opacity: 1;
+      }
 
-        .box-iqi { border: 1px solid rgba(232, 121, 249, 0.3); box-shadow: inset 0 0 20px rgba(232, 121, 249, 0.05); }
-        .box-iqi .comp-label { color: var(--iqi); }
-        .box-iqi .comp-value { font-size: 1.3rem; }
-        .iqi-sub { display: block; font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; text-transform: uppercase; }
+      /* Form Grid */
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      .full-width {
+        grid-column: span 2;
+      }
 
-        /* Thickness Helper */
-        .thick-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-        .remove-btn { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); width: 44px; height: 44px; border-radius: 10px; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; }
-        .add-row-btn { width: 100%; padding: 12px; background: transparent; border: 1px dashed rgba(255, 255, 255, 0.2); border-radius: 10px; color: var(--text-muted); font-weight: 600; cursor: pointer; margin-top: 10px; font-size: 0.9rem; }
-        
-        .total-banner { 
-            background: rgba(0,0,0,0.3); 
-            padding: 20px; 
-            border-radius: 12px; 
-            text-align: center; 
-            margin: 24px 0; 
-            border: 1px solid rgba(255, 255, 255, 0.1); 
-        }
-        .switch-row { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.2); padding: 12px 16px; border-radius: 10px; margin-bottom: 20px; border: 1px solid rgba(255, 255, 255, 0.05); }
-        .switch { position: relative; display: inline-block; width: 48px; height: 28px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #334155; transition: .4s; border-radius: 34px; }
-        .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
-        input:checked + .slider { background-color: var(--primary); }
-        input:checked + .slider:before { transform: translateX(20px); }
-        .apply-btn { width: 100%; background: var(--primary); color: #000; border: none; padding: 16px; border-radius: 12px; font-weight: 800; cursor: pointer; font-size: 1rem; box-shadow: 0 0 20px var(--primary-glow); }
-        
-        /* IQI Toggle */
-        .iqi-toggle + .slider { background-color: #334155; }
-        .iqi-toggle:checked + .slider { background-color: var(--iqi); }
+      /* Inputs & Labels */
+      label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        margin-bottom: 6px;
+        letter-spacing: 0.5px;
+      }
 
-        /* LOGBOOK STYLES */
-        .log-list { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
-        .log-item { 
-            background: rgba(163, 230, 53, 0.05); 
-            border: 1px solid rgba(163, 230, 53, 0.2); 
-            border-radius: 10px; 
-            padding: 15px; 
-            cursor: pointer; 
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .log-item:active { background: rgba(163, 230, 53, 0.15); }
-        .log-title { font-weight: 700; color: #fff; font-size: 0.95rem; }
-        .log-date { font-size: 0.7rem; color: var(--text-muted); }
-        
-        .log-btn { background: var(--log); color: #000; border: none; padding: 10px 14px; border-radius: 8px; font-weight: 800; font-size: 0.8rem; cursor: pointer; width: 48%; }
-        .log-btn-outline { background: transparent; color: var(--log); border: 1px solid var(--log); }
-        
-        .editor-container { display: none; }
-        .editor-container.active { display: block; }
-        
-        .log-textarea {
-            width: 100%; height: 200px; 
-            background: rgba(0,0,0,0.3); 
-            border: 1px solid rgba(163, 230, 53, 0.2); 
-            border-radius: 10px; 
-            color: #fff; 
-            padding: 15px; 
-            font-family: monospace; 
-            font-size: 0.9rem; 
-            margin-top: 10px; 
-            resize: none;
-        }
-        .log-toolbar { display: flex; gap: 8px; margin-top: 10px; overflow-x: auto; padding-bottom: 5px; }
-        .tool-btn { background: rgba(163, 230, 53, 0.1); color: var(--log); border: 1px solid rgba(163, 230, 53, 0.3); padding: 6px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; white-space: nowrap; cursor: pointer; }
-        
-        /* Toast Notification */
-        #toast {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(163, 230, 53, 0.9);
-            color: #000;
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-weight: 700;
-            font-size: 0.8rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            z-index: 200;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
-        }
-        #toast.visible { opacity: 1; }
+      /* Glassy Inputs */
+      input[type="number"],
+      input[type="text"],
+      select,
+      textarea {
+        width: 100%;
+        padding: 14px;
+        background: var(--input-bg);
+        border: 1px solid var(--input-border);
+        color: #fff;
+        border-radius: 10px;
+        font-size: 1.1rem;
+        font-weight: 500;
+        box-sizing: border-box;
+        appearance: none;
+        -webkit-appearance: none;
+        transition: all 0.2s;
+        font-family: inherit;
+      }
 
+      /* Custom Select Arrow */
+      select {
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 14px center;
+        background-size: 18px;
+        padding-right: 40px;
+      }
+
+      select option {
+        background-color: #1e293b;
+        color: #fff;
+      }
+
+      input:focus,
+      select:focus,
+      textarea:focus {
+        outline: none;
+        background: rgba(0, 0, 0, 0.4);
+        border-color: currentColor;
+      }
+
+      /* Focus Glows */
+      .card-1 input:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 10px var(--primary-glow);
+      }
+      .card-2 input:focus {
+        border-color: var(--success);
+        box-shadow: 0 0 10px var(--success-glow);
+      }
+      .card-3 input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 10px var(--accent-glow);
+      }
+      .card-4 select:focus {
+        border-color: var(--sfd);
+        box-shadow: 0 0 10px var(--sfd-glow);
+      }
+      .card-5 select:focus {
+        border-color: var(--shim);
+        box-shadow: 0 0 10px var(--shim-glow);
+      }
+      .card-6 input:focus {
+        border-color: var(--iqi);
+        box-shadow: 0 0 10px var(--iqi-glow);
+      }
+      .card-7 input:focus,
+      .card-7 textarea:focus {
+        border-color: var(--log);
+        box-shadow: 0 0 10px var(--log-glow);
+      }
+
+      /* Result Boxes */
+      .result-box {
+        margin-top: 20px;
+        padding: 20px;
+        border-radius: 12px;
+        text-align: center;
+        border: 1px solid transparent;
+        position: relative;
+        overflow: hidden;
+        background: rgba(0, 0, 0, 0.25);
+      }
+
+      /* Subtle colored overlay for results */
+      .res-1 {
+        border: 1px solid rgba(34, 211, 238, 0.1);
+        box-shadow: inset 0 0 15px rgba(34, 211, 238, 0.02);
+      }
+      .res-2 {
+        border: 1px solid rgba(52, 211, 153, 0.1);
+        box-shadow: inset 0 0 15px rgba(52, 211, 153, 0.02);
+      }
+      .res-3 {
+        border: 1px solid rgba(129, 140, 248, 0.1);
+        box-shadow: inset 0 0 15px rgba(129, 140, 248, 0.02);
+      }
+
+      .result-label {
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 5px;
+        opacity: 0.9;
+      }
+
+      /* Crisp text */
+      .result-value {
+        font-size: 2rem;
+        font-weight: 800;
+        font-family: monospace;
+        letter-spacing: -1px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      }
+
+      .val-1 {
+        color: var(--primary);
+      }
+      .val-2 {
+        color: var(--success);
+      }
+      .val-3 {
+        color: var(--accent);
+      }
+
+      /* Buttons */
+      .mini-btn {
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--primary);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.65rem;
+        cursor: pointer;
+        font-weight: 700;
+        transition: all 0.2s;
+      }
+      .mini-btn:active {
+        background: var(--primary);
+        color: #000;
+        box-shadow: 0 0 10px var(--primary);
+      }
+
+      .action-btn {
+        background: var(--sfd);
+        color: #000;
+        border: none;
+        padding: 10px 12px;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        cursor: pointer;
+        font-weight: 800;
+        margin-top: 8px;
+        width: 100%;
+        box-shadow: 0 4px 15px rgba(251, 146, 60, 0.3);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .action-btn:active {
+        transform: translateY(1px);
+        filter: brightness(0.9);
+      }
+
+      .secondary-btn {
+        background: rgba(255, 255, 255, 0.03);
+        color: var(--text-muted);
+        border: 1px solid var(--glass-border);
+        padding: 14px;
+        border-radius: 10px;
+        width: 100%;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 20px;
+        font-size: 0.85rem;
+        transition: all 0.2s;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      .secondary-btn:active {
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+      }
+
+      /* Append Log Button */
+      .append-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--text-muted);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 6px;
+        padding: 4px 8px;
+        font-size: 0.6rem;
+        font-weight: 700;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .append-btn:active {
+        background: #fff;
+        color: #000;
+      }
+
+      /* Appended version for multi-col cards */
+      .append-block-btn {
+        display: block;
+        width: 100%;
+        margin-top: 10px;
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--text-muted);
+        border: 1px dashed rgba(255, 255, 255, 0.1);
+        padding: 8px;
+        border-radius: 8px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        cursor: pointer;
+        text-transform: uppercase;
+      }
+      .append-block-btn:active {
+        background: rgba(255, 255, 255, 0.15);
+        color: #fff;
+      }
+
+      /* Modals */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s;
+      }
+      .modal-overlay.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .modal-content {
+        background: rgba(15, 23, 42, 0.95);
+        width: 90%;
+        max-width: 500px;
+        border-radius: 16px;
+        padding: 0;
+        overflow: hidden;
+        max-height: 90vh;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        transform: scale(0.95);
+        transition: transform 0.2s;
+        display: flex;
+        flex-direction: column;
+      }
+      .modal-overlay.open .modal-content {
+        transform: scale(1);
+      }
+
+      .modal-header {
+        background: rgba(255, 255, 255, 0.03);
+        padding: 16px 20px;
+        font-weight: 700;
+        color: #fff;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      .modal-close {
+        background: none;
+        border: none;
+        font-size: 1.8rem;
+        cursor: pointer;
+        color: var(--text-muted);
+        line-height: 1;
+      }
+      .modal-body {
+        padding: 20px;
+        overflow-y: auto;
+      }
+
+      /* Tables */
+      .exp-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        font-size: 0.9rem;
+        margin-top: 5px;
+      }
+      .exp-table th {
+        color: var(--text-muted);
+        padding: 12px 8px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        font-size: 0.7rem;
+        text-align: center;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .exp-table td {
+        padding: 12px 8px;
+        text-align: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        color: #fff;
+      }
+      .exp-table tr:last-child td {
+        border-bottom: none;
+      }
+
+      /* Comparison Box (Shared by SFD & Shim) */
+      .comp-row {
+        display: flex;
+        gap: 12px;
+        margin-top: 20px;
+      }
+      .comp-box {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 12px;
+        padding: 16px;
+        text-align: center;
+        flex: 1;
+      }
+      .comp-label {
+        font-size: 0.7rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+        opacity: 0.9;
+      }
+      .comp-value {
+        color: #fff;
+        font-size: 1.5rem;
+        font-weight: 800;
+        font-family: monospace;
+        margin-bottom: 4px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      }
+
+      /* Box Colors */
+      .box-sfd {
+        border: 1px solid rgba(251, 146, 60, 0.3);
+        box-shadow: inset 0 0 20px rgba(251, 146, 60, 0.05);
+      }
+      .box-sfd .comp-label {
+        color: var(--sfd);
+      }
+
+      .box-shim {
+        border: 1px solid rgba(244, 63, 94, 0.3);
+        box-shadow: inset 0 0 20px rgba(244, 63, 94, 0.05);
+      }
+      .box-shim .comp-label {
+        color: var(--shim);
+      }
+      .shim-sub {
+        display: block;
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        margin-top: 2px;
+        text-transform: uppercase;
+      }
+
+      .box-iqi {
+        border: 1px solid rgba(232, 121, 249, 0.3);
+        box-shadow: inset 0 0 20px rgba(232, 121, 249, 0.05);
+      }
+      .box-iqi .comp-label {
+        color: var(--iqi);
+      }
+      .box-iqi .comp-value {
+        font-size: 1.3rem;
+      }
+      .iqi-sub {
+        display: block;
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        margin-top: 2px;
+        text-transform: uppercase;
+      }
+
+      /* Thickness Helper */
+      .thick-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+      .remove-btn {
+        background: rgba(239, 68, 68, 0.15);
+        color: #ef4444;
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .add-row-btn {
+        width: 100%;
+        padding: 12px;
+        background: transparent;
+        border: 1px dashed rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        color: var(--text-muted);
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 10px;
+        font-size: 0.9rem;
+      }
+
+      .total-banner {
+        background: rgba(0, 0, 0, 0.3);
+        padding: 20px;
+        border-radius: 12px;
+        text-align: center;
+        margin: 24px 0;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .switch-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(0, 0, 0, 0.2);
+        padding: 12px 16px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 48px;
+        height: 28px;
+      }
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #334155;
+        transition: 0.4s;
+        border-radius: 34px;
+      }
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 20px;
+        width: 20px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: 0.4s;
+        border-radius: 50%;
+      }
+      input:checked + .slider {
+        background-color: var(--primary);
+      }
+      input:checked + .slider:before {
+        transform: translateX(20px);
+      }
+      .apply-btn {
+        width: 100%;
+        background: var(--primary);
+        color: #000;
+        border: none;
+        padding: 16px;
+        border-radius: 12px;
+        font-weight: 800;
+        cursor: pointer;
+        font-size: 1rem;
+        box-shadow: 0 0 20px var(--primary-glow);
+      }
+
+      /* IQI Toggle */
+      .iqi-toggle + .slider {
+        background-color: #334155;
+      }
+      .iqi-toggle:checked + .slider {
+        background-color: var(--iqi);
+      }
+
+      /* LOGBOOK STYLES */
+      .log-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 15px;
+      }
+      .log-item {
+        background: rgba(163, 230, 53, 0.05);
+        border: 1px solid rgba(163, 230, 53, 0.2);
+        border-radius: 10px;
+        padding: 15px;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .log-item:active {
+        background: rgba(163, 230, 53, 0.15);
+      }
+      .log-title {
+        font-weight: 700;
+        color: #fff;
+        font-size: 0.95rem;
+      }
+      .log-date {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+      }
+
+      .log-btn {
+        background: var(--log);
+        color: #000;
+        border: none;
+        padding: 10px 14px;
+        border-radius: 8px;
+        font-weight: 800;
+        font-size: 0.8rem;
+        cursor: pointer;
+        width: 48%;
+      }
+      .log-btn-outline {
+        background: transparent;
+        color: var(--log);
+        border: 1px solid var(--log);
+      }
+
+      .editor-container {
+        display: none;
+      }
+      .editor-container.active {
+        display: block;
+      }
+
+      .log-textarea {
+        width: 100%;
+        height: 200px;
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(163, 230, 53, 0.2);
+        border-radius: 10px;
+        color: #fff;
+        padding: 15px;
+        font-family: monospace;
+        font-size: 0.9rem;
+        margin-top: 10px;
+        resize: none;
+      }
+      .log-toolbar {
+        display: flex;
+        gap: 8px;
+        margin-top: 10px;
+        overflow-x: auto;
+        padding-bottom: 5px;
+      }
+      .tool-btn {
+        background: rgba(163, 230, 53, 0.1);
+        color: var(--log);
+        border: 1px solid rgba(163, 230, 53, 0.3);
+        padding: 6px 10px;
+        border-radius: 6px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        white-space: nowrap;
+        cursor: pointer;
+      }
+
+      /* Toast Notification */
+      #toast {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(163, 230, 53, 0.9);
+        color: #000;
+        padding: 10px 20px;
+        border-radius: 20px;
+        font-weight: 700;
+        font-size: 0.8rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        z-index: 200;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s;
+      }
+      #toast.visible {
+        opacity: 1;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
+    <div class="container">
+      <h1>NDT Field Tools</h1>
+      <div class="subtitle">Glassmorphism Edition v3.2</div>
 
-<div class="container">
-    <h1>NDT Field Tools</h1>
-    <div class="subtitle">Glassmorphism Edition v3.2</div>
-
-    <!-- CARD 1: EXPOSURE CALC -->
-    <div class="card card-1">
+      <!-- CARD 1: EXPOSURE CALC -->
+      <div class="card card-1">
         <div class="card-header" onclick="toggleCard('card1')">
-            <span>1. Exposure Calculator</span>
-            <span class="icon">▼</span>
+          <span>1. Exposure Calculator</span>
+          <span class="icon">▼</span>
         </div>
-        <div id="card1" class="card-body open" style="max-height: 1000px; opacity: 1; padding-top: 24px; padding-bottom: 24px;"> <!-- Default Open -->
-            <div class="grid">
-                <div>
-                    <label>Target Exp (R) <button class="mini-btn" onclick="openModal('expModal', event)">Values</button></label>
-                    <input type="number" id="targetExp" value="2.8" step="0.1">
-                </div>
-                <div>
-                    <label>Source Age (Mo)</label>
-                    <input type="number" id="age" value="0" step="0.1">
-                </div>
-                <div>
-                    <label>Material Thick (in) <button class="mini-btn" onclick="openModal('thickModal', event)">Calc</button></label>
-                    <input type="number" id="thick" value="0.500" step="0.001">
-                </div>
-                <div>
-                    <label>SFD (Inches)</label>
-                    <input type="number" id="sfd" value="24" step="0.5">
-                </div>
-                <div class="full-width">
-                    <label>Original Strength (Ci)</label>
-                    <input type="number" id="strength" value="50" step="0.1">
-                </div>
+        <div
+          id="card1"
+          class="card-body open"
+          style="
+            max-height: 1000px;
+            opacity: 1;
+            padding-top: 24px;
+            padding-bottom: 24px;
+          "
+        >
+          <!-- Default Open -->
+          <div class="grid">
+            <div>
+              <label
+                >Target Exp (R)
+                <button class="mini-btn" onclick="openModal('expModal', event)">
+                  Values
+                </button></label
+              >
+              <input type="number" id="targetExp" value="2.8" step="0.1" />
             </div>
-            <div class="result-box res-1">
-                <button class="append-btn" onclick="appendToLog('exp')">+ LOG</button>
-                <div class="result-label val-1">Calculated Exposure Time</div>
-                <div id="resExposure" class="result-value val-1">---</div>
+            <div>
+              <label>Source Age (Mo)</label>
+              <input type="number" id="age" value="0" step="0.1" />
             </div>
+            <div>
+              <label
+                >Material Thick (in)
+                <button
+                  class="mini-btn"
+                  onclick="openModal('thickModal', event)"
+                >
+                  Calc
+                </button></label
+              >
+              <input type="number" id="thick" value="0.500" step="0.001" />
+            </div>
+            <div>
+              <label>SFD (Inches)</label>
+              <input type="number" id="sfd" value="24" step="0.5" />
+            </div>
+            <div class="full-width">
+              <label>Original Strength (Ci)</label>
+              <input type="number" id="strength" value="50" step="0.1" />
+            </div>
+          </div>
+          <div class="result-box res-1">
+            <button class="append-btn" onclick="appendToLog('exp')">
+              + LOG
+            </button>
+            <div class="result-label val-1">Calculated Exposure Time</div>
+            <div id="resExposure" class="result-value val-1">---</div>
+          </div>
         </div>
-    </div>
+      </div>
 
-    <!-- CARD 2: TIME ADJUSTER -->
-    <div class="card card-2">
+      <!-- CARD 2: TIME ADJUSTER -->
+      <div class="card card-2">
         <div class="card-header" onclick="toggleCard('card2')">
-            <span>2. Universal Time Adjuster</span>
-            <span class="icon">▼</span>
+          <span>2. Universal Time Adjuster</span>
+          <span class="icon">▼</span>
         </div>
         <div id="card2" class="card-body">
-            <div class="grid">
-                <div class="full-width"><label>Original Time (Mins)</label><input type="number" id="t1" value="13.5" step="0.1"></div>
-                <div><label>Old Dist (in)</label><input type="number" id="d1" value="26"></div>
-                <div><label>New Dist (in)</label><input type="number" id="d2" value="28"></div>
-                <div><label>Old Curies</label><input type="number" id="c1" value="83.4" step="0.1"></div>
-                <div><label>New Curies</label><input type="number" id="c2" value="83.4" step="0.1"></div>
+          <div class="grid">
+            <div class="full-width">
+              <label>Original Time (Mins)</label
+              ><input type="number" id="t1" value="13.5" step="0.1" />
             </div>
-            <div class="result-box res-2">
-                <button class="append-btn" onclick="appendToLog('uni')">+ LOG</button>
-                <div class="result-label val-2">New Exposure Time</div>
-                <div id="resUniversal" class="result-value val-2">---</div>
+            <div>
+              <label>Old Dist (in)</label
+              ><input type="number" id="d1" value="26" />
             </div>
+            <div>
+              <label>New Dist (in)</label
+              ><input type="number" id="d2" value="28" />
+            </div>
+            <div>
+              <label>Old Curies</label
+              ><input type="number" id="c1" value="83.4" step="0.1" />
+            </div>
+            <div>
+              <label>New Curies</label
+              ><input type="number" id="c2" value="83.4" step="0.1" />
+            </div>
+          </div>
+          <div class="result-box res-2">
+            <button class="append-btn" onclick="appendToLog('uni')">
+              + LOG
+            </button>
+            <div class="result-label val-2">New Exposure Time</div>
+            <div id="resUniversal" class="result-value val-2">---</div>
+          </div>
         </div>
-    </div>
+      </div>
 
-    <!-- CARD 3: DENSITY ADJUST -->
-    <div class="card card-3">
+      <!-- CARD 3: DENSITY ADJUST -->
+      <div class="card card-3">
         <div class="card-header" onclick="toggleCard('card3')">
-            <span>3. Density Adjustment</span>
-            <span class="icon">▼</span>
+          <span>3. Density Adjustment</span>
+          <span class="icon">▼</span>
         </div>
         <div id="card3" class="card-body">
-            <div class="grid">
-                <div class="full-width"><label>Old Time (Mins)</label><input type="number" id="tOld" value="10" step="0.1"></div>
-                <div><label>Old Density</label><input type="number" id="densOld" value="2.0" step="0.1"></div>
-                <div><label>Target Density</label><input type="number" id="densNew" value="2.5" step="0.1"></div>
+          <div class="grid">
+            <div class="full-width">
+              <label>Old Time (Mins)</label
+              ><input type="number" id="tOld" value="10" step="0.1" />
             </div>
-            <div class="result-box res-3">
-                <button class="append-btn" onclick="appendToLog('dens')">+ LOG</button>
-                <div class="result-label val-3">Adjusted Time</div>
-                <div id="resDensity" class="result-value val-3">---</div>
+            <div>
+              <label>Old Density</label
+              ><input type="number" id="densOld" value="2.0" step="0.1" />
             </div>
+            <div>
+              <label>Target Density</label
+              ><input type="number" id="densNew" value="2.5" step="0.1" />
+            </div>
+          </div>
+          <div class="result-box res-3">
+            <button class="append-btn" onclick="appendToLog('dens')">
+              + LOG
+            </button>
+            <div class="result-label val-3">Adjusted Time</div>
+            <div id="resDensity" class="result-value val-3">---</div>
+          </div>
         </div>
-    </div>
+      </div>
 
-    <!-- CARD 4: MINIMUM SFD TOOL -->
-    <div class="card card-4">
+      <!-- CARD 4: MINIMUM SFD TOOL -->
+      <div class="card card-4">
         <div class="card-header" onclick="toggleCard('card4')">
-            <span>4. Min SFD (Double-Wall RT)</span>
-            <span class="icon">▼</span>
+          <span>4. Min SFD (Double-Wall RT)</span>
+          <span class="icon">▼</span>
         </div>
         <div id="card4" class="card-body">
-            <div class="grid">
-                <div class="full-width">
-                    <label>Nominal Pipe Size</label>
-                    <select id="sfdPipe" onchange="updateSourceOptions()"></select>
-                </div>
-                <div class="full-width">
-                    <label>Source Dimension (Longest)</label>
-                    <select id="sfdSource" onchange="calcSfd()"></select>
-                </div>
+          <div class="grid">
+            <div class="full-width">
+              <label>Nominal Pipe Size</label>
+              <select id="sfdPipe" onchange="updateSourceOptions()"></select>
             </div>
-            
-            <div class="comp-row">
-                <div class="comp-box box-sfd">
-                    <div class="comp-label">N/S 250</div>
-                    <div id="valNS" class="comp-value">---</div>
-                    <button class="action-btn" onclick="applySfdToMain('valNS')">APPLY</button>
-                </div>
-                <div class="comp-box box-sfd">
-                    <div class="comp-label">T9074</div>
-                    <div id="valT90" class="comp-value">---</div>
-                    <button class="action-btn" onclick="applySfdToMain('valT90')">APPLY</button>
-                </div>
+            <div class="full-width">
+              <label>Source Dimension (Longest)</label>
+              <select id="sfdSource" onchange="calcSfd()"></select>
             </div>
-            
-            <button class="append-block-btn" onclick="appendToLog('sfd')">+ ADD TO LOG</button>
-            <button class="secondary-btn" onclick="openModal('sfdModal', event)">View Full Table 5</button>
-        </div>
-    </div>
+          </div>
 
-    <!-- CARD 5: SHIM SELECTION GUIDE -->
-    <div class="card card-5">
+          <div class="comp-row">
+            <div class="comp-box box-sfd">
+              <div class="comp-label">N/S 250</div>
+              <div id="valNS" class="comp-value">---</div>
+              <button class="action-btn" onclick="applySfdToMain('valNS')">
+                APPLY
+              </button>
+            </div>
+            <div class="comp-box box-sfd">
+              <div class="comp-label">T9074</div>
+              <div id="valT90" class="comp-value">---</div>
+              <button class="action-btn" onclick="applySfdToMain('valT90')">
+                APPLY
+              </button>
+            </div>
+          </div>
+
+          <button class="append-block-btn" onclick="appendToLog('sfd')">
+            + ADD TO LOG
+          </button>
+          <button class="secondary-btn" onclick="openModal('sfdModal', event)">
+            View Full Table 5
+          </button>
+        </div>
+      </div>
+
+      <!-- CARD 5: SHIM SELECTION GUIDE -->
+      <div class="card card-5">
         <div class="card-header" onclick="toggleCard('card5')">
-            <span>5. Shim Selection Guide</span>
-            <span class="icon">▼</span>
+          <span>5. Shim Selection Guide</span>
+          <span class="icon">▼</span>
         </div>
         <div id="card5" class="card-body">
-            <div class="full-width" style="margin-bottom: 20px;">
-                <label>DMT (Wall Thickness)</label>
-                <select id="shimDmt" onchange="calcShim()"></select>
-            </div>
-            
-            <div id="biMetalAlert" class="hidden" style="background: rgba(244, 63, 94, 0.2); border: 1px solid var(--shim); padding: 10px; border-radius: 8px; margin-bottom: 15px; text-align: center; color: #fff; font-size: 0.85rem; font-weight: 600;">
-                NOTE: Bi-Metallic CRES/INCO Use Shim: .312
-            </div>
+          <div class="full-width" style="margin-bottom: 20px">
+            <label>DMT (Wall Thickness)</label>
+            <select id="shimDmt" onchange="calcShim()"></select>
+          </div>
 
-            <div class="comp-row">
-                <div class="comp-box box-shim">
-                    <div class="comp-label">Superimposed</div>
-                    <div class="comp-value" id="shimSuper">---</div>
-                </div>
-                <div class="comp-box box-shim">
-                    <div class="comp-label">Ellipsed</div>
-                    <div class="comp-value" id="shimEllipsed">---</div>
-                </div>
+          <div
+            id="biMetalAlert"
+            class="hidden"
+            style="
+              background: rgba(244, 63, 94, 0.2);
+              border: 1px solid var(--shim);
+              padding: 10px;
+              border-radius: 8px;
+              margin-bottom: 15px;
+              text-align: center;
+              color: #fff;
+              font-size: 0.85rem;
+              font-weight: 600;
+            "
+          >
+            NOTE: Bi-Metallic CRES/INCO Use Shim: .312
+          </div>
+
+          <div class="comp-row">
+            <div class="comp-box box-shim">
+              <div class="comp-label">Superimposed</div>
+              <div class="comp-value" id="shimSuper">---</div>
             </div>
-            <button class="append-block-btn" onclick="appendToLog('shim')">+ ADD TO LOG</button>
+            <div class="comp-box box-shim">
+              <div class="comp-label">Ellipsed</div>
+              <div class="comp-value" id="shimEllipsed">---</div>
+            </div>
+          </div>
+          <button class="append-block-btn" onclick="appendToLog('shim')">
+            + ADD TO LOG
+          </button>
         </div>
-    </div>
+      </div>
 
-    <!-- CARD 6: IQI SELECTOR -->
-    <div class="card card-6">
+      <!-- CARD 6: IQI SELECTOR -->
+      <div class="card card-6">
         <div class="card-header" onclick="toggleCard('card6')">
-            <span>6. Penetrameter (IQI)</span>
-            <span class="icon">▼</span>
+          <span>6. Penetrameter (IQI)</span>
+          <span class="icon">▼</span>
         </div>
         <div id="card6" class="card-body">
-            <div class="grid">
-                <div class="full-width">
-                    <label>Design Material Thick (Tm)</label>
-                    <input type="number" id="iqiThick" value="0.250" step="0.001" oninput="calcIQI()">
-                </div>
+          <div class="grid">
+            <div class="full-width">
+              <label>Design Material Thick (Tm)</label>
+              <input
+                type="number"
+                id="iqiThick"
+                value="0.250"
+                step="0.001"
+                oninput="calcIQI()"
+              />
             </div>
+          </div>
 
-            <div class="switch-row" style="margin-top:20px; border-color: rgba(232, 121, 249, 0.2);">
-                <span style="font-size:0.9rem; font-weight:600; color:var(--text-main)" id="iqiTechLabel">Double-Wall Viewing</span>
-                <label class="switch"><input type="checkbox" id="iqiToggle" class="iqi-toggle" onchange="calcIQI()"><span class="slider"></span></label>
-            </div>
+          <div
+            class="switch-row"
+            style="margin-top: 20px; border-color: rgba(232, 121, 249, 0.2)"
+          >
+            <span
+              style="
+                font-size: 0.9rem;
+                font-weight: 600;
+                color: var(--text-main);
+              "
+              id="iqiTechLabel"
+              >Double-Wall Viewing</span
+            >
+            <label class="switch"
+              ><input
+                type="checkbox"
+                id="iqiToggle"
+                class="iqi-toggle"
+                onchange="calcIQI()" /><span class="slider"></span
+            ></label>
+          </div>
 
-            <div class="comp-row">
-                <div class="comp-box box-iqi">
-                    <div class="comp-label">Required Source</div>
-                    <div class="comp-value" id="resSourceIQI">---</div>
-                </div>
-                <div class="comp-box box-iqi">
-                    <div class="comp-label">Allow Film Side</div>
-                    <div class="comp-value" id="resFilmIQI">---</div>
-                </div>
+          <div class="comp-row">
+            <div class="comp-box box-iqi">
+              <div class="comp-label">Source Side</div>
+              <div class="comp-value" id="resSourceIQI">---</div>
             </div>
-            <button class="append-block-btn" onclick="appendToLog('iqi')">+ ADD TO LOG</button>
+            <div class="comp-box box-iqi">
+              <div class="comp-label">Film Side</div>
+              <div class="comp-value" id="resFilmIQI">---</div>
+            </div>
+          </div>
+          <button class="append-block-btn" onclick="appendToLog('iqi')">
+            + ADD TO LOG
+          </button>
         </div>
-    </div>
+      </div>
 
-    <!-- CARD 7: FIELD LOGBOOK -->
-    <div class="card card-7">
+      <!-- CARD 7: FIELD LOGBOOK -->
+      <div class="card card-7">
         <div class="card-header" onclick="toggleCard('card7')">
-            <span>7. Field Logbook</span>
-            <span class="icon">▼</span>
+          <span>7. Field Logbook</span>
+          <span class="icon">▼</span>
         </div>
         <div id="card7" class="card-body">
-            
-            <!-- LIST VIEW -->
-            <div id="logListView">
-                <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
-                    <button class="log-btn" onclick="createNewLog()">+ NEW LOG</button>
-                    <button class="log-btn log-btn-outline" onclick="exportLogs()">BACKUP ALL</button>
-                </div>
-                <div id="logListContainer" class="log-list"></div>
+          <!-- LIST VIEW -->
+          <div id="logListView">
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 15px;
+              "
+            >
+              <button class="log-btn" onclick="createNewLog()">
+                + NEW LOG
+              </button>
+              <button class="log-btn log-btn-outline" onclick="exportLogs()">
+                BACKUP ALL
+              </button>
+            </div>
+            <div id="logListContainer" class="log-list"></div>
+          </div>
+
+          <!-- EDITOR VIEW -->
+          <div id="logEditorView" class="editor-container">
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 10px;
+              "
+            >
+              <button class="mini-btn" onclick="closeEditor()">← BACK</button>
+              <button
+                class="mini-btn"
+                style="color: #ef4444; border-color: rgba(239, 68, 68, 0.3)"
+                onclick="deleteCurrentLog()"
+              >
+                DELETE
+              </button>
             </div>
 
-            <!-- EDITOR VIEW -->
-            <div id="logEditorView" class="editor-container">
-                <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-                    <button class="mini-btn" onclick="closeEditor()">← BACK</button>
-                    <button class="mini-btn" style="color:#ef4444; border-color:rgba(239,68,68,0.3)" onclick="deleteCurrentLog()">DELETE</button>
-                </div>
-                
-                <label>Log Title</label>
-                <input type="text" id="logTitleInput" placeholder="Job Name / Location" oninput="saveCurrentLog()">
-                
-                <textarea id="logContentInput" class="log-textarea" placeholder="Start typing notes..." oninput="saveCurrentLog()"></textarea>
-                
-                <div class="log-toolbar">
-                    <button class="tool-btn" onclick="insertLogTime()">[TIME]</button>
-                    <button class="tool-btn" onclick="insertLogTemplate()">[SHOT]</button>
-                    <button class="tool-btn" onclick="copyLogContent()">[COPY]</button>
-                </div>
-                <div id="saveStatus" style="font-size:0.7rem; color:var(--log); text-align:right; margin-top:5px; opacity:0; transition:opacity 0.5s;">Saved</div>
-            </div>
+            <label>Log Title</label>
+            <input
+              type="text"
+              id="logTitleInput"
+              placeholder="Job Name / Location"
+              oninput="saveCurrentLog()"
+            />
 
+            <textarea
+              id="logContentInput"
+              class="log-textarea"
+              placeholder="Start typing notes..."
+              oninput="saveCurrentLog()"
+            ></textarea>
+
+            <div class="log-toolbar">
+              <button class="tool-btn" onclick="insertLogTime()">[TIME]</button>
+              <button class="tool-btn" onclick="insertLogTemplate()">
+                [SHOT]
+              </button>
+              <button class="tool-btn" onclick="copyLogContent()">
+                [COPY]
+              </button>
+            </div>
+            <div
+              id="saveStatus"
+              style="
+                font-size: 0.7rem;
+                color: var(--log);
+                text-align: right;
+                margin-top: 5px;
+                opacity: 0;
+                transition: opacity 0.5s;
+              "
+            >
+              Saved
+            </div>
+          </div>
         </div>
+      </div>
     </div>
 
-</div>
+    <!-- TOAST -->
+    <div id="toast">Saved to Log!</div>
 
-<!-- TOAST -->
-<div id="toast">Saved to Log!</div>
-
-<!-- MODAL 1: EXPOSURE VALUES -->
-<div id="expModal" class="modal-overlay" onclick="closeModal(event)">
-    <div class="modal-content">
-        <div class="modal-header"><span>Exposure Values (Ir-192)</span><button class="modal-close" onclick="closeModal(null, true)">×</button></div>
+    <!-- MODAL 1: EXPOSURE VALUES -->
+    <div id="expModal" class="modal-overlay" onclick="closeModal(event)">
+      <div class="modal-content">
+        <div class="modal-header">
+          <span>Exposure Values (Ir-192)</span
+          ><button class="modal-close" onclick="closeModal(null, true)">
+            ×
+          </button>
+        </div>
         <div class="modal-body">
+          <table class="exp-table">
+            <thead>
+              <tr>
+                <th style="text-align: left">Material</th>
+                <th>Fuji 100</th>
+                <th>Fuji 80</th>
+                <th>Fuji 50</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="text-align: left; font-weight: 700">Steel</td>
+                <td>
+                  <span class="val-btn" onclick="selectVal(2.8)">2.8</span>
+                </td>
+                <td>
+                  <span class="val-btn" onclick="selectVal(3.8)">3.8</span>
+                </td>
+                <td>
+                  <span class="val-btn" onclick="selectVal(5.5)">5.5</span>
+                </td>
+              </tr>
+              <tr>
+                <td style="text-align: left; font-weight: 700">Inconel</td>
+                <td>
+                  <span class="val-btn" onclick="selectVal(3.5)">3.5</span>
+                </td>
+                <td>
+                  <span class="val-btn" onclick="selectVal(4.8)">4.8</span>
+                </td>
+                <td>
+                  <span class="val-btn" onclick="selectVal(6.0)">6.0</span>
+                </td>
+              </tr>
+              <tr>
+                <td style="text-align: left; font-weight: 700">CuNi</td>
+                <td>
+                  <span class="val-btn" onclick="selectVal(4.0)">4.0</span>
+                </td>
+                <td>
+                  <span class="val-btn" onclick="selectVal(5.2)">5.2</span>
+                </td>
+                <td>
+                  <span class="val-btn" onclick="selectVal(6.5)">6.5</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p
+            style="
+              font-size: 0.75rem;
+              color: #94a3b8;
+              text-align: center;
+              margin-top: 20px;
+            "
+          >
+            Values represent approximate exposure factors for a target density
+            of 2.0 with Ir-192.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL 2: THICKNESS CALC -->
+    <div id="thickModal" class="modal-overlay" onclick="closeModal(event)">
+      <div class="modal-content">
+        <div class="modal-header">
+          <span>Thickness Calculator</span
+          ><button class="modal-close" onclick="closeModal(null, true)">
+            ×
+          </button>
+        </div>
+        <div class="modal-body">
+          <div id="thickInputs"></div>
+          <button class="add-row-btn" onclick="addThickRow()">
+            + Add Shim
+          </button>
+          <div class="switch-row" style="margin-top: 20px">
+            <span
+              style="
+                font-size: 0.9rem;
+                font-weight: 600;
+                color: var(--text-main);
+              "
+              >Double Wall (x2)</span
+            >
+            <label class="switch"
+              ><input
+                type="checkbox"
+                id="doubleToggle"
+                onchange="runTotalCalc()"
+                checked /><span class="slider"></span
+            ></label>
+          </div>
+          <div class="total-banner">
+            <div
+              style="
+                font-size: 0.7rem;
+                text-transform: uppercase;
+                color: var(--text-muted);
+                margin-bottom: 5px;
+              "
+            >
+              Total Thickness
+            </div>
+            <div
+              id="thickTotalDisplay"
+              style="
+                font-size: 2.5rem;
+                font-weight: 800;
+                color: var(--primary);
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+              "
+            >
+              0.000"
+            </div>
+          </div>
+          <button class="apply-btn" onclick="applyThickToMain()">
+            APPLY TO CALCULATOR
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL 3: SFD TABLE REFERENCE -->
+    <div id="sfdModal" class="modal-overlay" onclick="closeModal(event)">
+      <div class="modal-content" style="max-width: 600px">
+        <div class="modal-header">
+          <span>Table 5: Min SFD (Double-Wall)</span
+          ><button class="modal-close" onclick="closeModal(null, true)">
+            ×
+          </button>
+        </div>
+        <div class="modal-body">
+          <div style="overflow-x: auto">
             <table class="exp-table">
-                <thead><tr><th style="text-align:left">Material</th><th>Fuji 100</th><th>Fuji 80</th><th>Fuji 50</th></tr></thead>
-                <tbody>
-                    <tr><td style="text-align:left;font-weight:700">Steel</td><td><span class="val-btn" onclick="selectVal(2.8)">2.8</span></td><td><span class="val-btn" onclick="selectVal(3.8)">3.8</span></td><td><span class="val-btn" onclick="selectVal(5.5)">5.5</span></td></tr>
-                    <tr><td style="text-align:left;font-weight:700">Inconel</td><td><span class="val-btn" onclick="selectVal(3.5)">3.5</span></td><td><span class="val-btn" onclick="selectVal(4.8)">4.8</span></td><td><span class="val-btn" onclick="selectVal(6.0)">6.0</span></td></tr>
-                    <tr><td style="text-align:left;font-weight:700">CuNi</td><td><span class="val-btn" onclick="selectVal(4.0)">4.0</span></td><td><span class="val-btn" onclick="selectVal(5.2)">5.2</span></td><td><span class="val-btn" onclick="selectVal(6.5)">6.5</span></td></tr>
-                </tbody>
+              <thead>
+                <tr>
+                  <th style="text-align: left">Pipe</th>
+                  <th>Source Dim</th>
+                  <th>N/S 250</th>
+                  <th>T9074</th>
+                </tr>
+              </thead>
+              <tbody id="sfdTableBody">
+                <!-- Populated via JS -->
+              </tbody>
             </table>
-            <p style="font-size:0.75rem; color:#94a3b8; text-align:center; margin-top:20px;">Values represent approximate exposure factors for a target density of 2.0 with Ir-192.</p>
+          </div>
         </div>
+      </div>
     </div>
-</div>
 
-<!-- MODAL 2: THICKNESS CALC -->
-<div id="thickModal" class="modal-overlay" onclick="closeModal(event)">
-    <div class="modal-content">
-        <div class="modal-header"><span>Thickness Calculator</span><button class="modal-close" onclick="closeModal(null, true)">×</button></div>
-        <div class="modal-body">
-            <div id="thickInputs"></div>
-            <button class="add-row-btn" onclick="addThickRow()">+ Add Shim</button>
-            <div class="switch-row" style="margin-top:20px">
-                <span style="font-size:0.9rem; font-weight:600; color:var(--text-main)">Double Wall (x2)</span>
-                <label class="switch"><input type="checkbox" id="doubleToggle" onchange="runTotalCalc()" checked><span class="slider"></span></label>
-            </div>
-            <div class="total-banner">
-                <div style="font-size:0.7rem; text-transform:uppercase; color:var(--text-muted); margin-bottom:5px">Total Thickness</div>
-                <div id="thickTotalDisplay" style="font-size:2.5rem; font-weight:800; color:var(--primary); text-shadow: 0 2px 4px rgba(0,0,0,0.5)">0.000"</div>
-            </div>
-            <button class="apply-btn" onclick="applyThickToMain()">APPLY TO CALCULATOR</button>
-        </div>
-    </div>
-</div>
+    <script>
+      // --- CONSTANTS ---
+      const HALF_LIFE_DAYS = 73.83;
+      const DAYS_IN_MONTH_AVG = 30.4375;
+      const HALF_LIFE_MONTHS = HALF_LIFE_DAYS / DAYS_IN_MONTH_AVG;
+      const GAMMA_CONSTANT = 5.2; // Approximate for Ir-192 in R*in^2/(Ci*hr)
+      const ATTENUATION = 1.0; // Approximate linear attenuation coefficient for steel (per inch)
 
-<!-- MODAL 3: SFD TABLE REFERENCE -->
-<div id="sfdModal" class="modal-overlay" onclick="closeModal(event)">
-    <div class="modal-content" style="max-width:600px">
-        <div class="modal-header"><span>Table 5: Min SFD (Double-Wall)</span><button class="modal-close" onclick="closeModal(null, true)">×</button></div>
-        <div class="modal-body">
-            <div style="overflow-x:auto">
-                <table class="exp-table">
-                    <thead><tr><th style="text-align:left">Pipe</th><th>Source Dim</th><th>N/S 250</th><th>T9074</th></tr></thead>
-                    <tbody id="sfdTableBody">
-                        <!-- Populated via JS -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
+      // --- UI HELPERS ---
 
-<script>
-    // --- CONSTANTS ---
-    const HALF_LIFE_DAYS = 73.83; 
-    const DAYS_IN_MONTH_AVG = 30.4375; 
-    const HALF_LIFE_MONTHS = HALF_LIFE_DAYS / DAYS_IN_MONTH_AVG;
-    const GAMMA_CONSTANT = 5.9; 
-    const ATTENUATION = 1.4;
-
-    // --- UI HELPERS ---
-    
-    function formatTime(val) {
-        if(!val || val <= 0 || !isFinite(val)) return '---';
-        let h = Math.floor(val/60); let m = Math.floor(val%60); let s = Math.round((val*60)%60);
-        if(s==60){s=0;m++;} if(m==60){m=0;h++;}
+      function formatTime(val) {
+        if (!val || val <= 0 || !isFinite(val)) return "---";
+        let h = Math.floor(val / 60);
+        let m = Math.floor(val % 60);
+        let s = Math.round((val * 60) % 60);
+        if (s == 60) {
+          s = 0;
+          m++;
+        }
+        if (m == 60) {
+          m = 0;
+          h++;
+        }
         let timeStr = h > 0 ? `${h}h ${m}m ${s}s` : `${m}m ${s}s`;
-        let hh = h.toString().padStart(2,'0'); let mm = m.toString().padStart(2,'0'); let ss = s.toString().padStart(2,'0');
+        let hh = h.toString().padStart(2, "0");
+        let mm = m.toString().padStart(2, "0");
+        let ss = s.toString().padStart(2, "0");
         return `<span>${timeStr}</span><span style="display:block; font-size:0.7rem; opacity:0.6; margin-top:6px; letter-spacing:1px; font-family:monospace">(${hh}:${mm}:${ss})</span>`;
-    }
+      }
 
-    // Helper for Raw Seconds (for log)
-    function getSeconds(val) {
-        if(!val || val <= 0 || !isFinite(val)) return '';
-        let h = Math.floor(val/60); let m = Math.floor(val%60); let s = Math.round((val*60)%60);
-        if(s==60){s=0;m++;} if(m==60){m=0;h++;}
+      // Helper for Raw Seconds (for log)
+      function getSeconds(val) {
+        if (!val || val <= 0 || !isFinite(val)) return "";
+        let h = Math.floor(val / 60);
+        let m = Math.floor(val % 60);
+        let s = Math.round((val * 60) % 60);
+        if (s == 60) {
+          s = 0;
+          m++;
+        }
+        if (m == 60) {
+          m = 0;
+          h++;
+        }
         return h > 0 ? `${h}h ${m}m ${s}s` : `${m}m ${s}s`;
-    }
+      }
 
-    function toggleCard(id) {
+      function toggleCard(id) {
         const body = document.getElementById(id);
         const header = body.previousElementSibling;
-        
+
         // Check current state by maxHeight
-        if (body.style.maxHeight && body.style.maxHeight !== '0px') {
-            // Close
-            body.style.maxHeight = '0px';
-            body.classList.remove('open');
-            header.classList.remove('active');
+        if (body.style.maxHeight && body.style.maxHeight !== "0px") {
+          // Close
+          body.style.maxHeight = "0px";
+          body.classList.remove("open");
+          header.classList.remove("active");
         } else {
-            // Open
-            body.style.maxHeight = body.scrollHeight + 50 + "px"; // +buffer
-            body.classList.add('open');
-            header.classList.add('active');
+          // Open
+          body.style.maxHeight = body.scrollHeight + 50 + "px"; // +buffer
+          body.classList.add("open");
+          header.classList.add("active");
         }
-    }
+      }
 
-    function autoResizeCard(id) {
+      function autoResizeCard(id) {
         const body = document.getElementById(id);
-        if (body.classList.contains('open')) {
-             body.style.maxHeight = body.scrollHeight + 50 + "px";
+        if (body.classList.contains("open")) {
+          body.style.maxHeight = body.scrollHeight + 50 + "px";
         }
-    }
+      }
 
-    // Modal Logic
-    function openModal(id, e) { 
-        if(e) e.stopPropagation(); 
-        document.getElementById(id).classList.add('open'); 
-        if(id=='thickModal' && !document.querySelector('.thick-row')) addThickRow(); 
-    }
-    
-    function closeModal(e, force) { 
-        if(force || e.target.classList.contains('modal-overlay')) {
-            document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('open')); 
+      // Modal Logic
+      function openModal(id, e) {
+        if (e) e.stopPropagation();
+        document.getElementById(id).classList.add("open");
+        if (id == "thickModal" && !document.querySelector(".thick-row"))
+          addThickRow();
+      }
+
+      function closeModal(e, force) {
+        if (force || e.target.classList.contains("modal-overlay")) {
+          document
+            .querySelectorAll(".modal-overlay")
+            .forEach((m) => m.classList.remove("open"));
         }
-    }
+      }
 
-    function selectVal(v) { 
-        document.getElementById('targetExp').value = v; 
-        closeModal(null,true); 
-        calcExposure(); 
-    }
-
-    // --- CALC LOGIC ---
-
-    function calcExposure() {
-        const targetExp = parseFloat(document.getElementById('targetExp').value);
-        const age = parseFloat(document.getElementById('age').value);
-        const thick = parseFloat(document.getElementById('thick').value);
-        const sfd = parseFloat(document.getElementById('sfd').value);
-        const strength = parseFloat(document.getElementById('strength').value);
-        if(!targetExp || !sfd || !strength) return;
-        
-        let curAct = strength * Math.pow(0.5, age/HALF_LIFE_MONTHS);
-        let sfdFt = sfd/12.0;
-        let rate = ((curAct * GAMMA_CONSTANT)/Math.pow(sfdFt,2)) * Math.exp(-ATTENUATION * thick);
-        
-        const rawMins = (targetExp/rate)*60;
-        document.getElementById('resExposure').innerHTML = formatTime(rawMins);
-        document.getElementById('resExposure').dataset.raw = rawMins;
-    }
-
-    function calcUniversal() {
-        const t1 = parseFloat(document.getElementById('t1').value); 
-        const d1 = parseFloat(document.getElementById('d1').value);
-        const d2 = parseFloat(document.getElementById('d2').value); 
-        const c1 = parseFloat(document.getElementById('c1').value);
-        const c2 = parseFloat(document.getElementById('c2').value);
-        
-        if(!t1 || !d1 || !d2 || !c1 || !c2) return;
-        const res = t1 * Math.pow(d2/d1, 2) * (c1/c2);
-        document.getElementById('resUniversal').innerHTML = formatTime(res);
-        document.getElementById('resUniversal').dataset.raw = res;
-    }
-
-    function calcDensity() {
-        const t1 = parseFloat(document.getElementById('tOld').value); 
-        const d1 = parseFloat(document.getElementById('densOld').value);
-        const d2 = parseFloat(document.getElementById('densNew').value);
-        
-        if(!t1 || !d1 || !d2) return;
-        const res = t1 * (d2/d1);
-        document.getElementById('resDensity').innerHTML = formatTime(res);
-        document.getElementById('resDensity').dataset.raw = res;
-    }
-
-    // Thickness Logic
-    function addThickRow() {
-        const div = document.createElement('div'); div.className = 'thick-row';
-        div.innerHTML = `<input type="number" step="0.001" placeholder="0.000" oninput="runTotalCalc()" class="thick-input"><button class="remove-btn" onclick="this.parentElement.remove();runTotalCalc()">×</button>`;
-        document.getElementById('thickInputs').appendChild(div);
-    }
-    
-    function runTotalCalc() {
-        const inputs = document.querySelectorAll('.thick-input'); let total = 0;
-        inputs.forEach((inp, i) => { 
-            let v = parseFloat(inp.value)||0; 
-            if(i==0 && document.getElementById('doubleToggle').checked) v*=2; 
-            total += v; 
-        });
-        document.getElementById('thickTotalDisplay').innerText = total.toFixed(3) + '"';
-    }
-    
-    function applyThickToMain() {
-        document.getElementById('thick').value = parseFloat(document.getElementById('thickTotalDisplay').innerText);
-        closeModal(null,true); 
+      function selectVal(v) {
+        document.getElementById("targetExp").value = v;
+        closeModal(null, true);
         calcExposure();
-    }
+      }
 
-    // --- SFD TOOL ---
-    const SFD_DATA = {
+      // --- CALC LOGIC ---
+
+      function calcExposure() {
+        const targetExp = parseFloat(
+          document.getElementById("targetExp").value,
+        );
+        const age = parseFloat(document.getElementById("age").value);
+        const thick = parseFloat(document.getElementById("thick").value);
+        const sfd = parseFloat(document.getElementById("sfd").value);
+        const strength = parseFloat(document.getElementById("strength").value);
+        if (!targetExp || !sfd || !strength) return;
+
+        let curAct = strength * Math.pow(0.5, age / HALF_LIFE_MONTHS);
+        let sfdFt = sfd / 12.0;
+        let rate =
+          ((curAct * GAMMA_CONSTANT) / Math.pow(sfdFt, 2)) *
+          Math.exp(-ATTENUATION * thick);
+
+        const rawMins = (targetExp / rate) * 60;
+        document.getElementById("resExposure").innerHTML = formatTime(rawMins);
+        document.getElementById("resExposure").dataset.raw = rawMins;
+      }
+
+      function calcUniversal() {
+        const t1 = parseFloat(document.getElementById("t1").value);
+        const d1 = parseFloat(document.getElementById("d1").value);
+        const d2 = parseFloat(document.getElementById("d2").value);
+        const c1 = parseFloat(document.getElementById("c1").value);
+        const c2 = parseFloat(document.getElementById("c2").value);
+
+        if (!t1 || !d1 || !d2 || !c1 || !c2) return;
+        const res = t1 * Math.pow(d2 / d1, 2) * (c1 / c2);
+        document.getElementById("resUniversal").innerHTML = formatTime(res);
+        document.getElementById("resUniversal").dataset.raw = res;
+      }
+
+      function calcDensity() {
+        const t1 = parseFloat(document.getElementById("tOld").value);
+        const d1 = parseFloat(document.getElementById("densOld").value);
+        const d2 = parseFloat(document.getElementById("densNew").value);
+
+        if (!t1 || !d1 || !d2) return;
+        const res = t1 * (d2 / d1);
+        document.getElementById("resDensity").innerHTML = formatTime(res);
+        document.getElementById("resDensity").dataset.raw = res;
+      }
+
+      // Thickness Logic
+      function addThickRow() {
+        const div = document.createElement("div");
+        div.className = "thick-row";
+        div.innerHTML = `<input type="number" step="0.001" placeholder="0.000" oninput="runTotalCalc()" class="thick-input"><button class="remove-btn" onclick="this.parentElement.remove();runTotalCalc()">×</button>`;
+        document.getElementById("thickInputs").appendChild(div);
+      }
+
+      function runTotalCalc() {
+        const inputs = document.querySelectorAll(".thick-input");
+        let total = 0;
+        inputs.forEach((inp, i) => {
+          let v = parseFloat(inp.value) || 0;
+          if (i == 0 && document.getElementById("doubleToggle").checked) v *= 2;
+          total += v;
+        });
+        document.getElementById("thickTotalDisplay").innerText =
+          total.toFixed(3) + '"';
+      }
+
+      function applyThickToMain() {
+        document.getElementById("thick").value = parseFloat(
+          document.getElementById("thickTotalDisplay").innerText,
+        );
+        closeModal(null, true);
+        calcExposure();
+      }
+
+      // --- SFD TOOL ---
+      const SFD_DATA = {
         "1/2": [
-            {src:"1.0mm", ns:"2.5", t90:"2.8"}, {src:"1.2mm", ns:"3", t90:"3.2"}, {src:"2.1mm", ns:"5-1/4", t90:"5"}, 
-            {src:"2.3mm", ns:"5-3/4", t90:"5-3/8"}, {src:"2.5mm", ns:"6-1/4", t90:"5-3/4"}, {src:"5.5mm", ns:"16.5", t90:"11-3/4"}, 
-            {src:"0.068\"", ns:"4-1/2", t90:"4-1/4"}, {src:"0.080\"", ns:"5-1/8", t90:"4-7/8"}, {src:"0.118\"", ns:"7-5/8", t90:"6-3/4"}, {src:"0.125\"", ns:"8", t90:"7-1/8"}
+          { src: "1.0mm", ns: "2.5", t90: "2.8" },
+          { src: "1.2mm", ns: "3", t90: "3.2" },
+          { src: "2.1mm", ns: "5-1/4", t90: "5" },
+          { src: "2.3mm", ns: "5-3/4", t90: "5-3/8" },
+          { src: "2.5mm", ns: "6-1/4", t90: "5-3/4" },
+          { src: "5.5mm", ns: "16.5", t90: "11-3/4" },
+          { src: '0.068"', ns: "4-1/2", t90: "4-1/4" },
+          { src: '0.080"', ns: "5-1/8", t90: "4-7/8" },
+          { src: '0.118"', ns: "7-5/8", t90: "6-3/4" },
+          { src: '0.125"', ns: "8", t90: "7-1/8" },
         ],
         "3/4": [
-            {src:"1.0mm", ns:"2-5/8", t90:"3-1/8"}, {src:"1.2mm", ns:"3-1/4", t90:"3-5/8"}, {src:"2.1mm", ns:"5-5/8", t90:"5-1/2"}, 
-            {src:"2.3mm", ns:"6-1/8", t90:"5-7/8"}, {src:"2.5mm", ns:"6-5/8", t90:"6-1/4"}, {src:"5.5mm", ns:"17-3/8", t90:"12-3/8"},
-            {src:"0.068\"", ns:"4-5/8", t90:"4-5/8"}, {src:"0.080\"", ns:"5-1/2", t90:"5-1/4"}, {src:"0.118\"", ns:"8", t90:"7-1/4"}, {src:"0.125\"", ns:"8-1/2", t90:"7-5/8"}
+          { src: "1.0mm", ns: "2-5/8", t90: "3-1/8" },
+          { src: "1.2mm", ns: "3-1/4", t90: "3-5/8" },
+          { src: "2.1mm", ns: "5-5/8", t90: "5-1/2" },
+          { src: "2.3mm", ns: "6-1/8", t90: "5-7/8" },
+          { src: "2.5mm", ns: "6-5/8", t90: "6-1/4" },
+          { src: "5.5mm", ns: "17-3/8", t90: "12-3/8" },
+          { src: '0.068"', ns: "4-5/8", t90: "4-5/8" },
+          { src: '0.080"', ns: "5-1/2", t90: "5-1/4" },
+          { src: '0.118"', ns: "8", t90: "7-1/4" },
+          { src: '0.125"', ns: "8-1/2", t90: "7-5/8" },
         ],
-        "1": [
-            {src:"1.0mm", ns:"3-3/8", t90:"4"}, {src:"1.2mm", ns:"4", t90:"4-1/2"}, {src:"2.1mm", ns:"7", t90:"6-3/4"}, 
-            {src:"2.3mm", ns:"7-5/8", t90:"7-3/8"}, {src:"2.5mm", ns:"8-1/4", t90:"7-3/4"}, {src:"5.5mm", ns:"21-3/4", t90:"15-1/2"},
-            {src:"0.068\"", ns:"5-3/4", t90:"5-7/8"}, {src:"0.080\"", ns:"6-7/8", t90:"6-5/8"}, {src:"0.118\"", ns:"10", t90:"9-1/8"}, {src:"0.125\"", ns:"10-5/8", t90:"9-5/8"}
+        1: [
+          { src: "1.0mm", ns: "3-3/8", t90: "4" },
+          { src: "1.2mm", ns: "4", t90: "4-1/2" },
+          { src: "2.1mm", ns: "7", t90: "6-3/4" },
+          { src: "2.3mm", ns: "7-5/8", t90: "7-3/8" },
+          { src: "2.5mm", ns: "8-1/4", t90: "7-3/4" },
+          { src: "5.5mm", ns: "21-3/4", t90: "15-1/2" },
+          { src: '0.068"', ns: "5-3/4", t90: "5-7/8" },
+          { src: '0.080"', ns: "6-7/8", t90: "6-5/8" },
+          { src: '0.118"', ns: "10", t90: "9-1/8" },
+          { src: '0.125"', ns: "10-5/8", t90: "9-5/8" },
         ],
         "1-1/2": [
-            {src:"1.0mm", ns:"4-3/4", t90:"5-5/8"}, {src:"1.2mm", ns:"5-3/4", t90:"6-1/2"}, {src:"2.1mm", ns:"10", t90:"9-7/8"}, 
-            {src:"2.3mm", ns:"11", t90:"10-1/2"}, {src:"2.5mm", ns:"12", t90:"11-1/4"}, {src:"5.5mm", ns:"31-1/2", t90:"22-3/8"},
-            {src:"0.068\"", ns:"8-1/4", t90:"8-3/8"}, {src:"0.080\"", ns:"10", t90:"9-1/2"}, {src:"0.118\"", ns:"14-1/2", t90:"13-1/8"}, {src:"0.125\"", ns:"15-3/8", t90:"13-7/8"}
+          { src: "1.0mm", ns: "4-3/4", t90: "5-5/8" },
+          { src: "1.2mm", ns: "5-3/4", t90: "6-1/2" },
+          { src: "2.1mm", ns: "10", t90: "9-7/8" },
+          { src: "2.3mm", ns: "11", t90: "10-1/2" },
+          { src: "2.5mm", ns: "12", t90: "11-1/4" },
+          { src: "5.5mm", ns: "31-1/2", t90: "22-3/8" },
+          { src: '0.068"', ns: "8-1/4", t90: "8-3/8" },
+          { src: '0.080"', ns: "10", t90: "9-1/2" },
+          { src: '0.118"', ns: "14-1/2", t90: "13-1/8" },
+          { src: '0.125"', ns: "15-3/8", t90: "13-7/8" },
         ],
-        "2": [
-            {src:"1.0mm", ns:"6", t90:"7-1/8"}, {src:"1.2mm", ns:"7-1/8", t90:"8"}, {src:"2.1mm", ns:"12-1/2", t90:"12-1/4"}, 
-            {src:"2.3mm", ns:"13-3/4", t90:"13-1/4"}, {src:"2.5mm", ns:"15", t90:"14"}, {src:"5.5mm", ns:"39-1/4", t90:"28"},
-            {src:"0.068\"", ns:"10-1/2", t90:"10-1/2"}, {src:"0.080\"", ns:"12-3/8", t90:"11-7/8"}, {src:"0.118\"", ns:"18-1/8", t90:"16-1/2"}, {src:"0.125\"", ns:"19", t90:"17-1/2"}
+        2: [
+          { src: "1.0mm", ns: "6", t90: "7-1/8" },
+          { src: "1.2mm", ns: "7-1/8", t90: "8" },
+          { src: "2.1mm", ns: "12-1/2", t90: "12-1/4" },
+          { src: "2.3mm", ns: "13-3/4", t90: "13-1/4" },
+          { src: "2.5mm", ns: "15", t90: "14" },
+          { src: "5.5mm", ns: "39-1/4", t90: "28" },
+          { src: '0.068"', ns: "10-1/2", t90: "10-1/2" },
+          { src: '0.080"', ns: "12-3/8", t90: "11-7/8" },
+          { src: '0.118"', ns: "18-1/8", t90: "16-1/2" },
+          { src: '0.125"', ns: "19", t90: "17-1/2" },
         ],
         "2-1/2": [
-            {src:"1.0mm", ns:"7-1/4", t90:"8-5/8"}, {src:"1.2mm", ns:"8-5/8", t90:"9-3/4"}, {src:"2.1mm", ns:"15-1/8", t90:"14-3/4"}, 
-            {src:"2.3mm", ns:"16-5/8", t90:"16"}, {src:"2.5mm", ns:"18", t90:"17"}, {src:"5.5mm", ns:"47-1/2", t90:"33-3/4"},
-            {src:"0.068\"", ns:"12-3/4", t90:"12-3/4"}, {src:"0.080\"", ns:"14-3/4", t90:"14-3/8"}, {src:"0.118\"", ns:"22", t90:"19-7/8"}, {src:"0.125\"", ns:"23", t90:"20-7/8"}
+          { src: "1.0mm", ns: "7-1/4", t90: "8-5/8" },
+          { src: "1.2mm", ns: "8-5/8", t90: "9-3/4" },
+          { src: "2.1mm", ns: "15-1/8", t90: "14-3/4" },
+          { src: "2.3mm", ns: "16-5/8", t90: "16" },
+          { src: "2.5mm", ns: "18", t90: "17" },
+          { src: "5.5mm", ns: "47-1/2", t90: "33-3/4" },
+          { src: '0.068"', ns: "12-3/4", t90: "12-3/4" },
+          { src: '0.080"', ns: "14-3/4", t90: "14-3/8" },
+          { src: '0.118"', ns: "22", t90: "19-7/8" },
+          { src: '0.125"', ns: "23", t90: "20-7/8" },
         ],
-        "3": [
-            {src:"1.0mm", ns:"8-3/4", t90:"7"}, {src:"1.2mm", ns:"10-1/2", t90:"7-5/8"}, {src:"2.1mm", ns:"18-3/8", t90:"10-3/4"}, 
-            {src:"2.3mm", ns:"20-1/8", t90:"11-1/2"}, {src:"2.5mm", ns:"22", t90:"12-1/4"}, {src:"5.5mm", ns:"58", t90:"22-1/2"},
-            {src:"0.068\"", ns:"15-1/2", t90:"9-1/2"}, {src:"0.080\"", ns:"18", t90:"10-1/2"}, {src:"0.118\"", ns:"26-5/8", t90:"13-7/8"}, {src:"0.125\"", ns:"28", t90:"14-1/2"}
+        3: [
+          { src: "1.0mm", ns: "8-3/4", t90: "7" },
+          { src: "1.2mm", ns: "10-1/2", t90: "7-5/8" },
+          { src: "2.1mm", ns: "18-3/8", t90: "10-3/4" },
+          { src: "2.3mm", ns: "20-1/8", t90: "11-1/2" },
+          { src: "2.5mm", ns: "22", t90: "12-1/4" },
+          { src: "5.5mm", ns: "58", t90: "22-1/2" },
+          { src: '0.068"', ns: "15-1/2", t90: "9-1/2" },
+          { src: '0.080"', ns: "18", t90: "10-1/2" },
+          { src: '0.118"', ns: "26-5/8", t90: "13-7/8" },
+          { src: '0.125"', ns: "28", t90: "14-1/2" },
         ],
         "3-1/2": [
-            {src:"1.0mm", ns:"10", t90:"8"}, {src:"1.2mm", ns:"12", t90:"8-3/4"}, {src:"2.1mm", ns:"21", t90:"12-3/8"}, 
-            {src:"2.3mm", ns:"23", t90:"13-1/8"}, {src:"2.5mm", ns:"25", t90:"14"}, {src:"5.5mm", ns:"66", t90:"25-1/2"},
-            {src:"0.068\"", ns:"17-5/8", t90:"10-7/8"}, {src:"0.080\"", ns:"20-1/2", t90:"12"}, {src:"0.118\"", ns:"30-1/2", t90:"15-7/8"}, {src:"0.125\"", ns:"32", t90:"16-1/2"}
-        ]
-    };
+          { src: "1.0mm", ns: "10", t90: "8" },
+          { src: "1.2mm", ns: "12", t90: "8-3/4" },
+          { src: "2.1mm", ns: "21", t90: "12-3/8" },
+          { src: "2.3mm", ns: "23", t90: "13-1/8" },
+          { src: "2.5mm", ns: "25", t90: "14" },
+          { src: "5.5mm", ns: "66", t90: "25-1/2" },
+          { src: '0.068"', ns: "17-5/8", t90: "10-7/8" },
+          { src: '0.080"', ns: "20-1/2", t90: "12" },
+          { src: '0.118"', ns: "30-1/2", t90: "15-7/8" },
+          { src: '0.125"', ns: "32", t90: "16-1/2" },
+        ],
+      };
 
-    function initSfdTool() {
-        const pipeSelect = document.getElementById('sfdPipe');
-        const sourceSelect = document.getElementById('sfdSource');
-        const tbody = document.getElementById('sfdTableBody');
+      function initSfdTool() {
+        const pipeSelect = document.getElementById("sfdPipe");
+        const sourceSelect = document.getElementById("sfdSource");
+        const tbody = document.getElementById("sfdTableBody");
 
-        Object.keys(SFD_DATA).forEach(size => {
-            let opt = document.createElement('option');
-            opt.value = size; opt.innerText = size + '"';
-            pipeSelect.appendChild(opt);
+        Object.keys(SFD_DATA).forEach((size) => {
+          let opt = document.createElement("option");
+          opt.value = size;
+          opt.innerText = size + '"';
+          pipeSelect.appendChild(opt);
         });
 
         for (const [pipe, rows] of Object.entries(SFD_DATA)) {
-            rows.forEach(row => {
-                let tr = document.createElement('tr');
-                tr.innerHTML = `<td>${pipe}"</td><td>${row.src}</td><td style="color:var(--sfd);font-weight:700">${row.ns}</td><td style="color:var(--sfd);font-weight:700">${row.t90}</td>`;
-                tbody.appendChild(tr);
-            });
+          rows.forEach((row) => {
+            let tr = document.createElement("tr");
+            tr.innerHTML = `<td>${pipe}"</td><td>${row.src}</td><td style="color:var(--sfd);font-weight:700">${row.ns}</td><td style="color:var(--sfd);font-weight:700">${row.t90}</td>`;
+            tbody.appendChild(tr);
+          });
         }
         updateSourceOptions();
-    }
+      }
 
-    function updateSourceOptions() {
-        const pipe = document.getElementById('sfdPipe').value;
-        const sourceSelect = document.getElementById('sfdSource');
+      function updateSourceOptions() {
+        const pipe = document.getElementById("sfdPipe").value;
+        const sourceSelect = document.getElementById("sfdSource");
         const currentSrc = sourceSelect.value;
-        
-        sourceSelect.innerHTML = '';
-        
-        SFD_DATA[pipe].forEach(row => {
-            let opt = document.createElement('option');
-            opt.value = row.src; opt.innerText = row.src;
-            sourceSelect.appendChild(opt);
+
+        sourceSelect.innerHTML = "";
+
+        SFD_DATA[pipe].forEach((row) => {
+          let opt = document.createElement("option");
+          opt.value = row.src;
+          opt.innerText = row.src;
+          sourceSelect.appendChild(opt);
         });
 
-        if(currentSrc) {
-            const exists = Array.from(sourceSelect.options).some(o => o.value === currentSrc);
-            if(exists) sourceSelect.value = currentSrc;
+        if (currentSrc) {
+          const exists = Array.from(sourceSelect.options).some(
+            (o) => o.value === currentSrc,
+          );
+          if (exists) sourceSelect.value = currentSrc;
         }
         calcSfd();
-    }
+      }
 
-    function calcSfd() {
-        const pipe = document.getElementById('sfdPipe').value;
-        const src = document.getElementById('sfdSource').value;
-        const row = SFD_DATA[pipe].find(r => r.src === src);
-        
-        if(row) {
-            document.getElementById('valNS').innerText = row.ns;
-            document.getElementById('valT90').innerText = row.t90;
+      function calcSfd() {
+        const pipe = document.getElementById("sfdPipe").value;
+        const src = document.getElementById("sfdSource").value;
+        const row = SFD_DATA[pipe].find((r) => r.src === src);
+
+        if (row) {
+          document.getElementById("valNS").innerText = row.ns;
+          document.getElementById("valT90").innerText = row.t90;
         } else {
-            document.getElementById('valNS').innerText = '---';
-            document.getElementById('valT90').innerText = '---';
+          document.getElementById("valNS").innerText = "---";
+          document.getElementById("valT90").innerText = "---";
         }
-    }
+      }
 
-    function parseFraction(str) {
-        if(!str) return 0;
-        let parts = str.split('-');
-        if(parts.length === 2 && parts[1].includes('/')) {
-            let whole = parseFloat(parts[0]);
-            let frac = parts[1].split('/');
-            return whole + (parseFloat(frac[0]) / parseFloat(frac[1]));
+      function parseFraction(str) {
+        if (!str) return 0;
+        let parts = str.split("-");
+        if (parts.length === 2 && parts[1].includes("/")) {
+          let whole = parseFloat(parts[0]);
+          let frac = parts[1].split("/");
+          return whole + parseFloat(frac[0]) / parseFloat(frac[1]);
         }
-        if(str.includes('/')) {
-            let frac = str.split('/');
-            return parseFloat(frac[0]) / parseFloat(frac[1]);
+        if (str.includes("/")) {
+          let frac = str.split("/");
+          return parseFloat(frac[0]) / parseFloat(frac[1]);
         }
         return parseFloat(str);
-    }
+      }
 
-    function applySfdToMain(elementId) {
+      function applySfdToMain(elementId) {
         const valStr = document.getElementById(elementId).innerText;
-        if(valStr === '---') return;
-        
-        const numericVal = parseFraction(valStr);
-        document.getElementById('sfd').value = numericVal;
-        
-        // Open Card 1
-        const card1Body = document.getElementById('card1');
-        const card1Header = card1Body.previousElementSibling;
-        
-        if (!card1Body.classList.contains('open')) {
-            card1Body.style.maxHeight = card1Body.scrollHeight + 50 + "px";
-            card1Body.classList.add('open');
-            card1Header.classList.add('active');
-        }
-        
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (valStr === "---") return;
 
-        const sfdInput = document.getElementById('sfd');
-        sfdInput.style.borderColor = 'var(--sfd)';
-        sfdInput.style.boxShadow = '0 0 15px var(--sfd)';
-        setTimeout(() => { 
-            sfdInput.style.borderColor = 'var(--input-border)'; 
-            sfdInput.style.boxShadow = 'none';
+        const numericVal = parseFraction(valStr);
+        document.getElementById("sfd").value = numericVal;
+
+        // Open Card 1
+        const card1Body = document.getElementById("card1");
+        const card1Header = card1Body.previousElementSibling;
+
+        if (!card1Body.classList.contains("open")) {
+          card1Body.style.maxHeight = card1Body.scrollHeight + 50 + "px";
+          card1Body.classList.add("open");
+          card1Header.classList.add("active");
+        }
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+
+        const sfdInput = document.getElementById("sfd");
+        sfdInput.style.borderColor = "var(--sfd)";
+        sfdInput.style.boxShadow = "0 0 15px var(--sfd)";
+        setTimeout(() => {
+          sfdInput.style.borderColor = "var(--input-border)";
+          sfdInput.style.boxShadow = "none";
         }, 1200);
 
         calcExposure();
-    }
+      }
 
-    // --- SHIM TOOL LOGIC ---
-    const SHIM_DATA = [
-        { dmt: 0.147, sup: ['.187', '.218'], ell: ['---', '---'] },
-        { dmt: 0.174, sup: ['.218', '.250'], ell: ['---', '---'] },
-        { dmt: 0.176, sup: ['.218', '.250'], ell: ['---', '---'] },
-        { dmt: 0.179, sup: ['.218', '.250'], ell: ['.156', '.172'] },
-        { dmt: 0.200, sup: ['.250', '.281'], ell: ['.172', '---'] },
-        { dmt: 0.218, sup: ['.250', '.281'], ell: ['.187', '---'] },
-        { dmt: 0.250, sup: ['.312', '.281'], ell: ['.218', '---'] },
-        { dmt: 0.300, sup: ['.375', '.406'], ell: ['.250', '.281'] },
-        { dmt: 0.355, sup: ['.406', '.500'], ell: ['---', '---'] },
-        { dmt: 0.375, sup: ['.406', '.437'], ell: ['---', '---'] },
-        { dmt: 0.380, sup: ['.406', '.437'], ell: ['---', '---'] },
-        { dmt: 0.438, sup: ['.500', '.484'], ell: ['---', '---'] },
-        { dmt: 0.458, sup: ['.500', '---'], ell: ['---', '---'] }
-    ];
+      // --- SHIM TOOL LOGIC ---
+      const SHIM_DATA = [
+        { dmt: 0.147, sup: [".187", ".218"], ell: ["---", "---"] },
+        { dmt: 0.174, sup: [".218", ".250"], ell: ["---", "---"] },
+        { dmt: 0.176, sup: [".218", ".250"], ell: ["---", "---"] },
+        { dmt: 0.179, sup: [".218", ".250"], ell: [".156", ".172"] },
+        { dmt: 0.2, sup: [".250", ".281"], ell: [".172", "---"] },
+        { dmt: 0.218, sup: [".250", ".281"], ell: [".187", "---"] },
+        { dmt: 0.25, sup: [".312", ".281"], ell: [".218", "---"] },
+        { dmt: 0.3, sup: [".375", ".406"], ell: [".250", ".281"] },
+        { dmt: 0.355, sup: [".406", ".500"], ell: ["---", "---"] },
+        { dmt: 0.375, sup: [".406", ".437"], ell: ["---", "---"] },
+        { dmt: 0.38, sup: [".406", ".437"], ell: ["---", "---"] },
+        { dmt: 0.438, sup: [".500", ".484"], ell: ["---", "---"] },
+        { dmt: 0.458, sup: [".500", "---"], ell: ["---", "---"] },
+      ];
 
-    function initShimTool() {
-        const shimSelect = document.getElementById('shimDmt');
-        SHIM_DATA.forEach(item => {
-            const opt = document.createElement('option');
-            opt.value = item.dmt;
-            opt.textContent = item.dmt.toFixed(3);
-            shimSelect.appendChild(opt);
+      function initShimTool() {
+        const shimSelect = document.getElementById("shimDmt");
+        SHIM_DATA.forEach((item) => {
+          const opt = document.createElement("option");
+          opt.value = item.dmt;
+          opt.textContent = item.dmt.toFixed(3);
+          shimSelect.appendChild(opt);
         });
         calcShim();
-    }
+      }
 
-    function calcShim() {
-        const dmtVal = parseFloat(document.getElementById('shimDmt').value);
-        const data = SHIM_DATA.find(d => Math.abs(d.dmt - dmtVal) < 0.001);
-        
+      function calcShim() {
+        const dmtVal = parseFloat(document.getElementById("shimDmt").value);
+        const data = SHIM_DATA.find((d) => Math.abs(d.dmt - dmtVal) < 0.001);
+
         if (data) {
-            // Superimposed Output
-            let supText = data.sup[0];
-            if(data.sup[1] && data.sup[1] !== '---') supText += ` / ${data.sup[1]}`;
-            document.getElementById('shimSuper').innerHTML = `<span>${supText}</span><span class="shim-sub">1st / 2nd</span>`;
+          // Superimposed Output
+          let supText = data.sup[0];
+          if (data.sup[1] && data.sup[1] !== "---")
+            supText += ` / ${data.sup[1]}`;
+          document.getElementById("shimSuper").innerHTML =
+            `<span>${supText}</span><span class="shim-sub">1st / 2nd</span>`;
 
-            // Ellipsed Output
-            let ellText = data.ell[0];
-            if(data.ell[1] && data.ell[1] !== '---') ellText += ` / ${data.ell[1]}`;
-            document.getElementById('shimEllipsed').innerHTML = `<span>${ellText}</span><span class="shim-sub">1st / 2nd</span>`;
-            
-            // Bi-Metal Alert
-            const alert = document.getElementById('biMetalAlert');
-            if (dmtVal === 0.147) {
-                alert.classList.remove('hidden');
-            } else {
-                alert.classList.add('hidden');
-            }
+          // Ellipsed Output
+          let ellText = data.ell[0];
+          if (data.ell[1] && data.ell[1] !== "---")
+            ellText += ` / ${data.ell[1]}`;
+          document.getElementById("shimEllipsed").innerHTML =
+            `<span>${ellText}</span><span class="shim-sub">1st / 2nd</span>`;
+
+          // Bi-Metal Alert
+          const alert = document.getElementById("biMetalAlert");
+          if (dmtVal === 0.147) {
+            alert.classList.remove("hidden");
+          } else {
+            alert.classList.add("hidden");
+          }
         }
-    }
+      }
 
-    // --- IQI TOOL LOGIC ---
-    
-    // Table 1 Data: [Max Thickness, SourceIQI, Hole]
-    const TABLE_1_DW = [
+      // --- IQI TOOL LOGIC ---
+
+      // Table 1 Data: [Max Thickness, SourceIQI, Hole]
+      const TABLE_1_DW = [
         { max: 0.199, iqi: "50 (10)", hole: "4T" },
         { max: 0.235, iqi: "55 (11)", hole: "4T" },
         { max: 0.275, iqi: "60 (12)", hole: "4T" },
@@ -1108,21 +1818,21 @@
         { max: 0.375, iqi: "85 (17)", hole: "2T" },
         { max: 0.432, iqi: "90 (18)", hole: "2T" },
         { max: 0.489, iqi: "95 (19)", hole: "2T" },
-        { max: 0.547, iqi: "1.0 (20)", hole: "2T" }
-    ];
+        { max: 0.547, iqi: "1.0 (20)", hole: "2T" },
+      ];
 
-    const TABLE_1_SW = [
-        { max: 0.500, iqi: "50 (10)", hole: "4T" },
+      const TABLE_1_SW = [
+        { max: 0.5, iqi: "50 (10)", hole: "4T" },
         { max: 0.555, iqi: "55 (11)", hole: "4T" },
-        { max: 0.600, iqi: "60 (12)", hole: "4T" },
+        { max: 0.6, iqi: "60 (12)", hole: "4T" },
         { max: 0.642, iqi: "65 (13)", hole: "2T" },
         { max: 0.684, iqi: "70 (14)", hole: "2T" },
         { max: 0.725, iqi: "75 (15)", hole: "2T" },
         { max: 0.816, iqi: "80 (16)", hole: "2T" },
-        { max: 0.906, iqi: "85 (17)", hole: "2T" }
-    ];
+        { max: 0.906, iqi: "85 (17)", hole: "2T" },
+      ];
 
-    const TABLE_2_MAP = {
+      const TABLE_2_MAP = {
         "50 (10)": { iqi: "45 (9)", hole: "4T" },
         "55 (11)": { iqi: "50 (10)", hole: "4T" },
         "60 (12)": { iqi: "55 (11)", hole: "4T" },
@@ -1133,265 +1843,301 @@
         "85 (17)": { iqi: "80 (16)", hole: "2T" },
         "90 (18)": { iqi: "85 (17)", hole: "2T" },
         "95 (19)": { iqi: "90 (18)", hole: "2T" },
-        "1.0 (20)": { iqi: "95 (19)", hole: "2T" }
-    };
+        "1.0 (20)": { iqi: "95 (19)", hole: "2T" },
+      };
 
-    function calcIQI() {
-        const thick = parseFloat(document.getElementById('iqiThick').value);
-        const isDouble = document.getElementById('iqiToggle').checked;
-        const label = document.getElementById('iqiTechLabel');
-        const resSrc = document.getElementById('resSourceIQI');
-        const resFilm = document.getElementById('resFilmIQI');
+      function calcIQI() {
+        const thick = parseFloat(document.getElementById("iqiThick").value);
+        const isDouble = document.getElementById("iqiToggle").checked;
+        const label = document.getElementById("iqiTechLabel");
+        const resSrc = document.getElementById("resSourceIQI");
+        const resFilm = document.getElementById("resFilmIQI");
 
         if (isDouble) {
-            label.innerText = "Single-Wall Viewing";
-            label.style.color = "var(--success)";
+          label.innerText = "Single-Wall Viewing";
+          label.style.color = "var(--success)";
         } else {
-            label.innerText = "Double-Wall Viewing";
-            label.style.color = "var(--text-main)";
+          label.innerText = "Double-Wall Viewing";
+          label.style.color = "var(--text-main)";
         }
 
         if (!thick || thick <= 0) {
-            resSrc.innerHTML = "---";
-            resFilm.innerHTML = "---";
-            return;
+          resSrc.innerHTML = "---";
+          resFilm.innerHTML = "---";
+          return;
         }
 
         const table = isDouble ? TABLE_1_SW : TABLE_1_DW;
-        const match = table.find(row => thick <= row.max);
+        const match = table.find((row) => thick <= row.max);
 
         if (match) {
-            resSrc.innerHTML = `<span>${match.iqi}</span><span class="iqi-sub">${match.hole} Hole</span>`;
-            const mapKey = match.iqi;
-            if (TABLE_2_MAP[mapKey]) {
-                const film = TABLE_2_MAP[mapKey];
-                resFilm.innerHTML = `<span>${film.iqi}</span><span class="iqi-sub">${film.hole} Hole</span>`;
-            } else {
-                resFilm.innerHTML = "See Tbl 2";
-            }
+          resSrc.innerHTML = `<span>${match.iqi}</span><span class="iqi-sub">${match.hole} Hole</span>`;
+          const mapKey = match.iqi;
+          if (TABLE_2_MAP[mapKey]) {
+            const film = TABLE_2_MAP[mapKey];
+            resFilm.innerHTML = `<span>${film.iqi}</span><span class="iqi-sub">${film.hole} Hole</span>`;
+          } else {
+            resFilm.innerHTML = "See Tbl 2";
+          }
         } else {
-            resSrc.innerHTML = "Out of Rng";
-            resFilm.innerHTML = "---";
+          resSrc.innerHTML = "Out of Rng";
+          resFilm.innerHTML = "---";
         }
-    }
+      }
 
-    // --- LOGBOOK LOGIC ---
-    let logs = JSON.parse(localStorage.getItem('ndt_logs')) || [];
-    let activeLogId = null;
+      // --- LOGBOOK LOGIC ---
+      let logs = JSON.parse(localStorage.getItem("ndt_logs")) || [];
+      let activeLogId = null;
 
-    function renderLogList() {
-        const container = document.getElementById('logListContainer');
-        container.innerHTML = '';
-        
-        logs.sort((a,b) => b.updated - a.updated); // Sort by newest
+      function renderLogList() {
+        const container = document.getElementById("logListContainer");
+        container.innerHTML = "";
+
+        logs.sort((a, b) => b.updated - a.updated); // Sort by newest
 
         if (logs.length === 0) {
-            container.innerHTML = `<div style="text-align:center; color:var(--text-muted); font-size:0.8rem; padding:20px;">No saved logs found.<br>Tap "+ NEW LOG" to start.</div>`;
-            return;
+          container.innerHTML = `<div style="text-align:center; color:var(--text-muted); font-size:0.8rem; padding:20px;">No saved logs found.<br>Tap "+ NEW LOG" to start.</div>`;
+          return;
         }
 
-        logs.forEach(log => {
-            const date = new Date(log.updated).toLocaleDateString() + ' ' + new Date(log.updated).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-            const div = document.createElement('div');
-            div.className = 'log-item';
-            div.onclick = () => openLog(log.id);
-            div.innerHTML = `
+        logs.forEach((log) => {
+          const date =
+            new Date(log.updated).toLocaleDateString() +
+            " " +
+            new Date(log.updated).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            });
+          const div = document.createElement("div");
+          div.className = "log-item";
+          div.onclick = () => openLog(log.id);
+          div.innerHTML = `
                 <div>
-                    <div class="log-title">${log.title || 'Untitled Log'}</div>
+                    <div class="log-title">${log.title || "Untitled Log"}</div>
                     <div class="log-date">${date}</div>
                 </div>
                 <div style="color:var(--log)">›</div>
             `;
-            container.appendChild(div);
+          container.appendChild(div);
         });
-        autoResizeCard('card7');
-    }
+        autoResizeCard("card7");
+      }
 
-    function createNewLog() {
+      function createNewLog() {
         const id = Date.now();
-        const newLog = { id: id, title: `Log ${new Date().toLocaleDateString()}`, content: '', updated: id };
+        const newLog = {
+          id: id,
+          title: `Log ${new Date().toLocaleDateString()}`,
+          content: "",
+          updated: id,
+        };
         logs.unshift(newLog);
-        localStorage.setItem('ndt_logs', JSON.stringify(logs));
+        localStorage.setItem("ndt_logs", JSON.stringify(logs));
         openLog(id);
-    }
+      }
 
-    function openLog(id) {
+      function openLog(id) {
         activeLogId = id;
-        const log = logs.find(l => l.id === id);
-        if(!log) return;
+        const log = logs.find((l) => l.id === id);
+        if (!log) return;
 
-        document.getElementById('logTitleInput').value = log.title;
-        document.getElementById('logContentInput').value = log.content;
-        
+        document.getElementById("logTitleInput").value = log.title;
+        document.getElementById("logContentInput").value = log.content;
+
         // Switch Views
-        document.getElementById('logListView').style.display = 'none';
-        document.getElementById('logEditorView').classList.add('active');
-        autoResizeCard('card7');
-    }
+        document.getElementById("logListView").style.display = "none";
+        document.getElementById("logEditorView").classList.add("active");
+        autoResizeCard("card7");
+      }
 
-    function closeEditor() {
-        document.getElementById('logEditorView').classList.remove('active');
-        document.getElementById('logListView').style.display = 'block';
+      function closeEditor() {
+        document.getElementById("logEditorView").classList.remove("active");
+        document.getElementById("logListView").style.display = "block";
         activeLogId = null;
         renderLogList();
-    }
+      }
 
-    function saveCurrentLog() {
+      function saveCurrentLog() {
         if (!activeLogId) return;
-        const log = logs.find(l => l.id === activeLogId);
-        if(log) {
-            log.title = document.getElementById('logTitleInput').value;
-            log.content = document.getElementById('logContentInput').value;
-            log.updated = Date.now();
-            localStorage.setItem('ndt_logs', JSON.stringify(logs));
-            
-            // Show flash msg
-            const status = document.getElementById('saveStatus');
-            status.style.opacity = 1;
-            setTimeout(() => { status.style.opacity = 0; }, 1500);
-        }
-    }
+        const log = logs.find((l) => l.id === activeLogId);
+        if (log) {
+          log.title = document.getElementById("logTitleInput").value;
+          log.content = document.getElementById("logContentInput").value;
+          log.updated = Date.now();
+          localStorage.setItem("ndt_logs", JSON.stringify(logs));
 
-    function deleteCurrentLog() {
-        if(confirm("Are you sure you want to delete this log?")) {
-            logs = logs.filter(l => l.id !== activeLogId);
-            localStorage.setItem('ndt_logs', JSON.stringify(logs));
-            closeEditor();
+          // Show flash msg
+          const status = document.getElementById("saveStatus");
+          status.style.opacity = 1;
+          setTimeout(() => {
+            status.style.opacity = 0;
+          }, 1500);
         }
-    }
+      }
 
-    // --- AUTO LOG APPEND ---
-    function appendToLog(tool) {
+      function deleteCurrentLog() {
+        if (confirm("Are you sure you want to delete this log?")) {
+          logs = logs.filter((l) => l.id !== activeLogId);
+          localStorage.setItem("ndt_logs", JSON.stringify(logs));
+          closeEditor();
+        }
+      }
+
+      // --- AUTO LOG APPEND ---
+      function appendToLog(tool) {
         // 1. Get Data string based on tool
         let str = "";
-        const now = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        const now = new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
 
-        if (tool === 'exp') {
-            const timeRaw = document.getElementById('resExposure').dataset.raw;
-            const timeStr = getSeconds(timeRaw);
-            const targ = document.getElementById('targetExp').value;
-            const src = document.getElementById('strength').value;
-            const thk = document.getElementById('thick').value;
-            str = `\n[EXP ${now}] Targ:${targ}R | Src:${src}Ci | Thk:${thk}"\n>> TIME: ${timeStr}\n`;
-        } 
-        else if (tool === 'uni') {
-            const timeRaw = document.getElementById('resUniversal').dataset.raw;
-            const timeStr = getSeconds(timeRaw);
-            const d1 = document.getElementById('d1').value;
-            const d2 = document.getElementById('d2').value;
-            str = `\n[ADJ ${now}] Dist ${d1}"->${d2}"\n>> TIME: ${timeStr}\n`;
-        }
-        else if (tool === 'dens') {
-            const timeRaw = document.getElementById('resDensity').dataset.raw;
-            const timeStr = getSeconds(timeRaw);
-            const den1 = document.getElementById('densOld').value;
-            const den2 = document.getElementById('densNew').value;
-            str = `\n[DEN ${now}] Density ${den1}->${den2}\n>> TIME: ${timeStr}\n`;
-        }
-        else if (tool === 'sfd') {
-            const pipe = document.getElementById('sfdPipe').value;
-            const ns = document.getElementById('valNS').innerText;
-            const t90 = document.getElementById('valT90').innerText;
-            str = `\n[SFD ${now}] Pipe:${pipe}"\n>> NS250: ${ns}" | T9074: ${t90}"\n`;
-        }
-        else if (tool === 'shim') {
-            const dmt = document.getElementById('shimDmt').value;
-            const sup = document.getElementById('shimSuper').innerText.replace('1st / 2nd','').trim();
-            const ell = document.getElementById('shimEllipsed').innerText.replace('1st / 2nd','').trim();
-            str = `\n[SHIM ${now}] DMT:${dmt}"\n>> Super: ${sup} | Ellip: ${ell}\n`;
-        }
-        else if (tool === 'iqi') {
-            const thk = document.getElementById('iqiThick').value;
-            const tech = document.getElementById('iqiToggle').checked ? 'Single-Wall' : 'Double-Wall';
-            const src = document.getElementById('resSourceIQI').innerText.replace(' Hole','').trim();
-            const flm = document.getElementById('resFilmIQI').innerText.replace(' Hole','').trim();
-            str = `\n[IQI ${now}] Thk:${thk}" (${tech})\n>> Src: ${src} | Film: ${flm}\n`;
+        if (tool === "exp") {
+          const timeRaw = document.getElementById("resExposure").dataset.raw;
+          const timeStr = getSeconds(timeRaw);
+          const targ = document.getElementById("targetExp").value;
+          const src = document.getElementById("strength").value;
+          const thk = document.getElementById("thick").value;
+          str = `\n[EXP ${now}] Targ:${targ}R | Src:${src}Ci | Thk:${thk}"\n>> TIME: ${timeStr}\n`;
+        } else if (tool === "uni") {
+          const timeRaw = document.getElementById("resUniversal").dataset.raw;
+          const timeStr = getSeconds(timeRaw);
+          const d1 = document.getElementById("d1").value;
+          const d2 = document.getElementById("d2").value;
+          str = `\n[ADJ ${now}] Dist ${d1}"->${d2}"\n>> TIME: ${timeStr}\n`;
+        } else if (tool === "dens") {
+          const timeRaw = document.getElementById("resDensity").dataset.raw;
+          const timeStr = getSeconds(timeRaw);
+          const den1 = document.getElementById("densOld").value;
+          const den2 = document.getElementById("densNew").value;
+          str = `\n[DEN ${now}] Density ${den1}->${den2}\n>> TIME: ${timeStr}\n`;
+        } else if (tool === "sfd") {
+          const pipe = document.getElementById("sfdPipe").value;
+          const ns = document.getElementById("valNS").innerText;
+          const t90 = document.getElementById("valT90").innerText;
+          str = `\n[SFD ${now}] Pipe:${pipe}"\n>> NS250: ${ns}" | T9074: ${t90}"\n`;
+        } else if (tool === "shim") {
+          const dmt = document.getElementById("shimDmt").value;
+          const sup = document
+            .getElementById("shimSuper")
+            .innerText.replace("1st / 2nd", "")
+            .trim();
+          const ell = document
+            .getElementById("shimEllipsed")
+            .innerText.replace("1st / 2nd", "")
+            .trim();
+          str = `\n[SHIM ${now}] DMT:${dmt}"\n>> Super: ${sup} | Ellip: ${ell}\n`;
+        } else if (tool === "iqi") {
+          const thk = document.getElementById("iqiThick").value;
+          const tech = document.getElementById("iqiToggle").checked
+            ? "Single-Wall"
+            : "Double-Wall";
+          const src = document
+            .getElementById("resSourceIQI")
+            .innerText.replace(" Hole", "")
+            .trim();
+          const flm = document
+            .getElementById("resFilmIQI")
+            .innerText.replace(" Hole", "")
+            .trim();
+          str = `\n[IQI ${now}] Thk:${thk}" (${tech})\n>> Src: ${src} | Film: ${flm}\n`;
         }
 
         // 2. Determine target log
         let targetLog = null;
-        
+
         // If editing, use active
         if (activeLogId) {
-            targetLog = logs.find(l => l.id === activeLogId);
-        } 
+          targetLog = logs.find((l) => l.id === activeLogId);
+        }
         // If not editing, use most recent or create new
         else {
-            if (logs.length === 0) createNewLog(); // Creates and sets active, but we need the obj
-            targetLog = logs[0]; // Logic ensures logs[0] exists now
+          if (logs.length === 0) createNewLog(); // Creates and sets active, but we need the obj
+          targetLog = logs[0]; // Logic ensures logs[0] exists now
         }
 
         // 3. Append & Save
         if (targetLog) {
-            targetLog.content += str;
-            targetLog.updated = Date.now();
-            localStorage.setItem('ndt_logs', JSON.stringify(logs));
-            
-            // If Editor open, refresh textarea
-            if (activeLogId === targetLog.id) {
-                document.getElementById('logContentInput').value = targetLog.content;
-            }
+          targetLog.content += str;
+          targetLog.updated = Date.now();
+          localStorage.setItem("ndt_logs", JSON.stringify(logs));
 
-            // Show Toast
-            const toast = document.getElementById('toast');
-            toast.innerText = `Saved to: ${targetLog.title || 'Log'}`;
-            toast.classList.add('visible');
-            setTimeout(() => toast.classList.remove('visible'), 2000);
+          // If Editor open, refresh textarea
+          if (activeLogId === targetLog.id) {
+            document.getElementById("logContentInput").value =
+              targetLog.content;
+          }
+
+          // Show Toast
+          const toast = document.getElementById("toast");
+          toast.innerText = `Saved to: ${targetLog.title || "Log"}`;
+          toast.classList.add("visible");
+          setTimeout(() => toast.classList.remove("visible"), 2000);
         }
-    }
+      }
 
-    // Helpers
-    function insertLogTime() {
-        const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-        const box = document.getElementById('logContentInput');
+      // Helpers
+      function insertLogTime() {
+        const time = new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+        const box = document.getElementById("logContentInput");
         box.value += `\n[${time}] - `;
         saveCurrentLog();
         box.focus();
-    }
+      }
 
-    function insertLogTemplate() {
+      function insertLogTemplate() {
         const tpl = `\n-- SHOT --\nJoint: \nThick: \nTime: \nCur: \n`;
-        const box = document.getElementById('logContentInput');
+        const box = document.getElementById("logContentInput");
         box.value += tpl;
         saveCurrentLog();
         box.focus();
-    }
+      }
 
-    function copyLogContent() {
-        const text = document.getElementById('logContentInput').value;
+      function copyLogContent() {
+        const text = document.getElementById("logContentInput").value;
         navigator.clipboard.writeText(text).then(() => {
-            alert("Log copied to clipboard!");
+          alert("Log copied to clipboard!");
         });
-    }
+      }
 
-    function exportLogs() {
-        if(logs.length === 0) return;
+      function exportLogs() {
+        if (logs.length === 0) return;
         let exportText = "NDT FIELD LOGS EXPORT\n=====================\n\n";
-        logs.forEach(l => {
-            const date = new Date(l.updated).toLocaleString();
-            exportText += `LOG: ${l.title || 'Untitled'}\nDATE: ${date}\n-------------------\n${l.content}\n\n=====================\n\n`;
+        logs.forEach((l) => {
+          const date = new Date(l.updated).toLocaleString();
+          exportText += `LOG: ${l.title || "Untitled"}\nDATE: ${date}\n-------------------\n${l.content}\n\n=====================\n\n`;
         });
-        
+
         navigator.clipboard.writeText(exportText).then(() => {
-            alert("ALL logs copied to clipboard!\nYou can now paste them into an email or notes app.");
+          alert(
+            "ALL logs copied to clipboard!\nYou can now paste them into an email or notes app.",
+          );
         });
-    }
+      }
 
-    // --- INIT ---
-    document.querySelectorAll('input').forEach(inp => inp.addEventListener('input', () => { calcExposure(); calcUniversal(); calcDensity(); }));
-    document.querySelectorAll('.card-header').forEach(h => {
-        if(h.nextElementSibling.classList.contains('open')) h.classList.add('active');
-    });
+      // --- INIT ---
+      document.querySelectorAll("input").forEach((inp) =>
+        inp.addEventListener("input", () => {
+          calcExposure();
+          calcUniversal();
+          calcDensity();
+        }),
+      );
+      document.querySelectorAll(".card-header").forEach((h) => {
+        if (h.nextElementSibling.classList.contains("open"))
+          h.classList.add("active");
+      });
 
-    initSfdTool();
-    initShimTool();
-    calcIQI();
-    calcExposure(); 
-    calcUniversal(); 
-    calcDensity();
-    renderLogList(); // Init Logbook
-
-</script>
-
-</body>
+      initSfdTool();
+      initShimTool();
+      calcIQI();
+      calcExposure();
+      calcUniversal();
+      calcDensity();
+      renderLogList(); // Init Logbook
+    </script>
+  </body>
 </html>
