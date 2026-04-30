@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Gamma Exposure Calculator</title>
     
     <!-- PWA META TAGS -->
-    <title>GammaCalc</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#000000">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="GammaCalc">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23000000'/%3E%3Ccircle cx='50' cy='50' r='12' fill='%23ff1476'/%3E%3Cpath d='M43.25 38.31 L27.50 11.03 A45 45 0 0 1 72.50 11.03 L56.75 38.31 A13.5 13.5 0 0 0 43.25 38.31 Z M63.50 50.00 L95.00 50.00 A45 45 0 0 1 72.50 88.97 L56.75 61.69 A13.5 13.5 0 0 0 63.50 50.00 Z M43.25 61.69 L27.50 88.97 A45 45 0 0 1 5.00 50.00 L36.50 50.00 A13.5 13.5 0 0 0 43.25 61.69 Z' fill='%23ff1476'/%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23000000'/%3E%3Ccircle cx='50' cy='50' r='12' fill='%23d81b60'/%3E%3Cpath d='M43.25 38.31 L27.50 11.03 A45 45 0 0 1 72.50 11.03 L56.75 38.31 A13.5 13.5 0 0 0 43.25 38.31 Z M63.50 50.00 L95.00 50.00 A45 45 0 0 1 72.50 88.97 L56.75 61.69 A13.5 13.5 0 0 0 63.50 50.00 Z M43.25 61.69 L27.50 88.97 A45 45 0 0 1 5.00 50.00 L36.50 50.00 A13.5 13.5 0 0 0 43.25 61.69 Z' fill='%23d81b60'/%3E%3C/svg%3E">
 
     <style>
         :root {
-            /* SYSTEM TOKENS (LIGHT) */
+            /* SYSTEM TOKENS (LIGHT CHASSIS) */
             --chassis: #e5e5e5; 
             --surface: #f4f4f5; 
             --display-bg: #0a0a0c; 
@@ -36,32 +36,34 @@
             --overlay: rgba(0, 0, 0, 0.7); 
             --radius: 2px; 
             
-            /* MICRO-RECESS */
+            /* ZERO-BLUR MICRO-RECESS */
             --recess: inset 0 1px 0 rgba(0, 0, 0, 0.1), inset 0 -1px 0 rgba(255, 255, 255, 0.8);
             --recess-deep: inset 0 2px 0 rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(255, 255, 255, 1);
         }
 
         body.dark-mode {
-            /* SYSTEM TOKENS (DARK) */
-            --chassis: #000000; 
-            --surface: #0f0f11; 
-            --display-bg: #000000; 
+            /* TACTICAL NIGHT MODE (DARK AMBER/SEPIA) */
+            --chassis: #1c1206; 
+            --surface: #2a1b0a; 
+            --display-bg: #0a0602; 
             
-            --ink: #e2e8f0; 
-            --ink-dim: #8b949e;
-            --display-ink: #ffffff;
-            --display-dim: #71717a;
+            --ink: #ffb703; 
+            --ink-dim: #a67c00; 
+            --display-ink: #ffb703; 
+            --display-dim: #a67c00;
             
-            --accent: #ff1476; 
+            --accent: #ff6d00; 
             
-            --border: #27272a;
+            --border: #3d280f;
             --border-display: #000000;
             
-            --input-bg: #050505;
-            --input-focus-bg: #18181b;
+            --input-bg: #0a0602;
+            --input-focus-bg: #1c1206;
             
-            --recess: inset 0 1px 0 rgba(0, 0, 0, 0.8), inset 0 -1px 0 rgba(255, 255, 255, 0.05);
-            --recess-deep: inset 0 2px 0 rgba(0, 0, 0, 0.9), inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+            --overlay: rgba(10, 6, 2, 0.85);
+            
+            --recess: inset 0 1px 0 rgba(0, 0, 0, 0.8), inset 0 -1px 0 rgba(255, 183, 3, 0.1);
+            --recess-deep: inset 0 2px 0 rgba(0, 0, 0, 0.9), inset 0 -1px 0 rgba(255, 183, 3, 0.2);
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -98,6 +100,10 @@
             box-shadow: 0 1px 0 rgba(255,255,255,0.1); 
             transition: background-color 0.2s ease;
         }
+        
+        body.dark-mode .sticky-readout {
+            box-shadow: 0 1px 0 rgba(255, 183, 3, 0.1); 
+        }
 
         .readout-label {
             font-size: 0.6rem;
@@ -127,6 +133,8 @@
             border-top: 1px solid #222; 
             padding-top: 12px;
         }
+        
+        body.dark-mode .telemetry-strip { border-top-color: var(--border); }
 
         .telemetry-item {
             font-family: "SF Mono", monospace;
@@ -260,9 +268,66 @@
         }
 
         ::selection { background: var(--accent); color: #ffffff; }
+        body.dark-mode ::selection { background: var(--accent); color: #000000; }
 
         .unit { font-size: 0.6rem; font-weight: 800; color: var(--ink-dim); margin-left: 8px; }
         .field:focus-within .unit { color: var(--accent); }
+
+        /* --- BOUNDARY PANEL --- */
+        .boundary-panel {
+            margin-top: 24px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+            box-shadow: var(--recess);
+        }
+
+        .boundary-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
+            margin-bottom: 12px;
+        }
+
+        .boundary-header label {
+            font-size: 0.65rem; font-weight: 800; text-transform: uppercase;
+            letter-spacing: 1.5px; color: var(--ink);
+        }
+
+        .boundary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .boundary-col {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .boundary-title {
+            font-size: 0.65rem; font-weight: 800; color: var(--accent);
+            text-transform: uppercase; letter-spacing: 1px;
+            border-bottom: 1px solid var(--border); padding-bottom: 4px;
+        }
+
+        .boundary-row {
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .boundary-row span {
+            font-size: 0.55rem; font-weight: 800; color: var(--ink-dim);
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .boundary-row div {
+            font-family: "SF Mono", monospace; font-size: 0.85rem; 
+            font-weight: 600; color: var(--ink);
+        }
 
         .tab-content { display: none; }
         .tab-content.active { display: block; }
@@ -288,7 +353,12 @@
         .sheet-title { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: var(--ink); }
         .close-btn { background: transparent; border: none; font-size: 1.5rem; color: var(--ink-dim); cursor: pointer; padding: 0; line-height: 1; }
         
-        .ref-table { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--border); box-shadow: var(--recess); }
+        .table-wrap {
+            width: 100%; overflow-x: auto; border: 1px solid var(--border); 
+            box-shadow: var(--recess); background: var(--surface); border-radius: var(--radius);
+        }
+
+        .ref-table { width: 100%; border-collapse: collapse; }
         .ref-table th, .ref-table td { padding: 14px 8px; text-align: center; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); }
         .ref-table th { font-size: 0.55rem; color: var(--ink-dim); text-transform: uppercase; font-weight: 800; letter-spacing: 1px; background: var(--chassis); }
         .ref-table td:first-child, .ref-table th:first-child { text-align: left; }
@@ -298,11 +368,46 @@
             font-family: "SF Mono", monospace; font-size: 1rem; font-weight: 500; 
             cursor: pointer; transition: background 0.1s; 
         }
-        .val-cell:active { background: var(--accent); color: white; }
+        .val-cell:active { background: var(--accent); color: var(--bg); }
+
+        /* EDIT MODE STYLES */
+        .edit-input {
+            width: 100%; min-width: 40px;
+            background: var(--input-bg); border: 1px solid var(--border);
+            color: var(--ink); font-family: "SF Mono", monospace;
+            font-size: 0.8rem; text-align: center; padding: 6px 4px;
+            border-radius: var(--radius); box-shadow: var(--recess);
+            outline: none; -webkit-user-select: text; user-select: text;
+        }
+        .edit-input:focus { border-color: var(--ink); background: var(--input-focus-bg); box-shadow: var(--recess-deep); }
+        .edit-input.mat-input { text-align: left; font-family: "Inter", sans-serif; font-weight: 800; text-transform: uppercase; }
+        
+        .unlock-btn {
+            background: transparent; border: 1px solid var(--border);
+            color: var(--ink-dim); padding: 6px; border-radius: var(--radius); 
+            cursor: pointer; margin-right: 15px; transition: all 0.1s;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .unlock-btn.active {
+            background: var(--input-bg); color: var(--accent);
+            border-color: var(--border); box-shadow: var(--recess-deep);
+        }
+
+        .del-btn {
+            background: transparent; border: none; color: var(--accent);
+            font-size: 1.2rem; font-weight: bold; cursor: pointer; padding: 0 4px; line-height: 1;
+        }
+        .add-btn {
+            width: 100%; background: var(--input-bg); border: 1px dashed var(--ink-dim);
+            color: var(--ink-dim); font-size: 0.6rem; font-weight: 800;
+            padding: 8px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+            border-radius: var(--radius);
+        }
+        .add-btn:active { background: var(--border); }
 
         footer { margin-top: 60px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 20px; }
         
-        .invert-btn { 
+        .footer-btn { 
             background: var(--surface); 
             border: 1px solid var(--border); 
             padding: 8px 14px; font-size: 0.55rem; font-weight: 800; 
@@ -310,8 +415,8 @@
             color: var(--ink-dim); border-radius: var(--radius); cursor: pointer; 
             box-shadow: 0 1px 0 rgba(255,255,255,0.5);
         }
-        body.dark-mode .invert-btn { box-shadow: 0 1px 0 rgba(255,255,255,0.05); }
-        .invert-btn:active { background: var(--input-bg); box-shadow: var(--recess); }
+        body.dark-mode .footer-btn { box-shadow: 0 1px 0 rgba(255,255,255,0.05); }
+        .footer-btn:active { background: var(--input-bg); box-shadow: var(--recess); }
         
         input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
     </style>
@@ -353,7 +458,7 @@
                         </div>
                     </div>
                     <div class="field">
-                        <div class="field-header"><label>Original Ci</label></div>
+                        <div class="field-header"><label>Activity</label></div>
                         <div class="input-zone">
                             <input type="text" inputmode="decimal" pattern="[0-9\.]*" id="curies" value="100">
                             <span class="unit">Ci</span>
@@ -363,7 +468,7 @@
                     <div class="field">
                         <div class="field-header">
                             <label>Pipe Wall</label>
-                            <button id="dwToggleBtn" class="micro-btn toggle-on" onclick="toggleDW()">DW [x2]</button>
+                            <button id="dwToggleBtn" class="micro-btn toggle-on" onclick="toggleDW()">DW[x2]</button>
                         </div>
                         <div class="input-zone">
                             <input type="text" inputmode="decimal" pattern="[0-9\.]*" id="pipeThick" value="0.250">
@@ -398,6 +503,29 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- RADIATION BOUNDARY PANEL -->
+                <div class="boundary-panel">
+                    <div class="boundary-header">
+                        <label>Collimator Ratio</label>
+                        <div class="input-zone" style="width: 100px; padding: 6px 10px;">
+                            <input type="text" inputmode="decimal" pattern="[0-9\.]*" id="collimator" value="16" style="font-size: 1.2rem;">
+                            <span class="unit">:1</span>
+                        </div>
+                    </div>
+                    <div class="boundary-grid">
+                        <div class="boundary-col">
+                            <div class="boundary-title">100 mR/hr</div>
+                            <div class="boundary-row"><span>UNSHIELDED</span><div id="unshielded100">0 FT</div></div>
+                            <div class="boundary-row"><span>SHIELDED</span><div id="shielded100">0 FT</div></div>
+                        </div>
+                        <div class="boundary-col">
+                            <div class="boundary-title">2 mR/hr</div>
+                            <div class="boundary-row"><span>UNSHIELDED</span><div id="unshielded2">0 FT</div></div>
+                            <div class="boundary-row"><span>SHIELDED</span><div id="shielded2">0 FT</div></div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- ADJUSTMENT -->
@@ -428,8 +556,8 @@
         </main>
 
         <footer>
-            <div style="font-size: 0.55rem; font-weight: 800; letter-spacing: 2px; color: var(--ink-dim);">IRIDIUM-192 // NDT SYSTEM</div>
-            <button class="invert-btn" onclick="document.body.classList.toggle('dark-mode')">POWER</button>
+            <button class="footer-btn" onclick="shareApp()">SHARE APP</button>
+            <button class="footer-btn" onclick="toggleTheme()">SYSTEM MODE</button>
         </footer>
     </div>
 
@@ -437,17 +565,20 @@
     <div id="chartOverlay" class="modal-overlay" onclick="closeChart(event)">
         <div class="bottom-sheet" onclick="event.stopPropagation()">
             <div class="sheet-header">
-                <div class="sheet-title">Exposure Values (Ir-192)</div>
-                <button class="close-btn" onclick="closeChart(event)">×</button>
+                <div class="sheet-title">Exposure Matrix</div>
+                <div style="display:flex; align-items:center;">
+                    <button id="chartEditBtn" class="unlock-btn" onclick="toggleChartEdit()">
+                        <svg id="iconLock" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                    </button>
+                    <button class="close-btn" onclick="closeChart(event)">×</button>
+                </div>
             </div>
-            <table class="ref-table">
-                <thead><tr><th>Material</th><th>Fuji 100</th><th>Fuji 80</th><th>Fuji 50</th></tr></thead>
-                <tbody>
-                    <tr><td>Steel</td><td class="val-cell" onclick="setTargetValue(2.8)">2.8</td><td class="val-cell" onclick="setTargetValue(3.8)">3.8</td><td class="val-cell" onclick="setTargetValue(5.5)">5.5</td></tr>
-                    <tr><td>Inconel</td><td class="val-cell" onclick="setTargetValue(3.5)">3.5</td><td class="val-cell" onclick="setTargetValue(4.8)">4.8</td><td class="val-cell" onclick="setTargetValue(6.0)">6.0</td></tr>
-                    <tr><td>CuNi</td><td class="val-cell" onclick="setTargetValue(4.0)">4.0</td><td class="val-cell" onclick="setTargetValue(5.2)">5.2</td><td class="val-cell" onclick="setTargetValue(6.5)">6.5</td></tr>
-                </tbody>
-            </table>
+            <div class="table-wrap">
+                <table class="ref-table">
+                    <thead id="chartHead"></thead>
+                    <tbody id="chartBody"></tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -472,20 +603,173 @@
         const ATTN = 1.1;
 
         let currentTab = 'exposure';
-        let isDoubleWall = true; // Default ON
+        let isDoubleWall = true; 
 
-        function toggleDW() {
-            isDoubleWall = !isDoubleWall;
-            const btn = document.getElementById('dwToggleBtn');
-            if (isDoubleWall) {
-                btn.classList.add('toggle-on');
-            } else {
-                btn.classList.remove('toggle-on');
+        // --- STATE PERSISTENCE ---
+        const INPUT_IDS =['targetExp', 'curies', 'pipeThick', 'shimThick', 'sfd', 'age', 'collimator', 't1', 'd1', 'd2', 'c1', 'c2', 'dt1', 'dens1', 'dens2'];
+
+        function saveState() {
+            const state = { isDoubleWall: isDoubleWall };
+            INPUT_IDS.forEach(id => { 
+                const el = document.getElementById(id);
+                if(el) state[id] = el.value; 
+            });
+            localStorage.setItem('gammaCalcState', JSON.stringify(state));
+        }
+
+        function loadState() {
+            const saved = localStorage.getItem('gammaCalcState');
+            if (saved) {
+                const state = JSON.parse(saved);
+                INPUT_IDS.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el && state[id] !== undefined) el.value = state[id];
+                });
+                if (state.isDoubleWall !== undefined) {
+                    isDoubleWall = state.isDoubleWall;
+                    const btn = document.getElementById('dwToggleBtn');
+                    if(btn) {
+                        if (isDoubleWall) btn.classList.add('toggle-on');
+                        else btn.classList.remove('toggle-on');
+                    }
+                }
             }
-            runCalc();
+            if(localStorage.getItem('gammaTheme') === 'dark') document.body.classList.add('dark-mode');
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('gammaTheme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        }
+
+        // --- DYNAMIC CHART LOGIC ---
+        const DEFAULT_CHART = {
+            cols:["Film 100", "Film 80", "Film 50"],
+            rows:[
+                { mat: "Steel", vals:[2.8, 3.8, 5.5] },
+                { mat: "Inconel", vals:[3.5, 4.8, 6.0] },
+                { mat: "CuNi", vals:[4.0, 5.2, 6.5] }
+            ]
+        };
+
+        const SVG_LOCK = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>`;
+        const SVG_UNLOCK = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg>`;
+
+        let chartData = JSON.parse(localStorage.getItem('gammaChartData')) || DEFAULT_CHART;
+        let isChartEditMode = false;
+
+        function syncChartDataFromDOM() {
+            if(!isChartEditMode) return;
+            chartData.cols.forEach((col, i) => {
+                const el = document.getElementById(`col_${i}`);
+                if(el) chartData.cols[i] = el.value;
+            });
+            chartData.rows.forEach((row, r) => {
+                const elMat = document.getElementById(`mat_${r}`);
+                if(elMat) chartData.rows[r].mat = elMat.value;
+                row.vals.forEach((val, c) => {
+                    const elVal = document.getElementById(`val_${r}_${c}`);
+                    if(elVal) chartData.rows[r].vals[c] = parseFloat(elVal.value) || 0;
+                });
+            });
+        }
+
+        function renderChart() {
+            const thead = document.getElementById('chartHead');
+            const tbody = document.getElementById('chartBody');
+            
+            let headHtml = `<tr><th>Material</th>`;
+            chartData.cols.forEach((col, i) => {
+                if(isChartEditMode) {
+                    headHtml += `<th>
+                        <div style="display:flex; align-items:center; gap:4px;">
+                            <input type="text" class="edit-input" id="col_${i}" value="${col}">
+                            <button class="del-btn" onclick="delCol(${i})">×</button>
+                        </div>
+                    </th>`;
+                } else {
+                    headHtml += `<th>${col}</th>`;
+                }
+            });
+            if(isChartEditMode) headHtml += `<th><button class="add-btn" onclick="addCol()">+ COL</button></th>`;
+            headHtml += `</tr>`;
+            thead.innerHTML = headHtml;
+
+            let bodyHtml = '';
+            chartData.rows.forEach((row, r) => {
+                bodyHtml += `<tr>`;
+                if(isChartEditMode) {
+                    bodyHtml += `<td>
+                        <div style="display:flex; align-items:center; gap:4px;">
+                            <button class="del-btn" onclick="delRow(${r})">×</button>
+                            <input type="text" class="edit-input mat-input" id="mat_${r}" value="${row.mat}">
+                        </div>
+                    </td>`;
+                    row.vals.forEach((val, c) => {
+                        bodyHtml += `<td><input type="text" inputmode="decimal" pattern="[0-9\.]*" class="edit-input" id="val_${r}_${c}" value="${val}"></td>`;
+                    });
+                    bodyHtml += `<td></td>`; 
+                } else {
+                    bodyHtml += `<td>${row.mat}</td>`;
+                    row.vals.forEach((val) => {
+                        bodyHtml += `<td class="val-cell" onclick="setTargetValue(${val})">${val}</td>`;
+                    });
+                }
+                bodyHtml += `</tr>`;
+            });
+
+            if(isChartEditMode) {
+                bodyHtml += `<tr><td colspan="${chartData.cols.length + 2}"><button class="add-btn" style="margin-top:8px;" onclick="addRow()">+ ADD ROW</button></td></tr>`;
+            }
+
+            tbody.innerHTML = bodyHtml;
+        }
+
+        function toggleChartEdit() {
+            const btn = document.getElementById('chartEditBtn');
+            if(isChartEditMode) {
+                syncChartDataFromDOM();
+                localStorage.setItem('gammaChartData', JSON.stringify(chartData));
+                btn.classList.remove('active');
+                btn.innerHTML = SVG_LOCK;
+            } else {
+                btn.classList.add('active');
+                btn.innerHTML = SVG_UNLOCK;
+            }
+            isChartEditMode = !isChartEditMode;
+            renderChart();
+        }
+
+        function addCol() {
+            syncChartDataFromDOM();
+            chartData.cols.push("New");
+            chartData.rows.forEach(r => r.vals.push(0));
+            renderChart();
+        }
+
+        function addRow() {
+            syncChartDataFromDOM();
+            chartData.rows.push({ mat: "New", vals: new Array(chartData.cols.length).fill(0) });
+            renderChart();
+        }
+
+        function delCol(c) {
+            if(chartData.cols.length <= 1) return; 
+            syncChartDataFromDOM();
+            chartData.cols.splice(c, 1);
+            chartData.rows.forEach(r => r.vals.splice(c, 1));
+            renderChart();
+        }
+
+        function delRow(r) {
+            if(chartData.rows.length <= 1) return; 
+            syncChartDataFromDOM();
+            chartData.rows.splice(r, 1);
+            renderChart();
         }
 
         function openChart() {
+            renderChart(); 
             const overlay = document.getElementById('chartOverlay');
             overlay.style.display = 'block';
             void overlay.offsetWidth;
@@ -495,15 +779,46 @@
 
         function closeChart(e) {
             if (e) e.stopPropagation();
+            if(isChartEditMode) toggleChartEdit(); 
+            
             const overlay = document.getElementById('chartOverlay');
             overlay.style.opacity = '0';
             overlay.querySelector('.bottom-sheet').style.transform = 'translateX(-50%) translateY(100%)';
-            setTimeout(() => { overlay.style.display = 'none'; }, 200);
+            setTimeout(() => { overlay.style.display = 'none'; }, 300);
         }
 
         function setTargetValue(val) {
+            if(isChartEditMode) return; 
             document.getElementById('targetExp').value = val;
+            saveState();
             closeChart();
+            runCalc();
+        }
+
+        // --- SHARE LOGIC ---
+        function shareApp() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Gamma Exposure Calculator',
+                    text: 'Check out this free Ir-192 exposure calculator. It works completely offline.',
+                    url: window.location.href
+                }).catch(console.error);
+            } else {
+                navigator.clipboard.writeText(window.location.href);
+                alert("App link copied to clipboard!");
+            }
+        }
+
+        // --- CORE LOGIC ---
+        function toggleDW() {
+            isDoubleWall = !isDoubleWall;
+            const btn = document.getElementById('dwToggleBtn');
+            if (isDoubleWall) {
+                btn.classList.add('toggle-on');
+            } else {
+                btn.classList.remove('toggle-on');
+            }
+            saveState();
             runCalc();
         }
 
@@ -523,20 +838,59 @@
                 const sfd = parseFloat(document.getElementById('sfd').value) || 0;
                 const age = parseFloat(document.getElementById('age').value) || 0;
 
+                let currentAct = 0;
+
                 if (exp && cur && sfd) {
                     const decayFactor = Math.pow(0.5, age / (HALF_LIFE_DAYS / DAYS_IN_MONTH));
-                    const act = cur * decayFactor;
-                    const rate = ((act * GAMMA) / Math.pow(sfd / 12, 2)) * Math.exp(-ATTN * thk);
+                    currentAct = cur * decayFactor;
+                    const rate = ((currentAct * GAMMA) / Math.pow(sfd / 12, 2)) * Math.exp(-ATTN * thk);
                     
                     formatDisplay((exp / rate) * 60);
 
                     tel1.innerHTML = `MATL <span>${thk.toFixed(3)}"</span>`;
-                    tel2.innerHTML = `ACT <span>${act.toFixed(1)} Ci</span>`;
+                    tel2.innerHTML = `ACT <span>${currentAct.toFixed(1)} Ci</span>`;
                     tel1.style.display = 'block'; tel2.style.display = 'block';
 
                     const decayPercent = Math.max(0, decayFactor * 100);
                     document.getElementById('decayRing').style.background = `conic-gradient(var(--accent) ${decayPercent}%, var(--chassis) 0)`;
+                } else {
+                    formatDisplay(0);
+                    tel1.innerHTML = `MATL <span>---</span>`;
+                    tel2.innerHTML = `ACT <span>---</span>`;
+                    document.getElementById('decayRing').style.background = `var(--chassis)`;
                 }
+
+                // Calculate Boundaries
+                let colInput = document.getElementById('collimator');
+                let colRatio = colInput ? parseFloat(colInput.value) : 16;
+                if (!colRatio || colRatio <= 0) colRatio = 1; 
+
+                if (currentAct > 0) {
+                    const i0 = currentAct * 5200; 
+                    const id = i0 / colRatio;     
+
+                    const u100 = document.getElementById('unshielded100');
+                    if(u100) u100.innerText = Math.round(Math.sqrt(i0 / 100)) + " FT";
+                    
+                    const u2 = document.getElementById('unshielded2');
+                    if(u2) u2.innerText = Math.round(Math.sqrt(i0 / 2)) + " FT";
+                    
+                    const s100 = document.getElementById('shielded100');
+                    if(s100) s100.innerText = Math.round(Math.sqrt(id / 100)) + " FT";
+                    
+                    const s2 = document.getElementById('shielded2');
+                    if(s2) s2.innerText = Math.round(Math.sqrt(id / 2)) + " FT";
+                } else {
+                    const u100 = document.getElementById('unshielded100');
+                    if(u100) u100.innerText = "0 FT";
+                    const u2 = document.getElementById('unshielded2');
+                    if(u2) u2.innerText = "0 FT";
+                    const s100 = document.getElementById('shielded100');
+                    if(s100) s100.innerText = "0 FT";
+                    const s2 = document.getElementById('shielded2');
+                    if(s2) s2.innerText = "0 FT";
+                }
+
             } else if (currentTab === 'adjustment') {
                 const t1 = parseFloat(document.getElementById('t1').value) || 0;
                 const d1 = parseFloat(document.getElementById('d1').value) || 0;
@@ -549,6 +903,9 @@
                     
                     tel1.innerHTML = `FACTOR <span>${ratio.toFixed(2)}x</span>`;
                     tel2.style.display = 'none';
+                } else {
+                    formatDisplay(0);
+                    tel1.innerHTML = `FACTOR <span>---</span>`;
                 }
             } else if (currentTab === 'density') {
                 const t1 = parseFloat(document.getElementById('dt1').value) || 0;
@@ -561,11 +918,18 @@
                     const sign = shift > 0 ? '+' : '';
                     tel1.innerHTML = `SHIFT <span>${sign}${shift.toFixed(2)} ΔD</span>`;
                     tel2.style.display = 'none';
+                } else {
+                    formatDisplay(0);
+                    tel1.innerHTML = `SHIFT <span>---</span>`;
                 }
             }
         }
 
         function formatDisplay(mins) {
+            if (!mins || mins <= 0 || !isFinite(mins)) {
+                document.getElementById("mainTime").innerText = "00:00";
+                return;
+            }
             let h = Math.floor(mins / 60);
             let m = Math.floor(mins % 60);
             let s = Math.round((mins * 60) % 60);
@@ -612,8 +976,18 @@
             inp.addEventListener('mouseup', (e) => { e.preventDefault(); });
         });
 
-        document.addEventListener('input', runCalc);
-        window.onload = runCalc;
+        document.addEventListener('input', (e) => {
+            if (e.target.tagName === 'INPUT' && !e.target.classList.contains('edit-input')) {
+                saveState();
+                runCalc();
+            }
+        });
+
+        window.onload = () => {
+            loadState();
+            renderChart();
+            runCalc();
+        };
     </script>
 </body>
 </html>
